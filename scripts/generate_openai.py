@@ -240,7 +240,7 @@ def call_openai(api_key, prompt_en, ref_paths):
         req.add_header("Authorization", "Bearer " + api_key)
         req.add_header("Content-Type", content_type)
         try:
-            with urllib.request.urlopen(req, timeout=300) as resp:
+            with urllib.request.urlopen(req, timeout=600) as resp:
                 payload = json.loads(resp.read().decode("utf-8"))
             data = payload.get("data") or []
             if not data or not data[0].get("b64_json"):
@@ -262,6 +262,13 @@ def call_openai(api_key, prompt_en, ref_paths):
                 time.sleep(pause)
                 continue
             raise ApiError(f"нет связи с OpenAI API ({e.reason}). Проверьте интернет.")
+        except (TimeoutError, OSError) as e:
+            if attempt < max_attempts:
+                pause = 15 * attempt
+                print(f"      таймаут/обрыв соединения ({e}). Пауза {pause} c и повтор…")
+                time.sleep(pause)
+                continue
+            raise ApiError(f"обрыв соединения с OpenAI API после нескольких попыток ({e}).")
     raise ApiError("не удалось получить кадр после нескольких попыток.")
 
 
