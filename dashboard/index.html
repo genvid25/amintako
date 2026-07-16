@@ -71,6 +71,9 @@
   .banner .wrap{ display:flex; align-items:center; gap:10px; padding:8px clamp(16px,3vw,32px); }
   .banner b{ color:var(--text); font-weight:650; }
   .banner .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); flex:none; }
+  .banner[hidden]{ display:none; }
+  .banner--view{ background:var(--warn-weak); }
+  .banner--view .dot{ background:var(--warn); }
 
   /* ---------- header ---------- */
   header{ padding-top:22px; padding-bottom:6px; }
@@ -222,6 +225,8 @@
   .btn--primary{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
   .btn--primary:hover{ background:var(--accent-2); border-color:var(--accent-2); }
   .btn--ok{ background:var(--ok-weak); color:var(--ok); border-color:transparent; cursor:default; }
+  .btn--locked{ opacity:.5; cursor:not-allowed; }
+  .btn--locked:hover{ border-color:var(--border-2); }
   .btn:focus-visible,.chip:focus-visible,.seg button:focus-visible,.themebtn:focus-visible,.verbtn:focus-visible,summary:focus-visible{ outline:none; box-shadow:var(--ring); border-radius:var(--r-sm); }
   .pending-note{ font-size:var(--fs-sm); color:var(--text-3); margin-top:auto; padding-top:2px; }
 
@@ -271,7 +276,14 @@
 </head>
 <body>
 
-<div class="banner">
+<div class="banner banner--view" id="viewBanner" hidden>
+  <div class="wrap">
+    <span class="dot"></span>
+    <span><b>Режим просмотра.</b> Правки подключатся после настройки базы — пока можно смотреть кадры и скачивать PNG.</span>
+  </div>
+</div>
+
+<div class="banner" id="pilotBanner">
   <div class="wrap">
     <span class="dot"></span>
     <span><b>Локальный пилот.</b> Данные и картинки — настоящие, из папки проекта. Кадры генерируются командой в Терминале; в облачной версии это будет по расписанию.</span>
@@ -413,6 +425,8 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<!-- Опциональная конфигурация бэкенда. На GitHub Pages файл есть; через serve.py его нет — 404 гасим onerror. -->
+<script src="config.js" onerror="window.__CONFIG_MISSING=1"></script>
 <script>
 (function(){
   "use strict";
@@ -446,9 +460,31 @@
   var lastJson = '';
   var sceneChipsBuilt = false;
 
+  /* ---- режим записи правок: supabase / local / view (определяется сам, без сборки) ---- */
+  var VIEW_TIP = 'Правки подключатся после настройки базы — пока смотрите и скачивайте';
+  function backendMode(){
+    if(/[?&](view|preview)\b/i.test(location.search)) return 'view';   // ручной предпросмотр режима
+    var cfg = window.BACKEND_CONFIG;
+    if(cfg && cfg.supabaseUrl && cfg.supabaseKey) return 'supabase';   // (а) статичный хостинг + база
+    var h = location.hostname;
+    if(location.protocol!=='file:' && (h==='localhost'||h==='127.0.0.1'||h==='::1'||h==='[::1]')) return 'local'; // (б) serve.py
+    return 'view';                                                     // (в) Pages без базы — только просмотр
+  }
+  var MODE = backendMode();
+  function canEdit(){ return MODE!=='view'; }
+
+  function applyMode(){
+    var vb = document.getElementById('viewBanner');
+    var pb = document.getElementById('pilotBanner');
+    if(MODE==='view'){ if(vb) vb.hidden=false; if(pb) pb.hidden=true; }
+    else            { if(vb) vb.hidden=true;  if(pb) pb.hidden=false; }
+  }
+
   function uiFor(id){ return ui[id] || (ui[id] = { reworkOpen:false, draft:'', vi:null }); }
   function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function fileUrl(f){ return '/' + String(f).replace(/^\/+/, ''); }
+  // Пути относительные, чтобы работать и через serve.py (страница в корне),
+  // и на GitHub Pages (страница в /amintako/dashboard/). f выглядит как "images/xxx.png".
+  function fileUrl(f){ return '../' + String(f).replace(/^\/+/, ''); }
 
   function fmtUpdated(iso){
     if(!iso) return '—';
@@ -530,22 +566,32 @@
         html += '<details class="prompt"><summary>'+I.chev+'Промт (EN)</summary><p class="en">'+esc(activePrompt(c))+'</p></details>';
       }
       if(hasImg){
+        var lock = ' disabled title="'+esc(VIEW_TIP)+'"';
         html += '<div class="actions">';
         if(c.status==='approved'){
           html += '<button class="btn btn--ok" type="button" disabled>'+I.check+'Одобрено</button>';
-        } else {
+        } else if(canEdit()){
           html += '<button class="btn btn--primary" type="button" data-act="approve">'+I.check+'Одобрить</button>';
+        } else {
+          html += '<button class="btn btn--locked" type="button"'+lock+'>'+I.check+'Одобрить</button>';
         }
-        html += '<button class="btn" type="button" data-act="rework-open">'+I.redo+'Переделать</button>';
+        if(canEdit()){
+          html += '<button class="btn" type="button" data-act="rework-open">'+I.redo+'Переделать</button>';
+        } else {
+          html += '<button class="btn btn--locked" type="button"'+lock+'>'+I.redo+'Переделать</button>';
+        }
+        // Скачивание PNG доступно во всех режимах
         html += '<a class="btn" href="'+esc(fileUrl(cv.file))+'" download>'+I.down+'Скачать PNG</a>';
         html += '</div>';
-        html += '<div class="rework'+(u.reworkOpen?' is-on':'')+'">'+
-                  '<textarea placeholder="Что поправить или новые вводные для агента…">'+esc(u.draft||'')+'</textarea>'+
-                  '<div class="rrow">'+
-                    '<button class="btn btn--primary" type="button" data-act="rework-send">'+I.send+'Отправить агенту</button>'+
-                    '<button class="btn" type="button" data-act="rework-cancel">Отмена</button>'+
-                  '</div>'+
-                '</div>';
+        if(canEdit()){
+          html += '<div class="rework'+(u.reworkOpen?' is-on':'')+'">'+
+                    '<textarea placeholder="Что поправить или новые вводные для агента…">'+esc(u.draft||'')+'</textarea>'+
+                    '<div class="rrow">'+
+                      '<button class="btn btn--primary" type="button" data-act="rework-send">'+I.send+'Отправить агенту</button>'+
+                      '<button class="btn" type="button" data-act="rework-cancel">Отмена</button>'+
+                    '</div>'+
+                  '</div>';
+        }
       } else {
         html += '<p class="pending-note">'+(c.status==='generating'
                   ? 'Агент генерирует изображение — оно появится здесь автоматически.'
@@ -656,7 +702,7 @@
   function findCard(id){ return (data.frames||[]).filter(function(f){ return f.id===id; })[0]; }
 
   function fetchData(force){
-    return fetch('/data/frames.json', {cache:'no-store'})
+    return fetch('../data/frames.json', {cache:'no-store'})
       .then(function(r){ if(!r.ok) throw new Error('http '+r.status); return r.text(); })
       .then(function(txt){
         if(txt===lastJson && !force) return false;
@@ -672,13 +718,36 @@
   }
 
   function postFrame(id, status, feedback){
-    return fetch('/api/frame', {
+    return fetch('../api/frame', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ id:id, status:status, feedback:feedback||'' })
     }).then(function(r){ return r.json(); }).then(function(j){
       if(!j.ok){ showToast('Не удалось сохранить: '+(j.error||'ошибка сервера')); return false; }
       return fetchData(true).then(function(){ return true; });
     }).catch(function(){ showToast('Сервер не отвечает. Запущен ли serve.py?'); return false; });
+  }
+
+  // Запись правки в Supabase REST (режим статичного хостинга с базой).
+  // Ожидается таблица с колонками id/status/feedback; ключ — публичный anon.
+  function saveSupabase(id, status, feedback){
+    var cfg = window.BACKEND_CONFIG || {};
+    var base = String(cfg.supabaseUrl||'').replace(/\/+$/,'');
+    var table = cfg.table || 'frames';
+    var fb = status==='approved' ? '' : (feedback||'');
+    return fetch(base+'/rest/v1/'+encodeURIComponent(table)+'?id=eq.'+encodeURIComponent(id), {
+      method:'PATCH',
+      headers:{ 'apikey':cfg.supabaseKey, 'Authorization':'Bearer '+cfg.supabaseKey,
+                'Content-Type':'application/json', 'Prefer':'return=representation' },
+      body: JSON.stringify({ status:status, feedback:fb })
+    }).then(function(r){ if(!r.ok) throw new Error('supabase '+r.status); return r.json(); })
+      .then(function(){ var c=findCard(id); if(c){ c.status=status; c.feedback=fb; render(); } return true; })
+      .catch(function(){ showToast('База недоступна — правка не сохранена'); return false; });
+  }
+
+  // Единая точка записи: маршрутизирует по режиму. В режиме просмотра — ничего не делает.
+  function saveFrame(id, status, feedback){
+    if(!canEdit()) return Promise.resolve(false);
+    return MODE==='supabase' ? saveSupabase(id, status, feedback) : postFrame(id, status, feedback);
   }
 
   /* ---------------- взаимодействие с карточками ---------------- */
@@ -692,7 +761,7 @@
     var act = btn.getAttribute('data-act');
 
     if(act==='approve'){
-      postFrame(id, 'approved').then(function(ok){ if(ok) showToast('Кадр '+id+' одобрен'); });
+      saveFrame(id, 'approved').then(function(ok){ if(ok) showToast('Кадр '+id+' одобрен'); });
     }
     else if(act==='rework-open'){ u.reworkOpen=true; render(); focusDraft(id); }
     else if(act==='rework-cancel'){ u.reworkOpen=false; u.draft=''; render(); }
@@ -701,7 +770,7 @@
       var val = ta ? ta.value.trim() : '';
       if(!val){ showToast('Добавьте комментарий для агента'); if(ta) ta.focus(); return; }
       u.reworkOpen=false; u.draft='';
-      postFrame(id, 'redo', val).then(function(ok){ if(ok) showToast('Правка по кадру '+id+' отправлена'); });
+      saveFrame(id, 'redo', val).then(function(ok){ if(ok) showToast('Правка по кадру '+id+' отправлена'); });
     }
     else if(act==='ver'){ u.vi = +btn.getAttribute('data-v'); render(); }
   });
@@ -761,10 +830,14 @@
   themeBtn.addEventListener('click', function(){ root.setAttribute('data-theme', effDark()?'light':'dark'); reflectTheme(); });
 
   /* ---------------- старт ---------------- */
+  applyMode();
   fetchData(true).catch(function(){
     grid.innerHTML = '<div class="loaderr">Не удалось загрузить данные кадров.<br><br>'+
-      'Запустите локальный сервер командой <code>python3 scripts/serve.py</code> и откройте '+
-      '<code>http://localhost:8787</code> (открывать сам файл в браузере нельзя — данные не загрузятся).</div>';
+      (canEdit()
+        ? 'Запустите локальный сервер командой <code>python3 scripts/serve.py</code> и откройте '+
+          '<code>http://localhost:8787</code> (открывать сам файл в браузере нельзя — данные не загрузятся).'
+        : 'Обновите страницу. Возможно, данные ещё публикуются.')+
+      '</div>';
   });
   setInterval(autoRefresh, 5000);
 })();
