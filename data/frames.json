@@ -1,7 +1,7 @@
 {
   "project": "ЭХО В ГОРАХ",
   "series": "Серия 2 — Привяжи верблюда",
-  "updated": "2026-07-16T14:56:27Z",
+  "updated": "2026-07-16T18:08:11Z",
   "frames": [
     {
       "id": "1.3",
@@ -23,6 +23,13 @@
           "file": "images/s1_03_v1.png",
           "prompt_en": "A medium close-up cinematic still frame from a 3D animated feature film.\nFeaturing Aslan, a middle-aged mountain villager with a weathered face and a plain worn jacket — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe leans in slightly and speaks to Hamza with a grave, worried expression, brows drawn together.\nSetting: the courtyard of Hamza's stone house in a mountain village, midday (as in reference image 2).\nCamera: eye-level medium close-up, shallow depth of field, Aslan framed from the chest up on the right third of the frame.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, calm subdued atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:51:46Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s1_03_v2_openai.png",
+          "prompt_en": "A medium close-up cinematic still frame from a 3D animated feature film.\nFeaturing Aslan, a middle-aged mountain villager with a weathered face and a plain worn jacket — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe leans in slightly and speaks to Hamza with a grave, worried expression, brows drawn together.\nSetting: the courtyard of Hamza's stone house in a mountain village, midday (as in reference image 2).\nCamera: eye-level medium close-up, shallow depth of field, Aslan framed from the chest up on the right third of the frame.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, calm subdued atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:22:05Z"
         }
       ]
     },
@@ -46,6 +53,13 @@
           "file": "images/s1_04_v1.png",
           "prompt_en": "A close-up cinematic still frame from a 3D animated feature film.\nFeaturing Hamza, an old weathered mountain elder with a grey beard wearing a long dark coat — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe answers with one short word, his weathered face still and certain, eyes steady beneath heavy brows.\nSetting: the courtyard of Hamza's stone house in a mountain village, midday (as in reference image 2).\nCamera: eye-level close-up on Hamza's face, shallow depth of field, his face sharp against the softly blurred courtyard.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, calm subdued atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:52:23Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s1_04_v2_openai.png",
+          "prompt_en": "A close-up cinematic still frame from a 3D animated feature film.\nFeaturing Hamza, an old weathered mountain elder with a grey beard wearing a long dark coat — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe answers with one short word, his weathered face still and certain, eyes steady beneath heavy brows.\nSetting: the courtyard of Hamza's stone house in a mountain village, midday (as in reference image 2).\nCamera: eye-level close-up on Hamza's face, shallow depth of field, his face sharp against the softly blurred courtyard.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, calm subdued atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:24:14Z"
         }
       ]
     },
@@ -69,6 +83,13 @@
           "file": "images/s3_01_v1.png",
           "prompt_en": "A wide establishing cinematic still frame from a 3D animated feature film.\nFeaturing Hamza, an old weathered mountain elder with a grey beard, a long dark coat and a wooden staff — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe stands alone at the gate beside a packed backpack, a coil of rope and two lanterns, gripping his staff, his stern face calm and resolute as he prepares to set out.\nSetting: the gate of Hamza's stone house in the mountain village, day (as in reference image 2).\nCamera: eye-level wide establishing shot, deep focus, Hamza standing slightly off-center with the gear in the foreground and the house wall behind.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, quiet still atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:52:54Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s3_01_v2_openai.png",
+          "prompt_en": "A wide establishing cinematic still frame from a 3D animated feature film.\nFeaturing Hamza, an old weathered mountain elder with a grey beard, a long dark coat and a wooden staff — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe stands alone at the gate beside a packed backpack, a coil of rope and two lanterns, gripping his staff, his stern face calm and resolute as he prepares to set out.\nSetting: the gate of Hamza's stone house in the mountain village, day (as in reference image 2).\nCamera: eye-level wide establishing shot, deep focus, Hamza standing slightly off-center with the gear in the foreground and the house wall behind.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, quiet still atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:26:36Z"
         }
       ]
     },
@@ -92,6 +113,13 @@
           "file": "images/s3_03_v1.png",
           "prompt_en": "A tight close-up cinematic still frame from a 3D animated feature film.\nFeaturing Hamza, an old weathered mountain elder with a grey beard wearing a long dark coat — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe stands alone facing the mountain, his stone-hard face trembling for a moment before he closes his eyes and quietly makes a prayer, deep emotion held beneath the surface.\nSetting: the gate of Hamza's stone house in the mountain village, day (as in reference image 2).\nCamera: eye-level tight close-up on Hamza's face, very shallow depth of field, his face filling the frame.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, quiet still atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:53:49Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s3_03_v2_openai.png",
+          "prompt_en": "A tight close-up cinematic still frame from a 3D animated feature film.\nFeaturing Hamza, an old weathered mountain elder with a grey beard wearing a long dark coat — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe stands alone facing the mountain, his stone-hard face trembling for a moment before he closes his eyes and quietly makes a prayer, deep emotion held beneath the surface.\nSetting: the gate of Hamza's stone house in the mountain village, day (as in reference image 2).\nCamera: eye-level tight close-up on Hamza's face, very shallow depth of field, his face filling the frame.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, quiet still atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:28:50Z"
         }
       ]
     },
@@ -115,6 +143,13 @@
           "file": "images/s3_08_v1.png",
           "prompt_en": "A medium-full cinematic still frame from a 3D animated feature film.\nFeaturing Hamza, an old weathered mountain elder with a grey beard, a long dark coat and a wooden staff — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe nods down toward a coil of rope at his feet, offering it, his expression practical and steady.\nSetting: the gate of Hamza's stone house in the mountain village, day (as in reference image 2).\nCamera: eye-level medium-full shot from the waist up, moderate depth of field, Hamza on the left with the coiled rope visible below him.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, quiet still atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:54:18Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s3_08_v2_openai.png",
+          "prompt_en": "A medium-full cinematic still frame from a 3D animated feature film.\nFeaturing Hamza, an old weathered mountain elder with a grey beard, a long dark coat and a wooden staff — exactly as in reference image 1; keep his face, hair and outfit identical to the reference.\nHe nods down toward a coil of rope at his feet, offering it, his expression practical and steady.\nSetting: the gate of Hamza's stone house in the mountain village, day (as in reference image 2).\nCamera: eye-level medium-full shot from the waist up, moderate depth of field, Hamza on the left with the coiled rope visible below him.\nLighting: bright natural mountain daylight with soft clear shadows, cool sky fill and warm stone tones, quiet still atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:31:06Z"
         }
       ]
     },
@@ -140,6 +175,13 @@
           "file": "images/s4_20_v1.png",
           "prompt_en": "A wide shot cinematic still frame from a 3D animated feature film.\nFeaturing Amin, a lean resolute teenage boy — exactly as in reference image 1; keep his face, hair and outfit identical to the reference. Beside him is Tako, a very small young boy — exactly as in reference image 2; keep his face, hair and outfit identical to the reference.\nAmin drapes his own oversized jacket over tiny Tako, who is swallowed by it with the sleeves hanging past his knees; Amin's face is protective and matter-of-fact, Tako looks up small and grateful. The jacket matches reference image 3.\nSetting: the edge of a fresh landslide high in the mountains, a raw scar of broken earth below and a precipice beyond, overcast day (as in reference image 4).\nCamera: eye-level wide shot, deep focus, the two boys small against the vast broken mountainside.\nLighting: flat cool overcast daylight, pale grey sky, the first fine drizzle in the air, muted desaturated palette.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:54:52Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s4_20_v2_openai.png",
+          "prompt_en": "A wide shot cinematic still frame from a 3D animated feature film.\nFeaturing Amin, a lean resolute teenage boy — exactly as in reference image 1; keep his face, hair and outfit identical to the reference. Beside him is Tako, a very small young boy — exactly as in reference image 2; keep his face, hair and outfit identical to the reference.\nAmin drapes his own oversized jacket over tiny Tako, who is swallowed by it with the sleeves hanging past his knees; Amin's face is protective and matter-of-fact, Tako looks up small and grateful. The jacket matches reference image 3.\nSetting: the edge of a fresh landslide high in the mountains, a raw scar of broken earth below and a precipice beyond, overcast day (as in reference image 4).\nCamera: eye-level wide shot, deep focus, the two boys small against the vast broken mountainside.\nLighting: flat cool overcast daylight, pale grey sky, the first fine drizzle in the air, muted desaturated palette.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:33:45Z"
         }
       ]
     },
@@ -164,6 +206,13 @@
           "file": "images/s5_11_v1.png",
           "prompt_en": "A medium close-up cinematic still frame from a 3D animated feature film.\nFeaturing Amin, a lean resolute teenage boy — exactly as in reference image 1; keep his face, hair and outfit identical to the reference. With him is Tako, a very small young boy swamped in an oversized jacket — exactly as in reference image 2; keep his face, hair and outfit identical to the reference.\nAmin crouches and turns to Tako, steady and reassuring as he tells him to climb onto his back and hold on tight; Tako looks up frightened but trusting.\nSetting: a narrow mountain gorge where a fallen wet tree trunk bridges the gap and a muddy torrent roars far below, overcast day (as in reference image 3).\nCamera: eye-level medium close-up on the two boys framed from the chest up, shallow depth of field, the blurred gorge behind them.\nLighting: flat cool overcast daylight, damp misty air rising from the water, muted grey-green palette with cold shadows.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:55:16Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s5_11_v2_openai.png",
+          "prompt_en": "A medium close-up cinematic still frame from a 3D animated feature film.\nFeaturing Amin, a lean resolute teenage boy — exactly as in reference image 1; keep his face, hair and outfit identical to the reference. With him is Tako, a very small young boy swamped in an oversized jacket — exactly as in reference image 2; keep his face, hair and outfit identical to the reference.\nAmin crouches and turns to Tako, steady and reassuring as he tells him to climb onto his back and hold on tight; Tako looks up frightened but trusting.\nSetting: a narrow mountain gorge where a fallen wet tree trunk bridges the gap and a muddy torrent roars far below, overcast day (as in reference image 3).\nCamera: eye-level medium close-up on the two boys framed from the chest up, shallow depth of field, the blurred gorge behind them.\nLighting: flat cool overcast daylight, damp misty air rising from the water, muted grey-green palette with cold shadows.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:36:36Z"
         }
       ]
     },
@@ -188,6 +237,13 @@
           "file": "images/s5_13_v1.png",
           "prompt_en": "A tight close-up cinematic still frame from a 3D animated feature film.\nFeaturing Amin, a lean focused teenage boy — exactly as in reference image 1; keep his face, hair and outfit identical to the reference. Clinging to his back is Tako, a very small young boy in an oversized jacket — exactly as in reference image 2; keep his face, hair and outfit identical to the reference.\nTako clings tightly to Amin's back and whispers into his ear with a nervous, mischievous grin, while Amin crawls forward with jaw clenched in tense concentration.\nSetting: a narrow mountain gorge where a fallen wet tree trunk bridges the gap and a muddy torrent roars far below, overcast day (as in reference image 3).\nCamera: eye-level tight close-up on both their faces cheek to cheek, very shallow depth of field, the torrent a soft blur below.\nLighting: flat cool overcast daylight, damp misty air rising from the water, muted grey-green palette with cold shadows.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:55:51Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s5_13_v2_openai.png",
+          "prompt_en": "A tight close-up cinematic still frame from a 3D animated feature film.\nFeaturing Amin, a lean focused teenage boy — exactly as in reference image 1; keep his face, hair and outfit identical to the reference. Clinging to his back is Tako, a very small young boy in an oversized jacket — exactly as in reference image 2; keep his face, hair and outfit identical to the reference.\nTako clings tightly to Amin's back and whispers into his ear with a nervous, mischievous grin, while Amin crawls forward with jaw clenched in tense concentration.\nSetting: a narrow mountain gorge where a fallen wet tree trunk bridges the gap and a muddy torrent roars far below, overcast day (as in reference image 3).\nCamera: eye-level tight close-up on both their faces cheek to cheek, very shallow depth of field, the torrent a soft blur below.\nLighting: flat cool overcast daylight, damp misty air rising from the water, muted grey-green palette with cold shadows.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:39:56Z"
         }
       ]
     },
@@ -213,6 +269,247 @@
           "file": "images/s9_01_v1.png",
           "prompt_en": "A wide shot cinematic still frame from a 3D animated feature film.\nFeaturing Amin, a lean teenage boy — exactly as in reference image 1; keep his face, hair and outfit identical to the reference. With him is Tako, a very small young boy in an oversized jacket — exactly as in reference image 2; keep his face, hair and outfit identical to the reference. And Yusuf, an older sturdy teenage boy — exactly as in reference image 3; keep his face, hair and outfit identical to the reference.\nThe three boys sit huddled tight back to back around a small fire on the floor, their breath steaming in the cold as wind pushes through a gap in the roof; weary but enduring.\nSetting: inside a half-ruined stone shepherd's hut at night, a small fire on the floor and wind whistling through a gap in the roof (as in reference image 4).\nCamera: slightly high wide shot taking in the whole hut interior, deep focus, the boys small and central around the fire.\nLighting: warm flickering firelight from below on the faces, deep cold blue shadows filling the stone walls, high contrast night atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
           "generated_at": "2026-07-16T14:56:27Z"
+        },
+        {
+          "v": 2,
+          "provider": "openai",
+          "file": "images/s9_01_v2_openai.png",
+          "prompt_en": "A wide shot cinematic still frame from a 3D animated feature film.\nFeaturing Amin, a lean teenage boy — exactly as in reference image 1; keep his face, hair and outfit identical to the reference. With him is Tako, a very small young boy in an oversized jacket — exactly as in reference image 2; keep his face, hair and outfit identical to the reference. And Yusuf, an older sturdy teenage boy — exactly as in reference image 3; keep his face, hair and outfit identical to the reference.\nThe three boys sit huddled tight back to back around a small fire on the floor, their breath steaming in the cold as wind pushes through a gap in the roof; weary but enduring.\nSetting: inside a half-ruined stone shepherd's hut at night, a small fire on the floor and wind whistling through a gap in the roof (as in reference image 4).\nCamera: slightly high wide shot taking in the whole hut interior, deep focus, the boys small and central around the fire.\nLighting: warm flickering firelight from below on the faces, deep cold blue shadows filling the stone walls, high contrast night atmosphere.\nStyle: rendered as a 3D animated feature film still — stylized appealing proportions with large expressive eyes, soft global illumination, gentle subsurface scattering on the skin, clean detailed materials, cinematic depth of field, warm-cool color contrast, high render quality.\n16:9 widescreen framing, clean frame with no text, captions, subtitles, logos or watermarks.",
+          "generated_at": "2026-07-16T17:53:44Z"
+        }
+      ]
+    },
+    {
+      "id": "4.1",
+      "scene": 4,
+      "shot": "ОБЩИЙ",
+      "action": "Амин, Тако и Юсуф жмутся у камней над пропастью; внизу свежий дымящийся шрам оползня.",
+      "dialogue": "",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ПЕРСОНАЖИ/Тако",
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "First, the exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, crouches low among the rocks, shoulders tense, gaze grim and fixed ahead. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, huddles in close, curled tight and uneasy. Finally, the exact character in a grey puffer vest over a hoodie from Image 3, preserving identical facial features, grips a boulder, jaw clenched. Use Image 4 as the exact background location. Wide shot, eye-level, deep focus. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_01_v1.png",
+          "prompt_en": "First, the exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, crouches low among the rocks, shoulders tense, gaze grim and fixed ahead. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, huddles in close, curled tight and uneasy. Finally, the exact character in a grey puffer vest over a hoodie from Image 3, preserving identical facial features, grips a boulder, jaw clenched. Use Image 4 as the exact background location. Wide shot, eye-level, deep focus. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T17:57:06Z"
+        }
+      ]
+    },
+    {
+      "id": "4.2",
+      "scene": 4,
+      "shot": "СРЕДНИЙ ПО ГРУДЬ",
+      "action": "Тако смотрит в небо, оттуда тянет первой моросью.",
+      "dialogue": "",
+      "refs": [
+        "ПЕРСОНАЖИ/Тако",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a red-and-white striped shirt and red cap from Image 1, preserving identical facial features and proportions, tilts the head back and looks up at the sky, face tense and wary, bracing for what is coming. Use Image 2 as the exact background location. Medium close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_02_v1.png",
+          "prompt_en": "The exact character in a red-and-white striped shirt and red cap from Image 1, preserving identical facial features and proportions, tilts the head back and looks up at the sky, face tense and wary, bracing for what is coming. Use Image 2 as the exact background location. Medium close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T17:58:38Z"
+        }
+      ]
+    },
+    {
+      "id": "4.3",
+      "scene": 4,
+      "shot": "СРЕДНИЙ ПО ГРУДЬ",
+      "action": "Юсуф предлагает ждать спасателей.",
+      "dialogue": "ЮСУФ: Сидим. Не двигаемся. Спасатели придут — увидят нас.",
+      "refs": [
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, sits firmly and gestures downward with one hand, expression insistent and stubborn, urging everyone to stay put. Use Image 2 as the exact background location. Medium close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_03_v1.png",
+          "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, sits firmly and gestures downward with one hand, expression insistent and stubborn, urging everyone to stay put. Use Image 2 as the exact background location. Medium close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T17:59:39Z"
+        }
+      ]
+    },
+    {
+      "id": "4.4",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Амин возражает.",
+      "dialogue": "АМИН: Не придут. Не сюда.",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, sets the jaw and gives a small, certain shake of the head, eyes steady and grim in quiet disagreement. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_04_v1.png",
+          "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, sets the jaw and gives a small, certain shake of the head, eyes steady and grim in quiet disagreement. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T18:00:41Z"
+        }
+      ]
+    },
+    {
+      "id": "4.5",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Юсуф переспрашивает.",
+      "dialogue": "ЮСУФ: Что?",
+      "refs": [
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, blinks and leans in slightly, one brow raised in confused disbelief, caught off guard. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_05_v1.png",
+          "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, blinks and leans in slightly, one brow raised in confused disbelief, caught off guard. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T18:01:40Z"
+        }
+      ]
+    },
+    {
+      "id": "4.6",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Амин объясняет про обход.",
+      "dialogue": "АМИН: Пошлют в обход — через северный хребет. Это двое суток.",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, speaks with quiet urgency, brows drawn together, expression serious and reasoning while laying out a hard truth. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_06_v1.png",
+          "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, speaks with quiet urgency, brows drawn together, expression serious and reasoning while laying out a hard truth. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T18:02:39Z"
+        }
+      ]
+    },
+    {
+      "id": "4.7",
+      "scene": 4,
+      "shot": "ОБЩИЙ",
+      "action": "Амин продолжает, глядя на Тако.",
+      "dialogue": "АМИН: С нами Тако. Он маленький, до ночи замёрзнет. И дождь скоро пойдёт.",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ПЕРСОНАЖИ/Тако",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "First, the exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, turns to glance with concern toward the figure beside, expression protective and worried. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, stands hunched and shivering, looking up uncertainly. Use Image 3 as the exact background location. Wide shot, eye-level, deep focus. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_07_v1.png",
+          "prompt_en": "First, the exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, turns to glance with concern toward the figure beside, expression protective and worried. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, stands hunched and shivering, looking up uncertainly. Use Image 3 as the exact background location. Wide shot, eye-level, deep focus. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T18:03:53Z"
+        }
+      ]
+    },
+    {
+      "id": "4.8",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Юсуф открывает рот и закрывает; Тако переводит глаза с одного на другого.",
+      "dialogue": "",
+      "refs": [
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ПЕРСОНАЖИ/Тако",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "First, the exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, opens the mouth to argue then closes it, jaw working, torn and without an answer. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, glances nervously back and forth, tense and unsure. Use Image 3 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_08_v1.png",
+          "prompt_en": "First, the exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, opens the mouth to argue then closes it, jaw working, torn and without an answer. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, glances nervously back and forth, tense and unsure. Use Image 3 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T18:05:14Z"
+        }
+      ]
+    },
+    {
+      "id": "4.9",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Амин говорит про пастушью тропу.",
+      "dialogue": "АМИН: Дед говорил про дальнюю пастушью тропу. Сказал — туда не суйтесь. Значит, она есть.",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, speaks with quiet determination, a spark of resolve in the eyes, brows set while working out a plan. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_09_v1.png",
+          "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, speaks with quiet determination, a spark of resolve in the eyes, brows set while working out a plan. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T18:07:42Z"
+        }
+      ]
+    },
+    {
+      "id": "4.10",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Юсуф спорит.",
+      "dialogue": "ЮСУФ: Он сказал — НЕ СУЙТЕСЬ. Ты слышал, как и я.",
+      "refs": [
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, leans forward with a sharp, frustrated frown, one hand raised in protest, anxious and pushing back. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "review",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": [
+        {
+          "v": 1,
+          "file": "images/s4_10_v1.png",
+          "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, leans forward with a sharp, frustrated frown, one hand raised in protest, anxious and pushing back. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+          "generated_at": "2026-07-16T18:08:11Z"
         }
       ]
     }

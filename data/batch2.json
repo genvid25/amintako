@@ -1,0 +1,172 @@
+{
+  "project": "ЭХО В ГОРАХ",
+  "series": "Серия 2 — Привяжи верблюда",
+  "batch": "batch2 (тест нового ПРОМТ-ГАЙДа, сцена 4 кадры 4.1–4.10)",
+  "updated": "2026-07-16T17:26:32Z",
+  "frames": [
+    {
+      "id": "4.1",
+      "scene": 4,
+      "shot": "ОБЩИЙ",
+      "action": "Амин, Тако и Юсуф жмутся у камней над пропастью; внизу свежий дымящийся шрам оползня.",
+      "dialogue": "",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ПЕРСОНАЖИ/Тако",
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "First, the exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, crouches low among the rocks, shoulders tense, gaze grim and fixed ahead. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, huddles in close, curled tight and uneasy. Finally, the exact character in a grey puffer vest over a hoodie from Image 3, preserving identical facial features, grips a boulder, jaw clenched. Use Image 4 as the exact background location. Wide shot, eye-level, deep focus. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.2",
+      "scene": 4,
+      "shot": "СРЕДНИЙ ПО ГРУДЬ",
+      "action": "Тако смотрит в небо, оттуда тянет первой моросью.",
+      "dialogue": "",
+      "refs": [
+        "ПЕРСОНАЖИ/Тако",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a red-and-white striped shirt and red cap from Image 1, preserving identical facial features and proportions, tilts the head back and looks up at the sky, face tense and wary, bracing for what is coming. Use Image 2 as the exact background location. Medium close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.3",
+      "scene": 4,
+      "shot": "СРЕДНИЙ ПО ГРУДЬ",
+      "action": "Юсуф предлагает ждать спасателей.",
+      "dialogue": "ЮСУФ: Сидим. Не двигаемся. Спасатели придут — увидят нас.",
+      "refs": [
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, sits firmly and gestures downward with one hand, expression insistent and stubborn, urging everyone to stay put. Use Image 2 as the exact background location. Medium close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.4",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Амин возражает.",
+      "dialogue": "АМИН: Не придут. Не сюда.",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, sets the jaw and gives a small, certain shake of the head, eyes steady and grim in quiet disagreement. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.5",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Юсуф переспрашивает.",
+      "dialogue": "ЮСУФ: Что?",
+      "refs": [
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, blinks and leans in slightly, one brow raised in confused disbelief, caught off guard. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.6",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Амин объясняет про обход.",
+      "dialogue": "АМИН: Пошлют в обход — через северный хребет. Это двое суток.",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, speaks with quiet urgency, brows drawn together, expression serious and reasoning while laying out a hard truth. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.7",
+      "scene": 4,
+      "shot": "ОБЩИЙ",
+      "action": "Амин продолжает, глядя на Тако.",
+      "dialogue": "АМИН: С нами Тако. Он маленький, до ночи замёрзнет. И дождь скоро пойдёт.",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ПЕРСОНАЖИ/Тако",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "First, the exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, turns to glance with concern toward the figure beside, expression protective and worried. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, stands hunched and shivering, looking up uncertainly. Use Image 3 as the exact background location. Wide shot, eye-level, deep focus. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.8",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Юсуф открывает рот и закрывает; Тако переводит глаза с одного на другого.",
+      "dialogue": "",
+      "refs": [
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ПЕРСОНАЖИ/Тако",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "First, the exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, opens the mouth to argue then closes it, jaw working, torn and without an answer. Then, the exact character in a red-and-white striped shirt and red cap from Image 2, preserving identical facial features, glances nervously back and forth, tense and unsure. Use Image 3 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.9",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Амин говорит про пастушью тропу.",
+      "dialogue": "АМИН: Дед говорил про дальнюю пастушью тропу. Сказал — туда не суйтесь. Значит, она есть.",
+      "refs": [
+        "ПЕРСОНАЖИ/Амин",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey hoodie from Image 1, preserving identical facial features and proportions, speaks with quiet determination, a spark of resolve in the eyes, brows set while working out a plan. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    },
+    {
+      "id": "4.10",
+      "scene": 4,
+      "shot": "КРУПНЫЙ",
+      "action": "Юсуф спорит.",
+      "dialogue": "ЮСУФ: Он сказал — НЕ СУЙТЕСЬ. Ты слышал, как и я.",
+      "refs": [
+        "ПЕРСОНАЖИ/Юсуф брат Амина",
+        "ЛОКАЦИИ/горные тропинки/тропинка 1"
+      ],
+      "prompt_en": "The exact character in a grey puffer vest over a hoodie from Image 1, preserving identical facial features and proportions, leans forward with a sharp, frustrated frown, one hand raised in protest, anxious and pushing back. Use Image 2 as the exact background location. Close-up, eye-level, shallow depth of field. Soft diffused daylight.\nNo dust in the air. No text, no watermarks. High quality, vivid colors, sharp details, cinematic lighting. 3D animation, cinematic.",
+      "status": "queued",
+      "feedback": "",
+      "assignee": "Амин",
+      "versions": []
+    }
+  ]
+}
