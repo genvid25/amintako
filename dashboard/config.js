@@ -9,13 +9,15 @@
     3) иначе (GitHub Pages без базы) -> РЕЖИМ ПРОСМОТРА: кадры можно смотреть и
        скачивать, править нельзя.
 
-  Пока это заглушка (значения null) — на Pages дашборд работает в режиме просмотра.
+  Сейчас включён режим 1: кадры серии 2 читаются из общей базы.
 
   ПРАВО ПРАВИТЬ ДАЁТ НЕ ЭТОТ ФАЙЛ, А ЛИЧНАЯ ССЫЛКА СОТРУДНИКА:
     https://genvid25.github.io/amintako/dashboard/?key=<токен из таблицы members>
   Без ?key= дашборд открывается на просмотр, даже когда ключи ниже заданы.
   Токен уходит в базу заголовком x-review-key и проверяется внутри функций
-  whoami() / review_frame() / set_prompt().
+  whoami() / review_frame() / set_prompt(). Сами токены лежат в закрытой
+  таблице members: публичным ключом её не прочитать, в репозиторий она не
+  попадает — поэтому здесь их нет и быть не должно.
 
   supabaseKey — ПУБЛИЧНЫЙ ключ (sb_publishable_… или старый anon). Его можно
   держать во фронтенде: записи он не даёт, RLS разрешает публичному ключу
@@ -23,7 +25,7 @@
   НЕЛЬЗЯ — файл лежит в публичном репозитории.
 */
 window.BACKEND_CONFIG = {
-  supabaseUrl: null,   // напр. "https://abcdefgh.supabase.co"
-  supabaseKey: null,   // публичный ключ проекта Supabase
-  seriesId: null       // id серии из таблицы series; null — взять первую по номеру
+  supabaseUrl: "https://ngyndrkymyyrxvdwfoeh.supabase.co",
+  supabaseKey: "sb_publishable_hW23W_ubPPua_ctHi2vV6w_Dcen0x0d",  // публичный, НЕ secret
+  seriesId: 1          // «ЭХО В ГОРАХ», серия 2 «Привяжи верблюда»
 };
