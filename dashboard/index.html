@@ -23,6 +23,7 @@
     --accent:#0c8893; --accent-2:#0a6f79; --accent-weak:#d3ecef; --on-accent:#ffffff;
     --ok:#2c8a53; --ok-weak:#dcefe3; --warn:#a9711a; --warn-weak:#f3e8ce;
     --review:#2d6cb0; --review-weak:#dde8f6; --queue:#5f7284; --queue-weak:#e3e9ee;
+    --hold:#7b5aa6; --hold-weak:#e9e1f4;
     --shadow-1:0 1px 2px rgba(20,34,48,.07); --shadow-2:0 8px 26px rgba(20,34,48,.09);
     --ring:0 0 0 2px var(--bg),0 0 0 4px var(--accent);
   }
@@ -34,6 +35,7 @@
       --accent:#34bfc8; --accent-2:#57ced4; --accent-weak:#0f333a; --on-accent:#04262b;
       --ok:#58c281; --ok-weak:#12301f; --warn:#e0a94b; --warn-weak:#382a12;
       --review:#69a8e6; --review-weak:#152a41; --queue:#8698a8; --queue-weak:#1e2a35;
+      --hold:#b39ad6; --hold-weak:#241a33;
       --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 12px 34px rgba(0,0,0,.45);
       --ring:0 0 0 2px var(--bg),0 0 0 4px var(--accent);
     }
@@ -45,6 +47,7 @@
     --accent:#0c8893; --accent-2:#0a6f79; --accent-weak:#d3ecef; --on-accent:#ffffff;
     --ok:#2c8a53; --ok-weak:#dcefe3; --warn:#a9711a; --warn-weak:#f3e8ce;
     --review:#2d6cb0; --review-weak:#dde8f6; --queue:#5f7284; --queue-weak:#e3e9ee;
+    --hold:#7b5aa6; --hold-weak:#e9e1f4;
     --shadow-1:0 1px 2px rgba(20,34,48,.07); --shadow-2:0 8px 26px rgba(20,34,48,.09);
   }
   :root[data-theme="dark"]{
@@ -54,6 +57,7 @@
     --accent:#34bfc8; --accent-2:#57ced4; --accent-weak:#0f333a; --on-accent:#04262b;
     --ok:#58c281; --ok-weak:#12301f; --warn:#e0a94b; --warn-weak:#382a12;
     --review:#69a8e6; --review-weak:#152a41; --queue:#8698a8; --queue-weak:#1e2a35;
+    --hold:#b39ad6; --hold-weak:#241a33;
     --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 12px 34px rgba(0,0,0,.45);
   }
 
@@ -100,6 +104,8 @@
   .stat b{ color:var(--text); font-weight:680; font-variant-numeric:tabular-nums; }
   .d-total{ background:var(--text-3); } .d-review{ background:var(--review); } .d-ok{ background:var(--ok); }
   .d-redo{ background:var(--warn); } .d-queue{ background:var(--queue); } .d-gen{ background:var(--accent); }
+  .d-hold{ background:var(--hold); }
+  .stat[hidden]{ display:none; }
 
   /* ---------- panels ---------- */
   .panel{ background:var(--card); border:1px solid var(--border); border-radius:var(--r-md); box-shadow:var(--shadow-1); }
@@ -117,6 +123,12 @@
   .yoursection{ font-size:var(--fs-sm); color:var(--text-2); }
   .yoursection b{ color:var(--text); }
   .selnote{ font-size:var(--fs-xs); color:var(--text-3); }
+  .seg[hidden],.yoursection[hidden],.selnote[hidden]{ display:none; }
+  .whoami{ display:none; align-items:center; gap:9px; font-size:var(--fs-sm); color:var(--text-2); }
+  .whoami.is-on{ display:inline-flex; }
+  .whoami .av{ width:28px; height:28px; border-radius:50%; flex:none; display:grid; place-items:center;
+    background:var(--accent); color:var(--on-accent); font-size:var(--fs-sm); font-weight:700; }
+  .whoami b{ color:var(--text); font-weight:670; }
 
   /* ---------- agent panel ---------- */
   .agent{ margin-top:18px; position:relative; overflow:hidden;
@@ -138,8 +150,14 @@
   .agent__next .lbl{ font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.07em; color:var(--text-3); }
   .count{ font-size:30px; font-weight:700; letter-spacing:-.02em; font-variant-numeric:tabular-nums; margin:3px 0 2px; line-height:1; }
   .count small{ font-size:14px; font-weight:600; color:var(--text-3); letter-spacing:0; }
-  .cmd{ margin-top:9px; font-family:var(--mono); font-size:12px; color:var(--text);
-    background:var(--card-2); border:1px solid var(--border); border-radius:var(--r-xs); padding:8px 10px; overflow-x:auto; white-space:nowrap; }
+  .feed{ margin-top:11px; display:flex; flex-direction:column; gap:7px; }
+  .frow2{ display:flex; align-items:flex-start; gap:8px; font-size:var(--fs-sm); color:var(--text-2); line-height:1.45; }
+  .frow2 svg{ width:14px; height:14px; flex:none; margin-top:2px; color:var(--text-3); }
+  .frow2 .k{ color:var(--text-3); }
+  .frow2 b{ color:var(--text); font-weight:650; font-variant-numeric:tabular-nums; }
+  .frow2--stop{ color:var(--text); background:var(--warn-weak); border-radius:var(--r-xs); padding:8px 10px; }
+  .frow2--stop svg{ color:var(--warn); }
+  .frow2--idle{ color:var(--text-3); font-style:italic; }
   .updated{ grid-column:1/-1; border-top:1px dashed var(--border-2); margin-top:2px; padding-top:10px;
     font-size:var(--fs-xs); color:var(--text-3); }
 
@@ -161,12 +179,27 @@
   .resultline{ font-size:var(--fs-sm); color:var(--text-3); font-variant-numeric:tabular-nums; }
 
   /* ---------- grid + cards ---------- */
-  .grid{ margin-top:14px; display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr)); }
+  /* align-items:start — карточка с раскрытым промтом не растягивает соседей по ряду */
+  .grid{ margin-top:14px; display:grid; gap:16px; align-items:start; grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr)); }
   .card{ background:var(--card); border:1px solid var(--border); border-top:3px solid var(--sc,var(--border));
     border-radius:var(--r-md); overflow:hidden; box-shadow:var(--shadow-1); display:flex; flex-direction:column; }
   .card.is-hidden{ display:none; }
   .s-approved{ --sc:var(--ok); } .s-review{ --sc:var(--review); } .s-redo{ --sc:var(--warn); }
   .s-queued{ --sc:var(--queue); } .s-generating{ --sc:var(--accent); }
+  .s-waiting_anchor{ --sc:var(--hold); }
+
+  /* кадр ждёт одобрения мастер-кадра своей сцены — приглушаем, но оставляем читаемым */
+  .card.is-waiting{ opacity:.62; }
+  .card.is-waiting:hover,.card.is-waiting:focus-within{ opacity:1; }
+  /* мастер-кадр сцены — выделяем: от него зависит вся сцена */
+  .card.is-anchor{ border-color:var(--accent); box-shadow:var(--shadow-2); }
+  .anchor-mark{ display:inline-flex; align-items:center; gap:6px; align-self:flex-start;
+    padding:4px 10px; border-radius:999px; background:var(--accent-weak); color:var(--accent-2);
+    font-size:var(--fs-xs); font-weight:700; letter-spacing:.02em; }
+  .anchor-mark svg{ width:12px; height:12px; }
+  .hold-note{ display:flex; align-items:flex-start; gap:7px; font-size:var(--fs-sm); line-height:1.45;
+    background:var(--hold-weak); color:var(--text-2); border-radius:var(--r-xs); padding:9px 11px; }
+  .hold-note svg{ width:14px; height:14px; color:var(--hold); flex:none; margin-top:2px; }
 
   .thumb{ position:relative; aspect-ratio:16/9; background:var(--card-2); overflow:hidden; }
   .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -191,6 +224,7 @@
   .pill--warn{ background:var(--warn-weak); color:var(--warn); }
   .pill--queue{ background:var(--queue-weak); color:var(--queue); }
   .pill--gen{ background:var(--accent-weak); color:var(--accent-2); }
+  .pill--hold{ background:var(--hold-weak); color:var(--hold); }
   .pill--gen .spin-ico{ animation:spin .8s linear infinite; }
 
   .action{ margin:0; color:var(--text); font-size:var(--fs-base); line-height:1.5; }
@@ -205,11 +239,36 @@
   .fixnote .who svg{ width:11px; height:11px; vertical-align:-1px; margin-right:3px; }
 
   details.prompt{ border:1px solid var(--border); border-radius:var(--r-xs); background:var(--card-2); }
-  details.prompt > summary{ list-style:none; cursor:pointer; padding:8px 11px; font-size:var(--fs-sm); font-weight:600; color:var(--text-2); display:flex; align-items:center; gap:7px; }
+  details.prompt > summary{ list-style:none; cursor:pointer; padding:8px 11px; font-size:var(--fs-sm); font-weight:600; color:var(--text-2); display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
   details.prompt > summary::-webkit-details-marker{ display:none; }
-  details.prompt > summary .chev{ width:13px; height:13px; transition:transform .18s; color:var(--text-3); }
+  details.prompt > summary .chev{ width:13px; height:13px; transition:transform .18s; color:var(--text-3); flex:none; }
   details.prompt[open] > summary .chev{ transform:rotate(90deg); }
-  details.prompt .en{ padding:0 12px 11px; margin:0; line-height:1.55; color:var(--text-2); font-family:var(--mono); font-size:12px; }
+  details.prompt .en{ padding:0 12px 11px; margin:0; line-height:1.55; color:var(--text-2); font-family:var(--mono); font-size:12px; white-space:pre-wrap; }
+
+  /* ---------- редактирование промта ---------- */
+  .lockmark{ display:inline-flex; align-items:center; gap:4px; padding:2px 7px; border-radius:999px;
+    background:var(--accent-weak); color:var(--accent-2); font-size:10.5px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.04em; }
+  .lockmark svg{ width:10px; height:10px; }
+  .pbody{ padding:0 11px 11px; display:flex; flex-direction:column; gap:8px; }
+  .ptext{ width:100%; min-height:190px; resize:vertical; padding:9px 11px; border-radius:var(--r-xs);
+    border:1px solid var(--border-2); background:var(--card); color:var(--text);
+    font-family:var(--mono); font-size:12px; line-height:1.55; }
+  .ptext:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-weak); }
+  .ptext[readonly]{ color:var(--text-2); cursor:default; }
+  .phint{ font-size:var(--fs-xs); color:var(--text-3); line-height:1.45; }
+  .phint b{ color:var(--text-2); font-weight:650; }
+  .prow{ display:none; gap:8px; flex-wrap:wrap; }
+  details.prompt.is-dirty .prow{ display:flex; }
+  details.prompt.is-dirty .ptext{ border-color:var(--accent); }
+  .psaved{ display:none; align-items:center; gap:9px; flex-wrap:wrap; font-size:var(--fs-sm);
+    background:var(--ok-weak); color:var(--text); border-radius:var(--r-xs); padding:9px 11px; }
+  details.prompt.is-saved .psaved{ display:flex; }
+  details.prompt.is-saved.is-dirty .psaved{ display:none; }
+  .psaved .lbl{ font-weight:650; }
+  details.prompt .oldver{ border:none; background:none; }
+  details.prompt .oldver > summary{ padding:0; font-size:var(--fs-xs); color:var(--text-3); font-weight:600; }
+  details.prompt .oldver .en{ padding:7px 0 0; }
 
   .ver{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .ver__lbl{ font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); }
@@ -279,14 +338,14 @@
 <div class="banner banner--view" id="viewBanner" hidden>
   <div class="wrap">
     <span class="dot"></span>
-    <span><b>Режим просмотра.</b> Правки подключатся после настройки базы — пока можно смотреть кадры и скачивать PNG.</span>
+    <span id="viewBannerTxt"><b>Режим просмотра.</b> Правки подключатся после настройки базы — пока можно смотреть кадры и скачивать картинки.</span>
   </div>
 </div>
 
 <div class="banner" id="pilotBanner">
   <div class="wrap">
     <span class="dot"></span>
-    <span><b>Локальный пилот.</b> Данные и картинки — настоящие, из папки проекта. Кадры генерируются командой в Терминале; в облачной версии это будет по расписанию.</span>
+    <span id="pilotBannerTxt"><b>Локальная работа.</b> Данные и картинки — настоящие, из папки проекта.</span>
   </div>
 </div>
 
@@ -318,6 +377,7 @@
       <span class="stat"><span class="d d-redo"></span>На переделке <b id="c-redo">0</b></span>
       <span class="stat"><span class="d d-queue"></span>В очереди <b id="c-queued">0</b></span>
       <span class="stat"><span class="d d-gen"></span>Генерируется <b id="c-generating">0</b></span>
+      <span class="stat" id="stat-hold" hidden><span class="d d-hold"></span>Ждут мастер-кадр <b id="c-waiting_anchor">0</b></span>
     </div>
   </div>
 </header>
@@ -326,32 +386,33 @@
 
   <!-- employee selector -->
   <div class="panel selector section-gap">
-    <div class="seg" role="group" aria-label="Выбор сотрудника">
+    <div class="seg" id="empSeg" role="group" aria-label="Выбор сотрудника">
       <button type="button" data-emp="amin"  aria-pressed="false"><span class="who">Амин</span><span class="scope">сцены 1–8</span></button>
       <button type="button" data-emp="timur" aria-pressed="false"><span class="who">Тимур</span><span class="scope">сцены 9–16</span></button>
       <button type="button" data-emp="isa"   aria-pressed="true"><span class="who">Иса</span><span class="scope">все сцены</span></button>
     </div>
-    <div class="yoursection">Ваш раздел: <b id="sectionLbl">все сцены</b></div>
-    <div class="selnote">(в облачной версии — разделы по сериям)</div>
+    <div class="yoursection" id="sectionBox">Ваш раздел: <b id="sectionLbl">все сцены</b></div>
+    <div class="selnote" id="selNote">(в облачной версии — разделы по сериям)</div>
+    <div class="whoami" id="whoami"><span class="av" id="whoAv"></span><span>Вы вошли как <b id="whoName"></b><span id="whoRole"></span></span></div>
   </div>
 
-  <!-- agent panel (honest) -->
-  <section class="agent" aria-label="Генератор кадров">
+  <!-- worker panel -->
+  <section class="agent" aria-label="Воркер кадров">
     <div class="agent__grid">
       <div>
         <div class="agent__head">
           <div class="agent__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M18.4 18.4l-2.1-2.1M7.7 7.7L5.6 5.6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M8.5 9.5 10 11l-1.5 1.5M13 12.5h3"/></svg>
           </div>
-          <div class="agent__title">Генератор кадров</div>
-          <span class="tagline">локальный пилот</span>
+          <div class="agent__title">Воркер кадров</div>
+          <span class="tagline" id="workerTag">на машине режиссёра</span>
         </div>
         <p class="agent__summary">
-          Кадры генерируются, когда вы запускаете команду в Терминале. Скрипт берёт кадры из очереди,
-          отправляет их в Gemini (nano banana) с референсами персонажей и складывает готовые PNG сюда.
-          В облачной версии тот же процесс пойдёт по расписанию автоматически.
+          Кадры рисует программа-воркер на компьютере режиссёра: она сама открывает нейросеть в браузере
+          по вашей подписке, показывает ей референсы персонажей и складывает готовые кадры сюда.
+          Пока компьютер выключен или воркер не запущен — очередь просто ждёт.
         </p>
-        <div class="cmd">python3 scripts/generate.py --limit 5</div>
+        <div class="feed" id="workerFeed"></div>
       </div>
       <div class="agent__next">
         <div class="lbl">В очереди на генерацию</div>
@@ -373,6 +434,7 @@
       <button class="chip" data-fstatus="redo" aria-pressed="false">На переделке <span class="n" id="n-redo">0</span></button>
       <button class="chip" data-fstatus="generating" aria-pressed="false">Генерируется <span class="n" id="n-generating">0</span></button>
       <button class="chip" data-fstatus="queued" aria-pressed="false">В очереди <span class="n" id="n-queued">0</span></button>
+      <button class="chip" data-fstatus="waiting_anchor" aria-pressed="false">Ждут мастер-кадр <span class="n" id="n-waiting_anchor">0</span></button>
     </div>
     <div class="frow">
       <span class="flabel">Сцена</span>
@@ -395,17 +457,17 @@
       Как это работает
     </summary>
     <div class="how__body">
-      <p class="how__lead">Раскадровка превращается в очередь кадров. Claude-агент пишет к каждому кадру англоязычный промт по правилам студии, скрипт генерации отправляет кадры в Gemini (nano banana) с референсами персонажей, готовые PNG попадают в этот дашборд. Сотрудник одобряет кадр или отправляет на переделку с комментарием — правка возвращается к Claude, он переписывает промт, и кадр генерируется заново.</p>
+      <p class="how__lead">Раскадровка превращается в очередь кадров. Агент пишет к каждому кадру англоязычный промт по правилам студии. Воркер на компьютере режиссёра берёт кадры из очереди, генерирует их в браузере по вашей подписке с референсами персонажей и выкладывает готовые картинки в этот дашборд. Сотрудник одобряет кадр или отправляет на переделку с комментарием — правка возвращается к агенту, он переписывает промт, и кадр генерируется заново. Промт можно поправить и руками: такой промт агент больше не трогает.</p>
       <div class="flow">
-        <div class="flow-step"><span class="t">Очередь кадров</span><span class="d">data/frames.json</span></div>
+        <div class="flow-step"><span class="t">Очередь кадров</span><span class="d">раскадровка серии</span></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-step is-agent"><span class="t">Claude пишет промты</span><span class="d">EN-промт по правилам студии</span></div>
+        <div class="flow-step is-agent"><span class="t">Агент пишет промты</span><span class="d">EN-промт по правилам студии</span></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-step"><span class="t">generate.py</span><span class="d">запуск генерации</span></div>
+        <div class="flow-step"><span class="t">Мастер-кадр сцены</span><span class="d">одобряется первым</span></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-step"><span class="t">nano banana API</span><span class="d">Gemini · 16:9</span></div>
+        <div class="flow-step"><span class="t">Воркер</span><span class="d">генерирует в браузере</span></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-step"><span class="t">Готовые PNG</span><span class="d">папка images/</span></div>
+        <div class="flow-step"><span class="t">Готовые кадры</span><span class="d">папка images/</span></div>
         <span class="flow-arrow">→</span>
         <div class="flow-step"><span class="t">Дашборд</span><span class="d">проверка кадров</span></div>
         <span class="flow-arrow">→</span>
@@ -413,7 +475,11 @@
       </div>
       <div class="flow-loop">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9a8 8 0 1 0 1.5 5"/><path d="M20 4v5h-5"/></svg>
-        Правка возвращается к Claude → он переписывает промт → кадр снова уходит в генерацию.
+        Правка возвращается к агенту → он переписывает промт → кадр снова уходит в генерацию.
+      </div>
+      <div class="flow-loop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+        Мастер-кадр — первый кадр сцены. Пока его не одобрят, остальные кадры сцены ждут: по нему выравниваются свет и стиль всей сцены.
       </div>
     </div>
   </details>
@@ -440,19 +506,29 @@
     down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>',
     send:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7Z"/></svg>',
     chev:'<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
-    warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>'
+    warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>',
+    lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>',
+    star:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="m12 3 2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.3l6-.8L12 3Z"/></svg>',
+    save:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h7"/></svg>',
+    play:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.8v16.4L20 12 6 3.8Z"/></svg>',
+    pics:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="m4 17 5-4.5 4 3.5 3-2.5 4 3.5"/></svg>'
   };
 
   var STATUS = {
-    queued:     {label:'В очереди',     cls:'queue',  ico:I.clock},
-    generating: {label:'Генерируется',  cls:'gen',    ico:I.spin},
-    review:     {label:'Ждёт проверки', cls:'review', ico:I.eye},
-    approved:   {label:'Одобрено',      cls:'ok',     ico:I.check},
-    redo:       {label:'На переделке',  cls:'warn',   ico:I.redo}
+    queued:         {label:'В очереди',       cls:'queue',  ico:I.clock},
+    generating:     {label:'Генерируется',    cls:'gen',    ico:I.spin},
+    review:         {label:'Ждёт проверки',   cls:'review', ico:I.eye},
+    approved:       {label:'Одобрено',        cls:'ok',     ico:I.check},
+    redo:           {label:'На переделке',    cls:'warn',   ico:I.redo},
+    waiting_anchor: {label:'Ждёт мастер-кадр', cls:'hold',  ico:I.lock}
   };
   var EMP = { amin:'Амин', timur:'Тимур', isa:'Иса' };
   var EMP_RANGE = { amin:[1,8], timur:[9,16], isa:[1,999] };
   var SECTION = { amin:'сцены 1–8 (Амин)', timur:'сцены 9–16 (Тимур)', isa:'все сцены' };
+
+  // Комментарий, который уходит агенту, когда промт правили руками и просят перегенерировать.
+  // База требует для «переделки» непустой комментарий — поэтому он осмысленный, а не заглушка.
+  var PROMPT_REDO_NOTE = 'Промт отредактирован вручную — перерисовать кадр по новому промту.';
 
   var state = { emp:'isa', fstatus:'all', fscene:'all', q:'' };
   var ui = {};              // эфемерное состояние карточек (открыт ли ввод правки, черновик, выбранная версия)
@@ -460,27 +536,86 @@
   var lastJson = '';
   var sceneChipsBuilt = false;
 
-  /* ---- режим записи правок: supabase / local / view (определяется сам, без сборки) ---- */
-  var VIEW_TIP = 'Правки подключатся после настройки базы — пока смотрите и скачивайте';
+  /* ---- откуда данные и куда пишем: supabase / local / view (определяется сам, без сборки) ---- */
+  var CFG = window.BACKEND_CONFIG || {};
+  function urlParam(name){
+    var m = new RegExp('[?&]'+name+'=([^&#]*)').exec(location.search);
+    return m ? decodeURIComponent(m[1].replace(/\+/g,' ')) : '';
+  }
+  // Ключи и токены уезжают в заголовки запроса, а туда можно только обычные
+  // латинские символы. Испорченный ключ (кириллица из автозамены, перенос строки)
+  // иначе уронил бы вообще все запросы — поэтому такой просто не используем.
+  function headerSafe(s){ return typeof s==='string' && s!=='' && /^[\x20-\x7E]+$/.test(s); }
+
+  var rawKey = urlParam('key').trim();
+  var KEY = headerSafe(rawKey) ? rawKey : '';     // личный токен сотрудника из ссылки ?key=...
+  var keyBroken = !!rawKey && !KEY;
+  var cfgBroken = !!(CFG.supabaseUrl && CFG.supabaseKey) && !headerSafe(String(CFG.supabaseKey).trim());
+  var me = null;                        // {name, role, series_ids} — заполняет whoami()
+
   function backendMode(){
     if(/[?&](view|preview)\b/i.test(location.search)) return 'view';   // ручной предпросмотр режима
-    var cfg = window.BACKEND_CONFIG;
-    if(cfg && cfg.supabaseUrl && cfg.supabaseKey) return 'supabase';   // (а) статичный хостинг + база
+    if(CFG.supabaseUrl && CFG.supabaseKey && !cfgBroken) return 'supabase';   // (а) статичный хостинг + база
     var h = location.hostname;
     if(location.protocol!=='file:' && (h==='localhost'||h==='127.0.0.1'||h==='::1'||h==='[::1]')) return 'local'; // (б) serve.py
     return 'view';                                                     // (в) Pages без базы — только просмотр
   }
   var MODE = backendMode();
-  function canEdit(){ return MODE!=='view'; }
+
+  // В облаке право писать даёт не наличие базы, а личная ссылка: без неё — только просмотр.
+  function canEdit(){
+    if(MODE==='local') return true;
+    if(MODE==='supabase') return !!me;
+    return false;
+  }
+  var VIEW_TIP = (MODE==='supabase')
+    ? 'Откройте дашборд по своей личной ссылке, чтобы одобрять кадры и править промты'
+    : 'Правки подключатся после настройки базы — пока смотрите и скачивайте';
 
   function applyMode(){
     var vb = document.getElementById('viewBanner');
     var pb = document.getElementById('pilotBanner');
-    if(MODE==='view'){ if(vb) vb.hidden=false; if(pb) pb.hidden=true; }
-    else            { if(vb) vb.hidden=true;  if(pb) pb.hidden=false; }
+    if(canEdit()){
+      vb.hidden = true; pb.hidden = false;
+      document.getElementById('pilotBannerTxt').innerHTML = (MODE==='supabase')
+        ? '<b>Вы вошли по личной ссылке.</b> Одобрение, переделка и правка промтов сохраняются в общей базе — их сразу видят остальные.'
+        : '<b>Локальная работа.</b> Данные и картинки — настоящие, из папки проекта.';
+    } else {
+      pb.hidden = true; vb.hidden = false;
+      document.getElementById('viewBannerTxt').innerHTML = (MODE==='supabase')
+        ? '<b>Режим просмотра.</b> Чтобы одобрять кадры и править промты, откройте дашборд по своей личной ссылке.'
+        : '<b>Режим просмотра.</b> Правки подключатся после настройки базы — пока можно смотреть кадры и скачивать картинки.';
+    }
   }
 
-  function uiFor(id){ return ui[id] || (ui[id] = { reworkOpen:false, draft:'', vi:null }); }
+  // Кто сейчас правит: в облаке — тот, чья ссылка; локально — выбранный в переключателе.
+  function editorName(){ return (me && me.name) || EMP[state.emp] || ''; }
+
+  function applyIdentity(){
+    var seg  = document.getElementById('empSeg');
+    var box  = document.getElementById('sectionBox');
+    var note = document.getElementById('selNote');
+    var who  = document.getElementById('whoami');
+    if(MODE!=='supabase') return;                 // локально переключатель остаётся как был
+    seg.hidden = true; box.hidden = true;         // в облаке раздел определяет база, а не кнопки
+    if(me){
+      note.hidden = true;
+      who.classList.add('is-on');
+      document.getElementById('whoAv').textContent   = String(me.name||'?').slice(0,1).toUpperCase();
+      document.getElementById('whoName').textContent = me.name || '—';
+      document.getElementById('whoRole').textContent = (me.role==='director')
+        ? ' · режиссёр, видит все серии' : ' · аниматор';
+    } else {
+      note.textContent = 'Открыто без личной ссылки — доступен только просмотр.';
+    }
+  }
+
+  function uiFor(id){
+    return ui[id] || (ui[id] = {
+      reworkOpen:false, draft:'', vi:null,
+      promptOpen:false, promptDraft:null, promptSaved:false
+    });
+  }
   function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   // Пути относительные, чтобы работать и через serve.py (страница в корне),
   // и на GitHub Pages (страница в /amintako/dashboard/). f выглядит как "images/xxx.png".
@@ -502,9 +637,12 @@
     var idx = (u.vi==null ? v.length-1 : Math.min(u.vi, v.length-1));
     return v[idx];
   }
-  function activePrompt(c){
-    var cv = currentVersion(c);
-    return cv ? cv.prompt_en : (c.prompt_en || '');
+  // Промт кадра — тот, что уйдёт в следующую генерацию. Промты версий это история:
+  // они показываются отдельно и задним числом не переписываются.
+  function savedPrompt(c){
+    if(c.prompt_en) return c.prompt_en;
+    var v = (c.versions||[]);
+    return v.length ? (v[v.length-1].prompt_en || '') : '';
   }
 
   /* ---- части реплики: "ТАКО: текст" -> {who, line} ---- */
@@ -523,15 +661,72 @@
       return '<div class="thumb thumb--pending">'+badges+'<div class="ph ph--gen"><span class="spinner"></span><span>Генерируется…</span></div></div>';
     }
     if(!cv){
-      return '<div class="thumb thumb--pending">'+badges+'<div class="ph"><svg class="qicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>В очереди на генерацию</span></div></div>';
+      var wait = (c.status==='waiting_anchor')
+        ? 'Ждёт мастер-кадр сцены'
+        : 'В очереди на генерацию';
+      return '<div class="thumb thumb--pending">'+badges+'<div class="ph"><svg class="qicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>'+wait+'</span></div></div>';
     }
-    var src = fileUrl(cv.file);
-    return '<div class="thumb"><a href="'+esc(src)+'" target="_blank" rel="noopener"><img src="'+esc(src)+'" alt="Кадр '+esc(c.id)+'" loading="lazy"></a>'+badges+'</div>';
+    // в сетке — лёгкое превью, по клику и на скачивание — полный кадр
+    var full = fileUrl(cv.file);
+    var prev = fileUrl(cv.preview || cv.file);
+    return '<div class="thumb"><a href="'+esc(full)+'" target="_blank" rel="noopener"><img src="'+esc(prev)+'" alt="Кадр '+esc(c.id)+'" loading="lazy"></a>'+badges+'</div>';
   }
 
   function pillHtml(c){
     var m = STATUS[c.status] || STATUS.queued;
-    return '<span class="pill pill--'+m.cls+'">'+m.ico+'<span>'+m.label+'</span></span>';
+    var h = '<span class="pill pill--'+m.cls+'">'+m.ico+'<span>'+m.label+'</span></span>';
+    if(c.final_ok) h += '<span class="pill pill--ok">'+I.check+'<span>утвердил режиссёр</span></span>';
+    return h;
+  }
+
+  /* ---- раскрывашка с промтом: показ и редактирование ---- */
+  function promptHtml(c, hasImg){
+    var u = uiFor(c.id);
+    var saved = savedPrompt(c);
+    if(!saved && !canEdit()) return '';
+    var draft = (u.promptDraft==null ? saved : u.promptDraft);
+    var cls = 'prompt' + (draft!==saved ? ' is-dirty' : '') + (u.promptSaved ? ' is-saved' : '');
+
+    var h = '<details class="'+cls+'" data-prompt'+(u.promptOpen?' open':'')+'>';
+    h += '<summary>'+I.chev+'Промт (EN)';
+    if(c.prompt_locked) h += '<span class="lockmark">'+I.lock+'правил человек</span>';
+    h += '</summary><div class="pbody">';
+
+    if(c.prompt_locked){
+      var by   = c.prompt_updated_by ? (' — ' + esc(c.prompt_updated_by)) : '';
+      var when = c.prompt_updated_at ? (', ' + esc(fmtUpdated(c.prompt_updated_at))) : '';
+      h += '<p class="phint"><b>Промт отредактирован вручную'+by+when+'.</b> '+
+           'Агент такой промт не переписывает: правки сотрудника уйдут в комментарий, а текст останется вашим.</p>';
+    }
+
+    if(canEdit()){
+      h += '<textarea class="ptext" spellcheck="false" aria-label="Промт кадра '+esc(c.id)+'">'+esc(draft)+'</textarea>';
+      h += '<p class="phint">Этот текст уйдёт в следующую генерацию кадра. После сохранения агент перестанет переписывать промт сам.</p>';
+      h += '<div class="prow">'+
+             '<button class="btn btn--primary" type="button" data-act="prompt-save">'+I.save+'Сохранить промт</button>'+
+             '<button class="btn" type="button" data-act="prompt-cancel">Отмена</button>'+
+           '</div>';
+      h += '<div class="psaved"><span class="lbl">Сохранено.</span>' +
+           (hasImg
+             ? '<span>Отправить на перегенерацию?</span>'+
+               '<button class="btn btn--primary" type="button" data-act="prompt-redo">'+I.redo+'Отправить</button>'+
+               '<button class="btn" type="button" data-act="prompt-dismiss">Не сейчас</button>'
+             : '<span>Кадр ещё не рисовали — воркер возьмёт его уже с новым промтом.</span>'+
+               '<button class="btn" type="button" data-act="prompt-dismiss">Понятно</button>') +
+           '</div>';
+    } else {
+      h += '<p class="en">'+esc(saved)+'</p>';
+      h += '<p class="phint">'+esc(VIEW_TIP)+'.</p>';
+    }
+
+    // если смотрим старую версию, её промт показываем отдельно — это исторический факт
+    var cv = currentVersion(c);
+    if(cv && cv.prompt_en && cv.prompt_en !== saved){
+      h += '<details class="prompt oldver"><summary>'+I.chev+'Промт версии v'+esc(cv.v||'')+' — как было при генерации</summary>'+
+           '<p class="en">'+esc(cv.prompt_en)+'</p></details>';
+    }
+    h += '</div></details>';
+    return h;
   }
 
   function cardHtml(c){
@@ -542,9 +737,16 @@
     var html = thumbHtml(c);
     html += '<div class="card__body">';
       html += '<div class="card__top"><span class="idsmall">Кадр '+esc(c.id)+'</span>'+pillHtml(c)+'</div>';
+      if(c.is_anchor){
+        html += '<div class="anchor-mark">'+I.star+'мастер-кадр сцены '+esc(c.scene)+'</div>';
+      }
       html += '<p class="action'+(c.action?'':' muted')+'">'+esc(c.action||'—')+'</p>';
       if(dlg){
         html += '<blockquote class="line">'+(dlg.who?'<span class="who">'+esc(dlg.who)+'</span>':'')+'<em>«'+esc(dlg.line)+'»</em></blockquote>';
+      }
+      if(c.status==='waiting_anchor'){
+        html += '<div class="hold-note">'+I.lock+'<span>Ждёт одобрения первого кадра сцены '+esc(c.scene)+
+                ' — по нему выравниваются свет и стиль всей сцены.</span></div>';
       }
       // версии
       if(c.versions && c.versions.length>1){
@@ -561,10 +763,9 @@
       if(c.status==='redo' && c.feedback){
         html += '<div class="fixnote"><span class="who">'+I.warn+'правка</span><br>'+esc(c.feedback)+'</div>';
       }
-      // промт (EN)
-      if(activePrompt(c)){
-        html += '<details class="prompt"><summary>'+I.chev+'Промт (EN)</summary><p class="en">'+esc(activePrompt(c))+'</p></details>';
-      }
+      // промт (EN) — с редактированием, если режим позволяет
+      html += promptHtml(c, hasImg);
+
       if(hasImg){
         var lock = ' disabled title="'+esc(VIEW_TIP)+'"';
         html += '<div class="actions">';
@@ -580,8 +781,8 @@
         } else {
           html += '<button class="btn btn--locked" type="button"'+lock+'>'+I.redo+'Переделать</button>';
         }
-        // Скачивание PNG доступно во всех режимах
-        html += '<a class="btn" href="'+esc(fileUrl(cv.file))+'" download>'+I.down+'Скачать PNG</a>';
+        // Скачивание картинки доступно во всех режимах
+        html += '<a class="btn" href="'+esc(fileUrl(cv.file))+'" download>'+I.down+'Скачать кадр</a>';
         html += '</div>';
         if(canEdit()){
           html += '<div class="rework'+(u.reworkOpen?' is-on':'')+'">'+
@@ -593,14 +794,16 @@
                   '</div>';
         }
       } else {
-        html += '<p class="pending-note">'+(c.status==='generating'
-                  ? 'Агент генерирует изображение — оно появится здесь автоматически.'
-                  : 'Кадр ждёт генерации. Запустите: python3 scripts/generate.py')+'</p>';
+        var note;
+        if(c.status==='generating')           note = 'Воркер сейчас рисует этот кадр — картинка появится здесь сама.';
+        else if(c.status==='waiting_anchor')  note = 'Кадр встанет в очередь, как только одобрят мастер-кадр сцены.';
+        else                                  note = 'Кадр стоит в очереди — воркер возьмёт его в следующем прогоне.';
+        html += '<p class="pending-note">'+note+'</p>';
       }
     html += '</div>';
 
     var art = document.createElement('article');
-    art.className = 'card s-'+c.status;
+    art.className = 'card s-'+c.status + (c.is_anchor?' is-anchor':'') + (c.status==='waiting_anchor'?' is-waiting':'');
     art.setAttribute('data-id', c.id);
     art.setAttribute('data-scene', c.scene);
     art.setAttribute('data-status', c.status);
@@ -613,9 +816,39 @@
   var grid = document.getElementById('grid');
 
   function counts(){
-    var o = {total:0, queued:0, generating:0, review:0, approved:0, redo:0};
+    var o = {total:0, queued:0, generating:0, review:0, approved:0, redo:0, waiting_anchor:0};
     (data.frames||[]).forEach(function(f){ o.total++; if(o[f.status]!=null) o[f.status]++; });
     return o;
+  }
+
+  /* ---- панель воркера: что он делал в последний раз (из ленты событий) ---- */
+  function renderWorker(c){
+    var box = document.getElementById('workerFeed');
+    var tag = document.getElementById('workerTag');
+    var w   = data && data.worker;
+
+    if(!w){
+      tag.textContent = 'на машине режиссёра';
+      box.innerHTML = '<div class="frow2 frow2--idle">'+I.clock+
+        '<span>Воркер ещё не выходил на связь. Как только он отработает, здесь появится: когда запускался, сколько кадров сделал и на чём остановился.</span></div>';
+      return;
+    }
+
+    tag.textContent = w.running ? 'сейчас работает' : 'на машине режиссёра';
+    var h = '<div class="frow2">'+I.play+'<span><span class="k">Последний запуск:</span> <b>'+esc(fmtUpdated(w.at))+'</b></span></div>';
+    if(w.message){
+      h += '<div class="frow2">'+I.check+'<span>'+esc(w.message)+'</span></div>';
+    }
+    if(w.ok || w.failed){
+      h += '<div class="frow2">'+I.pics+'<span>Кадров сделано: <b>'+w.ok+'</b>'+
+           (w.failed ? ' · не получилось: <b>'+w.failed+'</b>' : '')+'</span></div>';
+    }
+    if(w.stop){
+      h += '<div class="frow2 frow2--stop">'+I.warn+'<span><b>Остановился:</b> '+esc(w.stop)+'</span></div>';
+    }
+    h += '<div class="frow2"><span class="k">В очереди сейчас:</span> <b>'+c.queued+'</b>'+
+         (c.waiting_anchor ? ' <span class="k">· ждут мастер-кадр:</span> <b>'+c.waiting_anchor+'</b>' : '')+'</div>';
+    box.innerHTML = h;
   }
 
   function buildSceneChips(){
@@ -646,21 +879,24 @@
     document.getElementById('projSub').textContent =
       (data.series||'—') + ' · ' + c.total + ' кадров';
     document.getElementById('footLine').textContent =
-      'Локальный пилот · «' + (data.project||'') + '» · ' + (data.series||'') + ' · данные из data/frames.json';
+      '«' + (data.project||'') + '» · ' + (data.series||'') + ' · ' +
+      (MODE==='supabase' ? 'данные из общей базы' : 'данные из data/frames.json');
 
     // счётчики
-    ['total','review','approved','redo','queued','generating'].forEach(function(k){
+    ['total','review','approved','redo','queued','generating','waiting_anchor'].forEach(function(k){
       var el = document.getElementById('c-'+k); if(el) el.textContent = c[k];
     });
+    document.getElementById('stat-hold').hidden = !c.waiting_anchor;   // пусто — не мозолим глаза
     // счётчики на чипах
     document.getElementById('n-all').textContent = c.total;
-    ['review','approved','redo','generating','queued'].forEach(function(k){
+    ['review','approved','redo','generating','queued','waiting_anchor'].forEach(function(k){
       var el = document.getElementById('n-'+k); if(el) el.textContent = c[k];
     });
-    // панель агента
+    // панель воркера
     document.getElementById('queueCount').textContent = c.queued;
     document.getElementById('reviewCount').textContent = c.review;
     document.getElementById('updatedLine').textContent = 'Данные обновлены: ' + fmtUpdated(data.updated);
+    renderWorker(c);
 
     buildSceneChips();
 
@@ -672,7 +908,9 @@
 
   /* ---------------- filters ---------------- */
   function applyFilters(){
-    var range = EMP_RANGE[state.emp];
+    // В облаке раздел сотрудника определяет база (своя серия), а не переключатель сцен.
+    var byEmp = (MODE!=='supabase');
+    var range = byEmp ? EMP_RANGE[state.emp] : [0, Infinity];
     var visible = 0, inScope = 0;
     grid.querySelectorAll('.card').forEach(function(el){
       var sc = +el.getAttribute('data-scene');
@@ -688,7 +926,8 @@
       if(ok) visible++;
     });
     document.getElementById('empty').classList.toggle('is-on', visible===0);
-    document.getElementById('resultLine').textContent = 'Показано кадров: '+visible+' из '+inScope+' в вашем разделе';
+    document.getElementById('resultLine').textContent =
+      'Показано кадров: '+visible+' из '+inScope+(byEmp ? ' в вашем разделе' : '');
   }
 
   /* ---------------- toast ---------------- */
@@ -698,56 +937,284 @@
     clearTimeout(toastT); toastT = setTimeout(function(){ toast.classList.remove('is-on'); }, 2600);
   }
 
-  /* ---------------- data load + автообновление ---------------- */
-  function findCard(id){ return (data.frames||[]).filter(function(f){ return f.id===id; })[0]; }
+  /* ================= данные: Supabase REST ==================
+     Библиотеку не подключаем: запросов пять штук, обычный fetch их закрывает,
+     а сторонний CDN — лишняя точка отказа на публичной странице.
+     Читаем напрямую (RLS разрешает select), пишем только через функции базы:
+     прямой UPDATE публичным ключом запрещён и не пройдёт.
+     ========================================================== */
+  var SB = String(CFG.supabaseUrl||'').replace(/\/+$/,'');
+  var seriesRow = null;
+  var promptColsOk = true;     // есть ли в базе колонки ручной правки промта
+  var lastProgress = '';
 
-  function fetchData(force){
+  function sbHeaders(extra){
+    var h = { 'apikey':CFG.supabaseKey, 'Authorization':'Bearer '+CFG.supabaseKey };
+    if(extra) for(var k in extra) h[k] = extra[k];
+    return h;
+  }
+  // Ошибки база отдаёт готовым русским текстом — показываем его как есть.
+  function sbMessage(text, code){
+    try{ var j = JSON.parse(text); return j.message || j.error || j.hint || ('база ответила '+code); }
+    catch(e){ return 'база ответила '+code; }
+  }
+  function sbGet(path){
+    return fetch(SB+'/rest/v1/'+path, {headers:sbHeaders({'Accept':'application/json'}), cache:'no-store'})
+      .then(function(r){
+        return r.text().then(function(t){
+          if(!r.ok) throw new Error(sbMessage(t, r.status));
+          return t ? JSON.parse(t) : [];
+        });
+      });
+  }
+  function sbRpc(fn, body){
+    var h = sbHeaders({'Content-Type':'application/json'});
+    if(KEY) h['x-review-key'] = KEY;     // токен уходит заголовком, а не в теле запроса
+    return fetch(SB+'/rest/v1/rpc/'+fn, {method:'POST', headers:h, body:JSON.stringify(body||{})})
+      .then(function(r){
+        return r.text().then(function(t){
+          if(!r.ok) throw new Error(sbMessage(t, r.status));
+          return t ? JSON.parse(t) : null;
+        });
+      });
+  }
+
+  function whoami(){
+    if(!KEY) return Promise.resolve(null);
+    return sbRpc('whoami', {})
+      .then(function(rows){ me = (rows && rows.length) ? rows[0] : null; return me; })
+      .catch(function(){ me = null; return null; });   // не пустили — работаем как гость
+  }
+
+  function frameSelect(){
+    return 'id,code,scene_n,seq,shot,action,dialogue,refs,prompt_en,status,feedback,assignee,'+
+           'is_anchor,final_ok,version_count,updated_at,updated_by'+
+           (promptColsOk ? ',prompt_locked,prompt_updated_by,prompt_updated_at' : '')+
+           ',versions(v,provider,full_url,preview_url,prompt_en,generated_at)';
+  }
+  function fetchFrames(seriesId){
+    var q = 'frames?select='+encodeURIComponent(frameSelect())+
+            '&series_id=eq.'+encodeURIComponent(seriesId)+'&order=scene_n.asc,seq.asc';
+    return sbGet(q).catch(function(err){
+      // колонок ручной правки промта в базе может ещё не быть — читаем без них
+      if(promptColsOk && /prompt_locked|prompt_updated/i.test(err.message||'')){
+        promptColsOk = false;
+        return fetchFrames(seriesId);
+      }
+      throw err;
+    });
+  }
+
+  // Кадр из базы -> та же форма, в которой карточки работают локально.
+  function mapFrame(row){
+    var vs = (row.versions||[]).slice().sort(function(a,b){ return (a.v||0)-(b.v||0); });
+    return {
+      id:        row.code,          // «1.3» — то, что видит человек
+      dbId:      row.id,            // число — им кадр адресуется в базе
+      scene:     row.scene_n,
+      shot:      row.shot || '',
+      action:    row.action || '',
+      dialogue:  row.dialogue || '',
+      refs:      row.refs || [],
+      prompt_en: row.prompt_en || '',
+      status:    row.status,
+      feedback:  row.feedback || '',
+      assignee:  row.assignee || '',
+      is_anchor: !!row.is_anchor,
+      final_ok:  !!row.final_ok,
+      prompt_locked:     !!row.prompt_locked,
+      prompt_updated_by: row.prompt_updated_by || '',
+      prompt_updated_at: row.prompt_updated_at || '',
+      updated_at: row.updated_at || '',
+      updated_by: row.updated_by || '',
+      versions: vs.map(function(v){
+        return { v:v.v, file:v.full_url, preview:v.preview_url || v.full_url,
+                 prompt_en:v.prompt_en || '', provider:v.provider || '', generated_at:v.generated_at || '' };
+      })
+    };
+  }
+  // Кадр из data/frames.json -> та же форма (полей мастер-кадра там может не быть).
+  function mapLocal(f){
+    return {
+      id:f.id, dbId:null, scene:f.scene, shot:f.shot||'', action:f.action||'', dialogue:f.dialogue||'',
+      refs:f.refs||[], prompt_en:f.prompt_en||'', status:f.status, feedback:f.feedback||'',
+      assignee:f.assignee||'', is_anchor:!!f.is_anchor, final_ok:!!f.final_ok,
+      prompt_locked:!!f.prompt_locked, prompt_updated_by:f.prompt_updated_by||'',
+      prompt_updated_at:f.prompt_updated_at||'', updated_at:f.updated_at||'', updated_by:f.updated_by||'',
+      versions:(f.versions||[]).map(function(v){
+        return { v:v.v, file:v.file, preview:v.preview||v.file, prompt_en:v.prompt_en||'',
+                 provider:v.provider||'', generated_at:v.generated_at||'' };
+      })
+    };
+  }
+
+  // Лента событий -> короткая сводка для панели воркера.
+  function summarizeWorker(rows){
+    rows = (rows||[]).filter(function(e){ return e.kind!=='review'; });   // решения людей — не работа воркера
+    if(!rows.length) return null;
+    var startIdx = -1;
+    for(var i=0;i<rows.length;i++){ if(rows[i].kind==='run_start'){ startIdx = i; break; } }
+    var slice = rows.slice(0, startIdx<0 ? rows.length : startIdx+1);     // события последнего прогона
+    var done = null, err = null, ok = 0, failed = 0;
+    slice.forEach(function(e){
+      if(e.kind==='run_done' && !done) done = e;
+      if(e.kind==='error'    && !err)  err  = e;
+      if(e.kind!=='run_done'){ ok += (e.frames_ok||0); failed += (e.frames_failed||0); }
+    });
+    if(done && (done.frames_ok || done.frames_failed)){ ok = done.frames_ok||0; failed = done.frames_failed||0; }
+    return {
+      at:      startIdx>=0 ? rows[startIdx].at : slice[slice.length-1].at,
+      message: (done && done.message) || slice[0].message || '',
+      ok: ok, failed: failed,
+      stop: err ? (err.message || 'воркер сообщил об ошибке') : '',
+      running: startIdx>=0 && !done && !err
+    };
+  }
+  function fetchWorker(seriesId){
+    return sbGet('events?select=at,kind,message,frames_ok,frames_failed&series_id=eq.'+
+                 encodeURIComponent(seriesId)+'&order=at.desc&limit=20')
+      .then(summarizeWorker)
+      .catch(function(){ return null; });   // лента не критична — панель покажет заглушку
+  }
+
+  function maxUpdated(frames){
+    var m = '';
+    frames.forEach(function(f){ if(f.updated_at && f.updated_at > m) m = f.updated_at; });
+    return m;
+  }
+
+  function loadSeries(){
+    if(seriesRow) return Promise.resolve(seriesRow);
+    var q = CFG.seriesId
+      ? 'series?select=id,project,number,title&id=eq.'+encodeURIComponent(CFG.seriesId)
+      : 'series?select=id,project,number,title&order=number.asc&limit=1';
+    return sbGet(q).then(function(rows){
+      if(!rows || !rows.length) throw new Error('В базе ещё нет ни одной серии');
+      seriesRow = rows[0];
+      return seriesRow;
+    });
+  }
+
+  function loadSupabase(){
+    return loadSeries().then(function(s){
+      return Promise.all([ fetchFrames(s.id), fetchWorker(s.id) ]);
+    }).then(function(res){
+      var frames = (res[0]||[]).map(mapFrame);
+      data = {
+        project: seriesRow.project || 'Проект',
+        series:  'Серия ' + (seriesRow.number||'') + (seriesRow.title ? ' — '+seriesRow.title : ''),
+        updated: maxUpdated(frames),
+        frames:  frames,
+        worker:  res[1]
+      };
+      render();
+      return true;
+    });
+  }
+
+  /* ---------------- данные: локальный файл ---------------- */
+  function loadLocal(force){
     return fetch('../data/frames.json', {cache:'no-store'})
       .then(function(r){ if(!r.ok) throw new Error('http '+r.status); return r.text(); })
       .then(function(txt){
         if(txt===lastJson && !force) return false;
-        lastJson = txt; data = JSON.parse(txt); render(); return true;
+        lastJson = txt;
+        var raw = JSON.parse(txt);
+        data = { project:raw.project, series:raw.series, updated:raw.updated,
+                 frames:(raw.frames||[]).map(mapLocal), worker:null };
+        render();
+        return true;
       });
   }
 
-  function autoRefresh(){
-    // не дёргаем интерфейс, если пользователь печатает правку
-    var ae = document.activeElement;
-    if(ae && ae.tagName==='TEXTAREA') return;
-    fetchData(false).catch(function(){ /* сервер недоступен — ждём следующий цикл */ });
+  function refresh(force){ return MODE==='supabase' ? loadSupabase() : loadLocal(force); }
+  function findCard(id){ return (data.frames||[]).filter(function(f){ return f.id===id; })[0]; }
+
+  /* ---------------- автообновление ----------------
+     В облаке сначала спрашиваем витрину прогресса (сотня байт) и тянем полный
+     список, только если счётчики изменились — иначе бесплатный трафик базы
+     сгорит за пару дней. */
+  function fetchProgress(){
+    return sbGet('progress?select=total,queued,generating,review,approved,redo,waiting_anchor,updated_at'+
+                 '&series_id=eq.'+encodeURIComponent(seriesRow.id))
+      .then(function(rows){ return JSON.stringify(rows||[]); });
+  }
+  // Запоминаем счётчики сразу после загрузки, чтобы первый же опрос был рабочим,
+  // а не потратился на знакомство с текущим состоянием.
+  function seedProgress(){
+    return fetchProgress().then(function(sig){ lastProgress = sig; }).catch(function(){});
+  }
+  function pollSupabase(){
+    if(!seriesRow) return;
+    fetchProgress()
+      .then(function(sig){
+        if(sig===lastProgress) return;
+        lastProgress = sig;
+        return loadSupabase();
+      })
+      .catch(function(){ /* база недоступна — попробуем в следующий цикл */ });
   }
 
+  function autoRefresh(){
+    // не дёргаем интерфейс, если человек печатает правку или промт
+    var ae = document.activeElement;
+    if(ae && ae.tagName==='TEXTAREA') return;
+    if(MODE==='supabase') pollSupabase();
+    else loadLocal(false).catch(function(){ /* сервер недоступен — ждём следующий цикл */ });
+  }
+
+  /* ---------------- запись правок ---------------- */
   function postFrame(id, status, feedback){
     return fetch('../api/frame', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ id:id, status:status, feedback:feedback||'' })
     }).then(function(r){ return r.json(); }).then(function(j){
       if(!j.ok){ showToast('Не удалось сохранить: '+(j.error||'ошибка сервера')); return false; }
-      return fetchData(true).then(function(){ return true; });
+      return loadLocal(true).then(function(){ return true; });
+    }).catch(function(){ showToast('Сервер не отвечает. Запущен ли serve.py?'); return false; });
+  }
+  function postPrompt(id, text){
+    return fetch('../api/prompt', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ id:id, promptEn:text, by:editorName() })
+    }).then(function(r){ return r.json(); }).then(function(j){
+      if(!j.ok){ showToast('Не удалось сохранить промт: '+(j.error||'ошибка сервера')); return false; }
+      return loadLocal(true).then(function(){ return true; });
     }).catch(function(){ showToast('Сервер не отвечает. Запущен ли serve.py?'); return false; });
   }
 
-  // Запись правки в Supabase REST (режим статичного хостинга с базой).
-  // Ожидается таблица с колонками id/status/feedback; ключ — публичный anon.
-  function saveSupabase(id, status, feedback){
-    var cfg = window.BACKEND_CONFIG || {};
-    var base = String(cfg.supabaseUrl||'').replace(/\/+$/,'');
-    var table = cfg.table || 'frames';
-    var fb = status==='approved' ? '' : (feedback||'');
-    return fetch(base+'/rest/v1/'+encodeURIComponent(table)+'?id=eq.'+encodeURIComponent(id), {
-      method:'PATCH',
-      headers:{ 'apikey':cfg.supabaseKey, 'Authorization':'Bearer '+cfg.supabaseKey,
-                'Content-Type':'application/json', 'Prefer':'return=representation' },
-      body: JSON.stringify({ status:status, feedback:fb })
-    }).then(function(r){ if(!r.ok) throw new Error('supabase '+r.status); return r.json(); })
-      .then(function(){ var c=findCard(id); if(c){ c.status=status; c.feedback=fb; render(); } return true; })
-      .catch(function(){ showToast('База недоступна — правка не сохранена'); return false; });
+  // Одобрить / отправить на переделку. Прямой UPDATE база не примет — только через функцию.
+  function reviewSupabase(c, status, feedback){
+    return sbRpc('review_frame', {
+      p_frame_id: c.dbId, p_status: status,
+      p_feedback: status==='redo' ? (feedback||'') : ''
+    }).then(function(){ return loadSupabase(); })
+      .then(function(){ return true; })
+      .catch(function(err){ showToast((err && err.message) || 'База недоступна — правка не сохранена'); return false; });
+  }
+  // Сохранить отредактированный промт. Тоже отдельная функция базы: см. дополнение к схеме.
+  function promptSupabase(c, text){
+    return sbRpc('set_prompt', { p_frame_id:c.dbId, p_prompt_en:text })
+      .then(function(){ return loadSupabase(); })
+      .then(function(){ return true; })
+      .catch(function(err){
+        var m = (err && err.message) || '';
+        if(/set_prompt|PGRST202|could not find|не найдена/i.test(m)){
+          m = 'База пока не умеет сохранять промты — нужна функция set_prompt (дополнение к схеме)';
+        }
+        showToast(m || 'База недоступна — промт не сохранён');
+        return false;
+      });
   }
 
-  // Единая точка записи: маршрутизирует по режиму. В режиме просмотра — ничего не делает.
-  function saveFrame(id, status, feedback){
+  // Единые точки записи: маршрутизируют по режиму. В режиме просмотра ничего не делают.
+  function saveFrame(c, status, feedback){
     if(!canEdit()) return Promise.resolve(false);
-    return MODE==='supabase' ? saveSupabase(id, status, feedback) : postFrame(id, status, feedback);
+    return MODE==='supabase' ? reviewSupabase(c, status, feedback) : postFrame(c.id, status, feedback);
+  }
+  function savePrompt(c, text){
+    if(!canEdit()) return Promise.resolve(false);
+    return MODE==='supabase' ? promptSupabase(c, text) : postPrompt(c.id, text);
   }
 
   /* ---------------- взаимодействие с карточками ---------------- */
@@ -761,30 +1228,74 @@
     var act = btn.getAttribute('data-act');
 
     if(act==='approve'){
-      saveFrame(id, 'approved').then(function(ok){ if(ok) showToast('Кадр '+id+' одобрен'); });
+      saveFrame(c, 'approved').then(function(ok){ if(ok) showToast('Кадр '+id+' одобрен'); });
     }
     else if(act==='rework-open'){ u.reworkOpen=true; render(); focusDraft(id); }
     else if(act==='rework-cancel'){ u.reworkOpen=false; u.draft=''; render(); }
     else if(act==='rework-send'){
-      var ta = cardEl.querySelector('textarea');
+      var ta = cardEl.querySelector('.rework textarea');
       var val = ta ? ta.value.trim() : '';
       if(!val){ showToast('Добавьте комментарий для агента'); if(ta) ta.focus(); return; }
       u.reworkOpen=false; u.draft='';
-      saveFrame(id, 'redo', val).then(function(ok){ if(ok) showToast('Правка по кадру '+id+' отправлена'); });
+      saveFrame(c, 'redo', val).then(function(ok){ if(ok) showToast('Правка по кадру '+id+' отправлена'); });
     }
     else if(act==='ver'){ u.vi = +btn.getAttribute('data-v'); render(); }
+
+    /* ---- редактирование промта ---- */
+    else if(act==='prompt-save'){
+      var pt  = cardEl.querySelector('.ptext');
+      var val2 = pt ? pt.value.trim() : '';
+      if(!val2){ showToast('Промт не может быть пустым'); if(pt) pt.focus(); return; }
+      if(val2===savedPrompt(c)){ showToast('Промт не изменился'); return; }
+      btn.disabled = true;
+      savePrompt(c, val2).then(function(ok){
+        btn.disabled = false;
+        if(!ok) return;
+        u.promptDraft = null;      // черновик стал сохранённым промтом
+        u.promptSaved = true;      // покажем «Сохранено. Отправить на перегенерацию?»
+        u.promptOpen  = true;
+        render();
+        showToast('Промт кадра '+id+' сохранён');
+      });
+    }
+    else if(act==='prompt-cancel'){ u.promptDraft = null; u.promptSaved = false; render(); }
+    else if(act==='prompt-dismiss'){ u.promptSaved = false; render(); }
+    else if(act==='prompt-redo'){
+      u.promptSaved = false;
+      saveFrame(c, 'redo', PROMPT_REDO_NOTE).then(function(ok){
+        if(ok) showToast('Кадр '+id+' уйдёт в работу с новым промтом');
+      });
+    }
   });
 
   grid.addEventListener('input', function(e){
-    if(e.target.tagName==='TEXTAREA'){
-      var cardEl = e.target.closest('.card');
-      var c = cardEl && findCard(cardEl.getAttribute('data-id'));
-      if(c) uiFor(c.id).draft = e.target.value;
+    var t = e.target;
+    if(t.tagName!=='TEXTAREA') return;
+    var cardEl = t.closest('.card');
+    var c = cardEl && findCard(cardEl.getAttribute('data-id'));
+    if(!c) return;
+    var u = uiFor(c.id);
+    if(t.classList.contains('ptext')){
+      // Кнопки «Сохранить/Отмена» показываем классом, без перерисовки — иначе улетит фокус.
+      u.promptDraft = t.value;
+      var d = t.closest('details.prompt');
+      if(d) d.classList.toggle('is-dirty', t.value !== savedPrompt(c));
+    } else {
+      u.draft = t.value;
     }
   });
 
+  // Событие toggle не всплывает — ловим его на фазе перехвата, чтобы запомнить,
+  // какие раскрывашки промта открыты, и не захлопывать их при перерисовке.
+  grid.addEventListener('toggle', function(e){
+    var d = e.target;
+    if(!d || d.tagName!=='DETAILS' || !d.hasAttribute('data-prompt')) return;
+    var cardEl = d.closest('.card');
+    if(cardEl) uiFor(cardEl.getAttribute('data-id')).promptOpen = d.open;
+  }, true);
+
   function focusDraft(id){
-    var node = grid.querySelector('.card[data-id="'+CSS.escape(id)+'"] textarea');
+    var node = grid.querySelector('.card[data-id="'+CSS.escape(id)+'"] .rework textarea');
     if(node){ node.focus(); node.setSelectionRange(node.value.length, node.value.length); }
   }
 
@@ -830,16 +1341,33 @@
   themeBtn.addEventListener('click', function(){ root.setAttribute('data-theme', effDark()?'light':'dark'); reflectTheme(); });
 
   /* ---------------- старт ---------------- */
-  applyMode();
-  fetchData(true).catch(function(){
-    grid.innerHTML = '<div class="loaderr">Не удалось загрузить данные кадров.<br><br>'+
-      (canEdit()
+  function showLoadError(err){
+    var msg = (err && err.message) ? esc(err.message) : '';
+    grid.innerHTML = '<div class="loaderr">Не удалось загрузить кадры.'+
+      (msg ? '<br><br>'+msg : '')+'<br><br>'+
+      (MODE==='local'
         ? 'Запустите локальный сервер командой <code>python3 scripts/serve.py</code> и откройте '+
           '<code>http://localhost:8787</code> (открывать сам файл в браузере нельзя — данные не загрузятся).'
-        : 'Обновите страницу. Возможно, данные ещё публикуются.')+
+        : 'Обновите страницу через минуту. Возможно, данные ещё публикуются.')+
       '</div>';
-  });
-  setInterval(autoRefresh, 5000);
+  }
+
+  applyMode();
+  // Молча падать нельзя: человек должен понимать, почему кнопок нет.
+  if(cfgBroken) setTimeout(function(){ showToast('Ключ базы в config.js испорчен — открыт режим просмотра'); }, 400);
+  else if(keyBroken) setTimeout(function(){ showToast('Ссылка испорчена — открыт режим просмотра. Возьмите свою ссылку заново'); }, 400);
+
+  var boot;
+  if(MODE==='supabase'){
+    // сначала выясняем, кто пришёл: от этого зависит, показывать ли кнопки правок
+    boot = whoami()
+      .then(function(){ applyMode(); applyIdentity(); return loadSupabase(); })
+      .then(seedProgress);
+  } else {
+    boot = loadLocal(true);
+  }
+  boot.catch(showLoadError);
+  setInterval(autoRefresh, MODE==='supabase' ? 12000 : 5000);
 })();
 </script>
 </body>

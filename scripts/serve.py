@@ -13,6 +13,8 @@
   GET  /images/...           -> готовые PNG
   GET  /Референсы/...        -> файлы референсов
   POST /api/frame            -> обновляет кадр (тело: {"id", "status", "feedback"})
+  POST /api/prompt           -> сохраняет промт, отредактированный руками
+                                (тело: {"id", "promptEn", "by"})
 
 Только стандартная библиотека Python 3 — ничего ставить не нужно.
 """
@@ -32,7 +34,8 @@ PORT = 8787
 
 # Папки, которые разрешено отдавать наружу
 ALLOWED_DIRS = ("data", "images", "Референсы", "dashboard")
-ALLOWED_STATUSES = ("queued", "generating", "review", "approved", "redo")
+# waiting_anchor — кадр ждёт, пока одобрят мастер-кадр своей сцены (как в облачной схеме)
+ALLOWED_STATUSES = ("queued", "generating", "review", "approved", "redo", "waiting_anchor")
 
 CONTENT_TYPES = {
     ".html": "text/html; charset=utf-8",
@@ -143,17 +146,32 @@ class Handler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self.do_GET()
 
-    # ---- POST /api/frame ----
+    # ---- POST ----
     def do_POST(self):
         path = urlparse(self.path).path
-        if path != "/api/frame":
+        if path == "/api/frame":
+            self._api_frame()
+        elif path == "/api/prompt":
+            self._api_prompt()
+        else:
             self._json_error(404, "неизвестный адрес: " + path)
-            return
+
+    def _read_json(self):
+        """Читает тело запроса. Возвращает None и сам отвечает ошибкой, если JSON битый."""
         try:
             length = int(self.headers.get("Content-Length", 0))
-            payload = json.loads(self.rfile.read(length).decode("utf-8"))
+            return json.loads(self.rfile.read(length).decode("utf-8"))
         except (ValueError, json.JSONDecodeError):
             self._json_error(400, "тело запроса — не корректный JSON")
+            return None
+
+    def _find_frame(self, data, fid):
+        return next((f for f in data.get("frames", []) if str(f.get("id")) == fid), None)
+
+    # ---- POST /api/frame — одобрить кадр или отправить на переделку ----
+    def _api_frame(self):
+        payload = self._read_json()
+        if payload is None:
             return
 
         fid = str(payload.get("id", "")).strip()
@@ -168,7 +186,7 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         data = json.loads(FRAMES_JSON.read_text(encoding="utf-8"))
-        frame = next((f for f in data.get("frames", []) if str(f.get("id")) == fid), None)
+        frame = self._find_frame(data, fid)
         if frame is None:
             self._json_error(404, "кадр не найден: " + fid)
             return
@@ -180,6 +198,39 @@ class Handler(BaseHTTPRequestHandler):
             frame["feedback"] = feedback or ""
         elif status == "approved":
             frame["feedback"] = ""
+        save_frames_atomic(data)
+        self._send(200, json.dumps({"ok": True, "frame": frame}, ensure_ascii=False))
+
+    # ---- POST /api/prompt — сохранить промт, отредактированный руками ----
+    #  Статус кадра НЕ трогаем: «отправить на перегенерацию» — отдельное решение
+    #  сотрудника, которое уходит обычным POST /api/frame со статусом redo.
+    def _api_prompt(self):
+        payload = self._read_json()
+        if payload is None:
+            return
+
+        fid = str(payload.get("id", "")).strip()
+        prompt = str(payload.get("promptEn", "") or "").strip()
+        by = str(payload.get("by", "") or "").strip()
+
+        if not fid:
+            self._json_error(400, "не указан id кадра")
+            return
+        if not prompt:
+            self._json_error(400, "промт не может быть пустым")
+            return
+
+        data = json.loads(FRAMES_JSON.read_text(encoding="utf-8"))
+        frame = self._find_frame(data, fid)
+        if frame is None:
+            self._json_error(404, "кадр не найден: " + fid)
+            return
+
+        frame["prompt_en"] = prompt
+        # промт, который правил человек, агент дальше не переписывает
+        frame["prompt_locked"] = True
+        frame["prompt_updated_by"] = by
+        frame["prompt_updated_at"] = now_iso()
         save_frames_atomic(data)
         self._send(200, json.dumps({"ok": True, "frame": frame}, ensure_ascii=False))
 
