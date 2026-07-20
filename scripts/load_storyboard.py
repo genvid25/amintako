@@ -444,12 +444,13 @@ def main():
 
     # Запись в ленту — только когда что-то действительно появилось. Иначе
     # повторный запуск засорял бы ленту одинаковыми строками «залита раскадровка».
+    # frames_ok намеренно не заполняем: это счётчик НАРИСОВАННЫХ кадров, а заливка
+    # ничего не рисует — иначе панель воркера отрапортует «кадров сделано: 165».
     if new_scenes or new_frames or new_versions:
         sb.insert("events", [{
             "series_id": series_id, "kind": "import",
             "message": "Залита раскадровка: сцен %d, кадров %d, версий картинок %d"
                        % (new_scenes, new_frames, new_versions),
-            "frames_ok": new_frames,
         }])
 
     report_statuses(sb, series_id)
