@@ -1,4 +1,5 @@
 .env
+data/materials-state.json
 __pycache__/
 *.pyc
 *.tmp
