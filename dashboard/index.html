@@ -107,6 +107,11 @@
   .d-redo{ background:var(--warn); } .d-queue{ background:var(--queue); } .d-gen{ background:var(--accent); }
   .d-hold{ background:var(--hold); }
   .stat[hidden]{ display:none; }
+  /* «Скачать одобренные» — в одном ряду со счётчиками, прижата вправо */
+  .dlall{ margin-left:auto; border-radius:999px; }
+  .dlall .n{ font-variant-numeric:tabular-nums; opacity:.75; }
+  .dlall[disabled]{ opacity:.5; cursor:not-allowed; }
+  .dlall[disabled]:hover{ border-color:var(--border-2); }
 
   /* ---------- panels ---------- */
   .panel{ background:var(--card); border:1px solid var(--border); border-radius:var(--r-md); box-shadow:var(--shadow-1); }
@@ -469,6 +474,7 @@
       <span class="stat"><span class="d d-queue"></span>В очереди <b id="c-queued">0</b></span>
       <span class="stat"><span class="d d-gen"></span>Генерируется <b id="c-generating">0</b></span>
       <span class="stat" id="stat-hold" hidden><span class="d d-hold"></span>Ждут мастер-кадр <b id="c-waiting_anchor">0</b></span>
+      <button class="btn dlall" id="dlApproved" type="button">Скачать одобренные<span class="n" id="dlCount">0</span></button>
     </div>
   </div>
 </header>
@@ -757,12 +763,13 @@
   var MODE = backendMode();
 
   // В облаке право писать даёт не наличие базы, а личная ссылка: без неё — только просмотр.
-  // Вторую границу задаёт серия: база принимает правку, только если серия закреплена
-  // за сотрудником (members.series_ids). Держим тут ту же проверку, чтобы кнопки не
-  // предлагали то, на что придёт отказ.
+  // Вторую границу задаёт серия: аниматор правит только закреплённые за ним
+  // (members.series_ids) — та же проверка, что в базе, чтобы кнопки не предлагали
+  // то, на что придёт отказ. Режиссёр решает по всем сериям: это его роль, а не
+  // список серий, поэтому назначение режиссёра на серию его больше не запирает.
   function canEdit(){
     if(MODE==='local') return true;
-    if(MODE==='supabase') return !!me && seriesAllowed(currentSeriesId());
+    if(MODE==='supabase') return !!me && (isDirector() || seriesAllowed(currentSeriesId()));
     return false;
   }
   var VIEW_TIP = (MODE==='supabase')
@@ -1088,6 +1095,7 @@
       var el = document.getElementById('c-'+k); if(el) el.textContent = c[k];
     });
     document.getElementById('stat-hold').hidden = !c.waiting_anchor;   // пусто — не мозолим глаза
+    syncApprovedBtn();
     // счётчики на чипах
     document.getElementById('n-all').textContent = c.total;
     ['review','approved','redo','generating','queued','waiting_anchor'].forEach(function(k){
@@ -2308,24 +2316,80 @@
     }).catch(showLoadError);
   }
 
-  /* ---------------- скачать одобренные кадры серии ---------------- */
-  function downloadApproved(seriesId){
-    sbGet('frames?select=code,scene_n,seq,status,versions(v,full_url)&series_id=eq.' +
-          encodeURIComponent(seriesId) + '&status=eq.approved&order=scene_n.asc,seq.asc')
+  /* ---------------- скачать одобренные кадры серии ----------------
+     Одобренные кадры — исходники для монтажа видео на стороне, поэтому качать их
+     нужно и аниматору из «Кадров», и режиссёру из «Управления». Сборка ссылок,
+     имена файлов и сами скачивания общие; разное только место, откуда пришёл вызов. */
+  function approvedLinks(seriesId){
+    if(MODE!=='supabase') return Promise.resolve(loadedApprovedLinks());   // локально кадры уже в памяти
+    return sbGet('frames?select=code,scene_n,seq,status,versions(v,full_url)&series_id=eq.' +
+                 encodeURIComponent(seriesId) + '&status=eq.approved&order=scene_n.asc,seq.asc')
       .then(function(rows){
         var links = [];
         (rows||[]).forEach(function(f){
           var vs = (f.versions||[]).slice().sort(function(a,b){ return (a.v||0)-(b.v||0); });
-          var last = vs[vs.length-1];
-          if(!last || !last.full_url) return;
-          var name = last.full_url.split('/').pop();
-          links.push({ url: fileUrl(last.full_url), name: 'кадр-' + f.code + '-' + name });
+          var last = vs[vs.length-1];               // последняя версия — она и одобрена
+          if(!last || !last.full_url) return;       // full_url, а не preview_url: нужен полный размер
+          links.push({ url: fileUrl(last.full_url),
+                       name: approvedName(f.scene_n, f.seq, last.v, last.full_url) });
         });
+        return links;
+      });
+  }
+  function loadedApprovedLinks(){
+    var links = [];
+    ((data && data.frames) || []).forEach(function(f){
+      if(f.status !== 'approved') return;
+      var vs = f.versions || [], last = vs[vs.length-1];
+      if(!last || !last.file) return;
+      links.push({ url: fileUrl(last.file),
+                   name: approvedName(f.scene, String(f.id).split('.')[1], last.v, last.file) });
+    });
+    return links;
+  }
+  // Имя файла для стороннего монтажа: латиница и порядок сцен, чтобы кадры легли
+  // по порядку в любом редакторе. s04_10_v2.png — сцена 4, кадр 10, вторая версия.
+  function approvedName(scene, seq, v, url){
+    var ext = (String(url).match(/\.([a-z0-9]+)$/i) || [null, 'png'])[1];
+    if(scene == null || seq == null || seq === '') return String(url).split('/').pop();
+    function two(n){ n = +n || 0; return (n < 10 ? '0' : '') + n; }
+    return 's' + two(scene) + '_' + two(seq) + '_v' + (+v || 1) + '.' + ext.toLowerCase();
+  }
+
+  function downloadApproved(seriesId){
+    approvedLinks(seriesId)
+      .then(function(links){
         if(!links.length){ showToast('Одобренных кадров с картинками пока нет'); return; }
         showApprovedList(seriesId, links);
       })
       .catch(function(err){ showToast((err && err.message) || 'Не удалось собрать кадры'); });
   }
+
+  /* ---- та же выгрузка, но из «Кадров»: одной кнопкой, без промежуточного списка ----
+     Счётчик берём из уже загруженной серии — он обновляется вместе с сеткой и не
+     стоит лишнего запроса. Скачивание не меняет данные, поэтому доступно и без
+     личной ссылки, в режиме просмотра. */
+  function syncApprovedBtn(){
+    var b = el('dlApproved');
+    if(!b) return;
+    var n = 0;
+    ((data && data.frames) || []).forEach(function(f){ if(f.status === 'approved') n++; });
+    el('dlCount').textContent = n;
+    b.disabled = !n;
+    b.title = n ? ('Скачать одобренные кадры серии: ' + n) : 'Пока нет одобренных кадров';
+  }
+  el('dlApproved').insertAdjacentHTML('afterbegin', I.down);
+  el('dlApproved').addEventListener('click', function(){
+    var b = this;
+    b.disabled = true;
+    approvedLinks(currentSeriesId())
+      .then(function(links){
+        if(!links.length){ showToast('Одобренных кадров с картинками пока нет'); return; }
+        clickDownloads(links);
+      })
+      .catch(function(err){ showToast((err && err.message) || 'Не удалось собрать кадры'); })
+      .then(function(){ syncApprovedBtn(); });
+  });
   // Архив на клиенте не собираем: сторонняя библиотека с чужого CDN — лишняя
   // точка отказа. Отдаём список прямых ссылок и жмём их по очереди.
   function showApprovedList(seriesId, links){
