@@ -98,6 +98,7 @@
 
   /* ---------- counters ---------- */
   .counters{ display:flex; flex-wrap:wrap; gap:9px; margin-top:16px; }
+  .counters[hidden]{ display:none; }
   .stat{ display:inline-flex; align-items:center; gap:8px; padding:7px 12px 7px 10px; border-radius:999px;
     background:var(--card); border:1px solid var(--border); font-size:var(--fs-sm); color:var(--text-2); box-shadow:var(--shadow-1); }
   .stat .d{ width:8px; height:8px; border-radius:50%; flex:none; }
@@ -327,6 +328,90 @@
     opacity:0; pointer-events:none; transition:opacity .22s,transform .22s; z-index:50; max-width:90vw; }
   .toast.is-on{ opacity:1; transform:translate(-50%,0); }
 
+  /* ---------- режиссёрский раздел ---------- */
+  .mgr{ display:flex; flex-direction:column; gap:16px; margin-top:18px; }
+  .mgr[hidden],#viewFrames[hidden]{ display:none; }
+
+  .mpanel{ background:var(--card); border:1px solid var(--border); border-radius:var(--r-md); box-shadow:var(--shadow-1); }
+  .mpanel__head{ padding:15px 17px 0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .mpanel__title{ font-size:var(--fs-md); font-weight:680; letter-spacing:-.01em; }
+  .mpanel__hint{ font-size:var(--fs-sm); color:var(--text-3); flex:1 1 200px; }
+  .mpanel__body{ padding:13px 17px 17px; display:flex; flex-direction:column; gap:13px; }
+
+  /* строка-запись: серия, сотрудник, файл */
+  .mrow{ display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:11px 13px; border:1px solid var(--border); border-radius:var(--r-sm); background:var(--card-2); }
+  .mrow__main{ flex:1 1 240px; min-width:0; display:flex; flex-direction:column; gap:3px; }
+  .mrow__t{ font-weight:670; font-size:var(--fs-base); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .mrow__d{ font-size:var(--fs-sm); color:var(--text-3); }
+  .mrow__d b{ color:var(--text-2); font-weight:650; font-variant-numeric:tabular-nums; }
+  .mrow__acts{ display:flex; gap:7px; flex-wrap:wrap; }
+  .mrow.is-off{ opacity:.55; }
+
+  /* полоска прогресса серии */
+  .bar{ display:flex; height:7px; border-radius:999px; overflow:hidden; background:var(--queue-weak); width:100%; }
+  .bar i{ display:block; height:100%; }
+  .bar .b-ok{ background:var(--ok); } .bar .b-review{ background:var(--review); }
+  .bar .b-redo{ background:var(--warn); } .bar .b-gen{ background:var(--accent); }
+  .barlbl{ display:flex; gap:12px; flex-wrap:wrap; font-size:var(--fs-xs); color:var(--text-3); font-variant-numeric:tabular-nums; }
+  .barlbl b{ color:var(--text-2); font-weight:650; }
+
+  /* формы */
+  .mfield{ display:flex; flex-direction:column; gap:5px; flex:1 1 160px; }
+  .mfield label{ font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); }
+  .minput{ width:100%; padding:9px 11px; border-radius:var(--r-sm); border:1px solid var(--border-2);
+    background:var(--card); color:var(--text); font:inherit; font-size:var(--fs-sm); }
+  .minput:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-weak); }
+  .mform{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;
+    padding:12px 13px; border:1px dashed var(--border-2); border-radius:var(--r-sm); background:var(--card-2); }
+  .mform[hidden]{ display:none; }
+
+  /* галочки «кто ведёт серию» */
+  .mchecks{ display:flex; gap:8px; flex-wrap:wrap; }
+  .mcheck{ display:inline-flex; align-items:center; gap:7px; padding:6px 11px; border-radius:999px;
+    border:1px solid var(--border); background:var(--card); font-size:var(--fs-sm); cursor:pointer; }
+  .mcheck input{ accent-color:var(--accent); margin:0; }
+  .mcheck.is-fixed{ opacity:.7; cursor:default; }
+
+  /* загрузка материалов */
+  .drop{ border:2px dashed var(--border-2); border-radius:var(--r-md); background:var(--card-2);
+    padding:22px 16px; display:flex; flex-direction:column; align-items:center; gap:9px; text-align:center;
+    transition:border-color .15s,background .15s; }
+  .drop.is-over{ border-color:var(--accent); background:var(--accent-weak); }
+  .drop svg{ width:26px; height:26px; color:var(--text-3); }
+  .drop.is-over svg{ color:var(--accent); }
+  .drop__t{ font-weight:660; }
+  .drop__d{ font-size:var(--fs-sm); color:var(--text-3); max-width:52ch; }
+  .drop__btns{ display:flex; gap:8px; flex-wrap:wrap; margin-top:2px; }
+
+  .upline{ display:flex; align-items:center; gap:10px; font-size:var(--fs-sm); }
+  .upline__n{ flex:1 1 160px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-2); }
+  .upline__s{ font-size:var(--fs-xs); color:var(--text-3); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .upline.is-err .upline__s{ color:var(--warn); }
+  .upline.is-ok .upline__s{ color:var(--ok); }
+  .prog{ flex:0 0 90px; height:5px; border-radius:999px; background:var(--queue-weak); overflow:hidden; }
+  .prog i{ display:block; height:100%; background:var(--accent); width:0; transition:width .18s; }
+
+  .msg{ font-size:var(--fs-sm); line-height:1.5; border-radius:var(--r-xs); padding:10px 12px; }
+  .msg--warn{ background:var(--warn-weak); color:var(--text); }
+  .msg--info{ background:var(--card-2); color:var(--text-2); border:1px solid var(--border); }
+  .msg code{ font-family:var(--mono); font-size:12px; background:var(--card); border:1px solid var(--border);
+    padding:1px 6px; border-radius:5px; }
+  .msg[hidden]{ display:none; }
+
+  .mempty{ font-size:var(--fs-sm); color:var(--text-3); font-style:italic; }
+  .mlist{ display:flex; flex-direction:column; gap:8px; }
+  .mgroup__t{ font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.07em; color:var(--text-3); margin-bottom:6px; }
+
+  /* лента событий */
+  .ev{ display:flex; gap:10px; align-items:flex-start; font-size:var(--fs-sm); line-height:1.45; padding:7px 0;
+    border-bottom:1px solid var(--border); }
+  .ev:last-child{ border-bottom:none; }
+  .ev__at{ flex:0 0 118px; color:var(--text-3); font-size:var(--fs-xs); font-variant-numeric:tabular-nums; padding-top:2px; }
+  .ev__k{ flex:0 0 auto; }
+  .ev__m{ flex:1 1 200px; color:var(--text-2); min-width:0; overflow-wrap:anywhere; }
+  @media (max-width:560px){ .ev{ flex-wrap:wrap; } .ev__at{ flex-basis:100%; } }
+
   @keyframes spin{ to{ transform:rotate(360deg); } }
   @media (prefers-reduced-motion:reduce){
     *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
@@ -386,6 +471,10 @@
 
   <!-- employee selector -->
   <div class="panel selector section-gap">
+    <div class="seg" id="viewSeg" role="group" aria-label="Раздел дашборда" hidden>
+      <button type="button" data-view="frames" aria-pressed="true"><span class="who">Кадры</span><span class="scope">проверка и промты</span></button>
+      <button type="button" data-view="manage" aria-pressed="false"><span class="who">Управление</span><span class="scope">материалы, серии, команда</span></button>
+    </div>
     <div class="seg" id="empSeg" role="group" aria-label="Выбор сотрудника">
       <button type="button" data-emp="amin"  aria-pressed="false"><span class="who">Амин</span><span class="scope">сцены 1–8</span></button>
       <button type="button" data-emp="timur" aria-pressed="false"><span class="who">Тимур</span><span class="scope">сцены 9–16</span></button>
@@ -395,6 +484,8 @@
     <div class="selnote" id="selNote">(в облачной версии — разделы по сериям)</div>
     <div class="whoami" id="whoami"><span class="av" id="whoAv"></span><span>Вы вошли как <b id="whoName"></b><span id="whoRole"></span></span></div>
   </div>
+
+  <div id="viewFrames">
 
   <!-- worker panel -->
   <section class="agent" aria-label="Воркер кадров">
@@ -483,6 +574,100 @@
       </div>
     </div>
   </details>
+
+  </div><!-- /viewFrames -->
+
+  <!-- ============ режиссёрский раздел ============ -->
+  <section class="mgr" id="viewManage" aria-label="Управление проектом" hidden>
+
+    <div class="counters" id="mSummary"></div>
+    <div class="msg msg--warn" id="mSqlNote" hidden></div>
+
+    <!-- материалы -->
+    <div class="mpanel">
+      <div class="mpanel__head">
+        <span class="mpanel__title">Материалы серии</span>
+        <span class="mpanel__hint">Раскадровка, референсы и сценарий. Отсюда их берёт воркер — папки на вашем компьютере больше не нужны.</span>
+        <select class="minput" id="matSeries" style="flex:0 0 auto;width:auto" aria-label="Серия, к которой относятся материалы"></select>
+      </div>
+      <div class="mpanel__body">
+        <div class="frow">
+          <span class="flabel">Куда кладём</span>
+          <div id="matCats" style="display:contents"></div>
+        </div>
+        <div class="drop" id="matDrop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          <span class="drop__t" id="matDropT">Перетащите сюда файлы или папку</span>
+          <span class="drop__d" id="matDropD">Можно бросить папку целиком — вложенные папки сохранятся. Если папка называется ПЕРСОНАЖИ, ЛОКАЦИИ или ПРЕДМЕТЫ, файлы разложатся по этим разделам сами. Русские имена файлов запишутся латиницей: «дорога к аулу.jpeg» → «doroga k aulu.jpeg» — этого требует хранилище.</span>
+          <div class="drop__btns">
+            <button class="btn" type="button" id="matPickFiles">Выбрать файлы</button>
+            <button class="btn" type="button" id="matPickDir">Выбрать папку</button>
+          </div>
+          <input type="file" id="matFiles" multiple hidden>
+          <input type="file" id="matDir" webkitdirectory directory multiple hidden>
+        </div>
+        <div class="mlist" id="matProgress"></div>
+        <div class="mlist" id="matList"></div>
+      </div>
+    </div>
+
+    <!-- серии -->
+    <div class="mpanel">
+      <div class="mpanel__head">
+        <span class="mpanel__title">Серии</span>
+        <span class="mpanel__hint">Прогресс по каждой серии и кто её ведёт.</span>
+        <button class="btn" type="button" id="serAddBtn">Новая серия</button>
+      </div>
+      <div class="mpanel__body">
+        <div class="mform" id="serForm" hidden>
+          <div class="mfield" style="flex:1 1 200px"><label for="serProject">Проект</label><input class="minput" id="serProject" type="text" autocomplete="off"></div>
+          <div class="mfield" style="flex:0 0 90px"><label for="serNumber">Номер</label><input class="minput" id="serNumber" type="number" min="1" step="1" autocomplete="off"></div>
+          <div class="mfield" style="flex:1 1 200px"><label for="serTitle">Название</label><input class="minput" id="serTitle" type="text" placeholder="например, Привяжи верблюда" autocomplete="off"></div>
+          <div class="mfield" style="flex:1 1 100%"><label>Кто ведёт</label><div class="mchecks" id="serWho"></div></div>
+          <button class="btn btn--primary" type="button" id="serSave">Создать серию</button>
+          <button class="btn" type="button" id="serCancel">Отмена</button>
+        </div>
+        <div class="mlist" id="serList"></div>
+      </div>
+    </div>
+
+    <!-- команда -->
+    <div class="mpanel">
+      <div class="mpanel__head">
+        <span class="mpanel__title">Команда</span>
+        <span class="mpanel__hint">У каждого своя ссылка — по ней он входит в дашборд. Ссылка личная, её нельзя пересылать дальше.</span>
+        <button class="btn" type="button" id="memAddBtn">Добавить участника</button>
+      </div>
+      <div class="mpanel__body">
+        <div class="mform" id="memForm" hidden>
+          <div class="mfield" style="flex:1 1 180px"><label for="memName">Имя</label><input class="minput" id="memName" type="text" placeholder="например, Тимур" autocomplete="off"></div>
+          <div class="mfield" style="flex:0 0 150px"><label for="memRole">Роль</label>
+            <select class="minput" id="memRole">
+              <option value="animator">Аниматор</option>
+              <option value="director">Режиссёр</option>
+            </select>
+          </div>
+          <div class="mfield" style="flex:1 1 100%"><label>Какие серии видит</label><div class="mchecks" id="memWho"></div></div>
+          <button class="btn btn--primary" type="button" id="memSave">Завести и получить ссылку</button>
+          <button class="btn" type="button" id="memCancel">Отмена</button>
+        </div>
+        <div class="mlist" id="memList"></div>
+      </div>
+    </div>
+
+    <!-- лента воркера -->
+    <div class="mpanel">
+      <div class="mpanel__head">
+        <span class="mpanel__title">Лента воркера</span>
+        <span class="mpanel__hint">Что происходило в проекте: запуски воркера, решения по кадрам, загрузки материалов.</span>
+        <button class="btn" type="button" id="feedReload">Обновить</button>
+      </div>
+      <div class="mpanel__body">
+        <div id="feedList"></div>
+      </div>
+    </div>
+
+  </section>
 
   <footer class="foot">
     <span id="footLine">Локальный пилот · данные из data/frames.json</span>
@@ -598,6 +783,8 @@
     var who  = document.getElementById('whoami');
     if(MODE!=='supabase') return;                 // локально переключатель остаётся как был
     seg.hidden = true; box.hidden = true;         // в облаке раздел определяет база, а не кнопки
+    // Раздел «Управление» — только по ссылке режиссёра.
+    document.getElementById('viewSeg').hidden = !(me && me.role === 'director');
     if(me){
       note.hidden = true;
       who.classList.add('is-on');
@@ -947,6 +1134,9 @@
   var seriesRow = null;
   var promptColsOk = true;     // есть ли в базе колонки ручной правки промта
   var lastProgress = '';
+  // Режиссёр может открыть в «Кадрах» любую серию, не только ту, что в config.js.
+  var seriesOverride = null;
+  function currentSeriesId(){ return seriesOverride || (seriesRow && seriesRow.id) || CFG.seriesId || null; }
 
   function sbHeaders(extra){
     var h = { 'apikey':CFG.supabaseKey, 'Authorization':'Bearer '+CFG.supabaseKey };
@@ -1050,7 +1240,7 @@
 
   // Лента событий -> короткая сводка для панели воркера.
   function summarizeWorker(rows){
-    rows = (rows||[]).filter(function(e){ return e.kind!=='review'; });   // решения людей — не работа воркера
+    rows = (rows||[]).filter(function(e){ return !HUMAN_KINDS[e.kind]; });   // решения людей — не работа воркера
     if(!rows.length) return null;
     var startIdx = -1;
     for(var i=0;i<rows.length;i++){ if(rows[i].kind==='run_start'){ startIdx = i; break; } }
@@ -1072,7 +1262,7 @@
   }
   function fetchWorker(seriesId){
     return sbGet('events?select=at,kind,message,frames_ok,frames_failed&series_id=eq.'+
-                 encodeURIComponent(seriesId)+'&order=at.desc&limit=20')
+                 encodeURIComponent(seriesId)+'&order=at.desc&limit=40')
       .then(summarizeWorker)
       .catch(function(){ return null; });   // лента не критична — панель покажет заглушку
   }
@@ -1085,8 +1275,9 @@
 
   function loadSeries(){
     if(seriesRow) return Promise.resolve(seriesRow);
-    var q = CFG.seriesId
-      ? 'series?select=id,project,number,title&id=eq.'+encodeURIComponent(CFG.seriesId)
+    var want = seriesOverride || CFG.seriesId;
+    var q = want
+      ? 'series?select=id,project,number,title&id=eq.'+encodeURIComponent(want)
       : 'series?select=id,project,number,title&order=number.asc&limit=1';
     return sbGet(q).then(function(rows){
       if(!rows || !rows.length) throw new Error('В базе ещё нет ни одной серии');
@@ -1339,6 +1530,974 @@
   mq.addEventListener('change', reflectTheme);
   new MutationObserver(reflectTheme).observe(root, { attributes:true, attributeFilter:['data-theme'] });
   themeBtn.addEventListener('click', function(){ root.setAttribute('data-theme', effDark()?'light':'dark'); reflectTheme(); });
+
+  /* ================= РЕЖИССЁРСКИЙ РАЗДЕЛ =================
+     Вкладка «Управление»: материалы, серии, команда, лента событий.
+     Открывается только по ссылке режиссёра (whoami вернул role=director).
+
+     Читает раздел то же, что и весь дашборд (серии, прогресс, лента —
+     они разрешены на чтение всем), а меняет что-либо только через
+     отдельные функции базы из docs/supabase-storage-политики.sql.
+     Пока тот файл не выполнен в SQL Editor, раздел открывается и
+     показывает данные, но на попытку записи отвечает подсказкой —
+     молча ничего не ломается.
+     ======================================================= */
+
+  var SQL_TIP = 'База ещё не знает про режиссёрский раздел — выполните файл ' +
+                'docs/supabase-storage-политики.sql в Supabase → SQL Editor.';
+  var STORE_TIP = 'Хранилище пока не принимает файлы — выполните файл ' +
+                  'docs/supabase-storage-политики.sql в Supabase → SQL Editor.';
+  var MAT_LIMIT = 50 * 1024 * 1024;      // потолок одного файла в бакете
+
+  var MAT_CATS = [
+    { id:'storyboard', label:'Раскадровка', ext:['xls','xlsx','xlsm','csv'],
+      tip:'файл Excel (XLS или XLSX)' },
+    { id:'characters', label:'Персонажи',   ext:'image', tip:'картинки (PNG, JPG, WEBP)' },
+    { id:'locations',  label:'Локации',     ext:'image', tip:'картинки (PNG, JPG, WEBP)' },
+    { id:'props',      label:'Предметы',    ext:'image', tip:'картинки (PNG, JPG, WEBP)' },
+    { id:'script',     label:'Сценарий',    ext:['doc','docx','txt','rtf','pdf','fdx'],
+      tip:'документ (DOCX, TXT, PDF)' }
+  ];
+  var IMG_EXT = ['png','jpg','jpeg','webp','gif','heic','heif','bmp','tif','tiff','avif'];
+
+  // Папки, которые режиссёр приносит с компьютера, раскладываются сами.
+  // null — папка-обёртка: её просто снимаем и смотрим, что внутри.
+  var DIR_CAT = {
+    'персонажи':'characters', 'characters':'characters', 'personazhi':'characters',
+    'локации':'locations',    'locations':'locations',    'lokacii':'locations',
+    'предметы':'props',       'props':'props',            'predmety':'props',
+    'раскадровка':'storyboard','storyboard':'storyboard',
+    'сценарий':'script',      'script':'script',
+    'референсы':null, 'референс':null, 'refs':null, 'references':null, 'материалы':null
+  };
+
+  var EV_KIND = {
+    run_start:{t:'запуск',              c:'queue'},
+    run_done: {t:'прогон завершён',     c:'ok'},
+    generated:{t:'кадр готов',          c:'gen'},
+    error:    {t:'ошибка',              c:'warn'},
+    import:   {t:'раскадровка залита',  c:'gen'},
+    review:   {t:'решение по кадру',    c:'review'},
+    materials_uploaded:{t:'материалы',  c:'gen'},
+    materials_deleted: {t:'материалы',  c:'queue'},
+    series_created:    {t:'новая серия',c:'ok'},
+    member_added:      {t:'участник',   c:'ok'},
+    member_updated:    {t:'участник',   c:'queue'},
+    note:     {t:'заметка',             c:'queue'}
+  };
+  // События людей — не работа воркера: в его сводку они попадать не должны.
+  var HUMAN_KINDS = { review:1, materials_uploaded:1, materials_deleted:1, note:1,
+                      series_created:1, member_added:1, member_updated:1 };
+
+  var MG = { tab:'frames', busy:false, sqlMissing:false, storeErr:'',
+             series:[], progress:{}, team:[], events:[], files:[],
+             cat:'characters', matSeries:null, uploading:false };
+
+  function isDirector(){ return !!(me && me.role === 'director'); }
+  function el(id){ return document.getElementById(id); }
+
+  function fmtSize(b){
+    if(!b && b!==0) return '';
+    if(b < 1024) return b + ' Б';
+    if(b < 1024*1024) return (b/1024).toFixed(0) + ' КБ';
+    return (b/1024/1024).toFixed(b < 10*1024*1024 ? 1 : 0).replace('.', ',') + ' МБ';
+  }
+  function plural(n, one, few, many){
+    var a = Math.abs(n) % 100, b = a % 10;
+    if(a > 10 && a < 20) return many;
+    if(b > 1 && b < 5)   return few;
+    if(b === 1)          return one;
+    return many;
+  }
+  function extOf(name){
+    var i = String(name).lastIndexOf('.');
+    return i < 0 ? '' : String(name).slice(i+1).toLowerCase();
+  }
+  function catById(id){
+    for(var i=0;i<MAT_CATS.length;i++) if(MAT_CATS[i].id===id) return MAT_CATS[i];
+    return MAT_CATS[1];
+  }
+
+  /* ---- запись: те же RPC, но с понятной подсказкой про недостающий SQL ---- */
+  function dirRpc(fn, body){
+    return sbRpc(fn, body).catch(function(err){
+      var m = (err && err.message) || '';
+      if(/PGRST202|could not find|does not exist|schema cache/i.test(m)){
+        MG.sqlMissing = true; renderSqlNote();
+        throw new Error(SQL_TIP);
+      }
+      throw err;
+    });
+  }
+  // След в ленте: если функции ещё нет, загрузку из-за этого не валим.
+  function dirEvent(seriesId, kind, message, details){
+    return dirRpc('director_event', { p_series_id:seriesId||null, p_kind:kind,
+                                      p_message:message, p_details:details||null })
+      .catch(function(){ return null; });
+  }
+
+  /* ================= ХРАНИЛИЩЕ (бакет materials) =================
+     Ходим обычным fetch/XHR, как и в остальном дашборде. Право писать
+     даёт заголовок x-review-key: политики бакета проверяют его так же,
+     как функции базы проверяют его в обычных запросах.
+     =============================================================== */
+  var ST = SB + '/storage/v1';
+  function stHeaders(extra){
+    var h = sbHeaders(extra);
+    if(KEY) h['x-review-key'] = KEY;
+    return h;
+  }
+  function stPath(p){ return String(p).split('/').map(encodeURIComponent).join('/'); }
+
+  // Ошибки хранилища приходят по-английски — переводим в человеческую подсказку.
+  function stMessage(text, code){
+    var m = '';
+    try{ var j = JSON.parse(text); m = j.message || j.error || ''; }catch(e){}
+    if(code === 413 || /maximum allowed size|too large|payload/i.test(m))
+      return 'файл больше 50 МБ — уменьшите его или разбейте на части';
+    if(code === 403 || code === 401 || /row-level security|Unauthorized|not authorized/i.test(m))
+      return STORE_TIP;
+    if(code === 404 || /Bucket not found/i.test(m))
+      return 'в проекте нет бакета materials — он заводится тем же файлом docs/supabase-storage-политики.sql';
+    if(/Invalid key/i.test(m))
+      return 'хранилище не приняло имя файла — переименуйте его латиницей, без спецзнаков';
+    return m || ('хранилище ответило ' + code);
+  }
+
+  function stUpload(path, file, onProg){
+    return new Promise(function(resolve, reject){
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', ST + '/object/materials/' + stPath(path), true);
+      var h = stHeaders({ 'x-upsert':'true', 'cache-control':'3600' });
+      for(var k in h) xhr.setRequestHeader(k, h[k]);
+      xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+      if(xhr.upload && onProg){
+        xhr.upload.onprogress = function(e){ if(e.lengthComputable) onProg(e.loaded / e.total); };
+      }
+      xhr.onload = function(){
+        if(xhr.status >= 200 && xhr.status < 300) resolve(true);
+        else reject(new Error(stMessage(xhr.responseText, xhr.status)));
+      };
+      xhr.onerror = function(){ reject(new Error('нет связи с хранилищем — проверьте интернет')); };
+      xhr.ontimeout = function(){ reject(new Error('хранилище не ответило вовремя')); };
+      xhr.send(file);
+    });
+  }
+  function stList(prefix){
+    return fetch(ST + '/object/list/materials', {
+      method:'POST', headers:stHeaders({'Content-Type':'application/json'}),
+      body: JSON.stringify({ prefix:prefix, limit:200, offset:0,
+                             sortBy:{ column:'name', order:'asc' } })
+    }).then(function(r){
+      return r.text().then(function(t){
+        if(!r.ok) throw new Error(stMessage(t, r.status));
+        return t ? JSON.parse(t) : [];
+      });
+    });
+  }
+  // Референсы лежат с подпапками («ЛОКАЦИИ/Аул/…»), а список хранилища
+  // отдаёт один уровень — поэтому спускаемся внутрь сами.
+  function stListDeep(prefix, depth){
+    return stList(prefix).then(function(rows){
+      var files = [], dirs = [];
+      (rows||[]).forEach(function(r){
+        if(!r || !r.name) return;
+        if(r.id) files.push({ path: prefix + r.name,
+                              size: (r.metadata && r.metadata.size) || 0,
+                              at:   r.created_at || r.updated_at || '' });
+        else if(depth > 0) dirs.push(r.name);
+      });
+      if(!dirs.length) return files;
+      return Promise.all(dirs.map(function(d){ return stListDeep(prefix + d + '/', depth-1); }))
+        .then(function(lists){
+          return files.concat.apply(files, lists);
+        });
+    });
+  }
+  function stDelete(path){
+    return fetch(ST + '/object/materials/' + stPath(path), {
+      method:'DELETE', headers:stHeaders({})
+    }).then(function(r){
+      return r.text().then(function(t){
+        if(!r.ok) throw new Error(stMessage(t, r.status));
+        return true;
+      });
+    });
+  }
+  // Бакет закрытый: чтобы показать файл, просим у хранилища временную ссылку.
+  function stSign(path){
+    return fetch(ST + '/object/sign/materials/' + stPath(path), {
+      method:'POST', headers:stHeaders({'Content-Type':'application/json'}),
+      body: JSON.stringify({ expiresIn: 3600 })
+    }).then(function(r){
+      return r.text().then(function(t){
+        if(!r.ok) throw new Error(stMessage(t, r.status));
+        var j = JSON.parse(t);
+        return ST + (j.signedURL || j.signedUrl || '');
+      });
+    });
+  }
+
+  /* ---------------- разбор того, что бросили ----------------
+     Имена файлов хранилище принимает только «латинские»: буквы, цифры и
+     горстка знаков. На «проба.png» оно отвечает «Invalid key» — проверено.
+     Поэтому русские названия переводим в латиницу, остальное заменяем на
+     подчёркивание: «дорога к аулу.jpeg» ляжет как «doroga k aulu.jpeg» —
+     и узнаваемо, и хранилищу подходит. */
+  var TRANSLIT = {
+    'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i',
+    'й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t',
+    'у':'u','ф':'f','х':'h','ц':'c','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'',
+    'э':'e','ю':'yu','я':'ya'
+  };
+  function translit(s){
+    return String(s).replace(/[А-Яа-яЁё]/g, function(ch){
+      var low = ch.toLowerCase(), t = TRANSLIT[low];
+      if(t === undefined) return ch;
+      if(!t || ch === low) return t;
+      return t.charAt(0).toUpperCase() + t.slice(1);   // «Аул» -> «Aul»
+    });
+  }
+  function safeSeg(s){
+    return translit(String(s))
+      .replace(/[\u0000-\u001f]/g, '')
+      .replace(/[^\w!.*'() &$@=;:+,?-]/g, '_')         // ровно то, что разрешает хранилище
+      .replace(/_{2,}/g, '_')
+      .replace(/^[._]+/, '')
+      .trim();
+  }
+  function safeRel(rel){
+    return String(rel).split('/').map(safeSeg).filter(Boolean).join('/');
+  }
+  // Куда положить файл: если верхняя папка называется «ПЕРСОНАЖИ» или
+  // «ЛОКАЦИИ» — раскладываем по ней, иначе в выбранный раздел.
+  function routeFile(rel, defCat){
+    var parts = String(rel).split('/').filter(Boolean);
+    var cat = null;
+    while(parts.length > 1){
+      var k = parts[0].toLowerCase();
+      if(!DIR_CAT.hasOwnProperty(k)) break;
+      if(DIR_CAT[k]){ cat = DIR_CAT[k]; parts.shift(); break; }
+      parts.shift();                       // папка-обёртка — снимаем и смотрим дальше
+    }
+    return { cat: cat || defCat, rel: parts.join('/') };
+  }
+  function walkEntry(entry, prefix){
+    if(!entry) return Promise.resolve([]);
+    if(entry.isFile){
+      return new Promise(function(res){
+        entry.file(function(f){ res([{ file:f, rel:prefix + entry.name }]); },
+                   function(){ res([]); });
+      });
+    }
+    if(entry.isDirectory){
+      var reader = entry.createReader(), acc = [];
+      return new Promise(function(res){
+        (function readMore(){
+          reader.readEntries(function(batch){
+            if(!batch.length){                       // папка кончилась — спускаемся внутрь
+              Promise.all(acc.map(function(e){ return walkEntry(e, prefix + entry.name + '/'); }))
+                .then(function(lists){ res([].concat.apply([], lists)); });
+              return;
+            }
+            acc = acc.concat(Array.prototype.slice.call(batch));
+            readMore();                               // readEntries отдаёт максимум 100 за раз
+          }, function(){ res([]); });
+        })();
+      });
+    }
+    return Promise.resolve([]);
+  }
+  function filesFromDrop(dt){
+    var items = dt.items, roots = [], i;
+    for(i=0; items && i<items.length; i++){
+      var e = items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : null;
+      if(e) roots.push(e);                            // читать entry надо сразу, потом они «протухают»
+    }
+    if(!roots.length){
+      return Promise.resolve(Array.prototype.slice.call(dt.files||[])
+        .map(function(f){ return { file:f, rel:f.name }; }));
+    }
+    return Promise.all(roots.map(function(e){ return walkEntry(e, ''); }))
+      .then(function(lists){ return [].concat.apply([], lists); });
+  }
+
+  /* ---------------- загрузка ---------------- */
+  function checkFile(item){
+    var c = catById(item.cat), e = extOf(item.name);
+    if(item.file.size > MAT_LIMIT)
+      return 'весит ' + fmtSize(item.file.size) + ' — лимит 50 МБ на файл';
+    if(!item.file.size) return 'пустой файл';
+    if(c.ext === 'image'){
+      if(IMG_EXT.indexOf(e) < 0) return 'это не картинка — в «' + c.label + '» нужны ' + c.tip;
+    } else if(c.ext.indexOf(e) < 0){
+      return 'в «' + c.label + '» нужен ' + c.tip;
+    }
+    return '';
+  }
+
+  function uploadFiles(list){
+    if(MG.uploading) { showToast('Дождитесь окончания текущей загрузки'); return; }
+    var sid = MG.matSeries || currentSeriesId();
+    if(!sid){ showToast('Сначала выберите серию'); return; }
+
+    // раскладываем по разделам, отсеиваем служебные файлы Мака
+    var plan = [];
+    list.forEach(function(f){
+      var raw = f.rel || f.file.name;
+      if(/(^|\/)\./.test(raw)) return;                       // .DS_Store и прочий мусор
+      var routed = routeFile(raw, MG.cat);                   // раздел — по исходным русским папкам,
+      var rel = safeRel(routed.rel);                         // и только потом имя переводим в латиницу
+      if(!rel) return;
+      plan.push({ file:f.file, cat:routed.cat, rel:rel, name:rel.split('/').pop(),
+                  path:'series-' + sid + '/' + routed.cat + '/' + rel });
+    });
+    if(!plan.length){ showToast('Не нашлось ни одного файла'); return; }
+
+    var box = el('matProgress');
+    box.innerHTML = '';
+    MG.uploading = true;
+
+    var rows = plan.map(function(p){
+      var d = document.createElement('div');
+      d.className = 'upline';
+      d.innerHTML = '<span class="upline__n">' + esc(p.rel) + '</span>' +
+                    '<span class="prog"><i></i></span>' +
+                    '<span class="upline__s">ждёт</span>';
+      box.appendChild(d);
+      return d;
+    });
+
+    var ok = 0, bad = 0, byCat = {};
+    var seq = Promise.resolve();
+    plan.forEach(function(p, i){
+      seq = seq.then(function(){
+        var row = rows[i], bar = row.querySelector('.prog i'), st = row.querySelector('.upline__s');
+        var why = checkFile(p);
+        if(why){ bad++; row.className = 'upline is-err'; st.textContent = why; return; }
+        st.textContent = 'загружаем…';
+        return stUpload(p.path, p.file, function(k){ bar.style.width = Math.round(k*100) + '%'; })
+          .then(function(){
+            ok++; byCat[p.cat] = (byCat[p.cat]||0) + 1;
+            row.className = 'upline is-ok'; bar.style.width = '100%';
+            st.textContent = 'готово · ' + fmtSize(p.file.size);
+          })
+          .catch(function(err){
+            bad++; row.className = 'upline is-err';
+            st.textContent = (err && err.message) || 'не удалось';
+          });
+      });
+    });
+
+    seq.then(function(){
+      MG.uploading = false;
+      if(ok){
+        var parts = Object.keys(byCat).map(function(c){ return catById(c).label.toLowerCase() + ' ' + byCat[c]; });
+        showToast('Загружено ' + ok + ' ' + plural(ok,'файл','файла','файлов') +
+                  (bad ? ', не удалось ' + bad : ''));
+        dirEvent(sid, 'materials_uploaded',
+                 'загрузил материалы (' + parts.join(', ') + ')',
+                 { files: ok, by_category: byCat });
+        loadMaterials();
+      } else {
+        showToast('Ничего не загрузилось — посмотрите подсказки в списке');
+      }
+    });
+  }
+
+  /* ---------------- список материалов ---------------- */
+  function loadMaterials(){
+    var sid = MG.matSeries || currentSeriesId();
+    if(!sid) return Promise.resolve();
+    return stListDeep('series-' + sid + '/', 3)
+      .then(function(files){ MG.files = files; MG.storeErr = ''; renderMaterials(); })
+      .catch(function(err){
+        MG.files = []; MG.storeErr = (err && err.message) || 'хранилище недоступно';
+        renderMaterials();
+      });
+  }
+
+  function renderMaterials(){
+    var box = el('matList');
+    var sid = MG.matSeries || currentSeriesId();
+    var pref = 'series-' + sid + '/';
+    if(MG.storeErr){
+      box.innerHTML = '<div class="msg msg--warn">' + esc(MG.storeErr) + '</div>';
+      return;
+    }
+    if(!MG.files.length){
+      box.innerHTML = '<div class="mempty">Для этой серии пока ничего не загружено.</div>';
+      return;
+    }
+    var groups = {};
+    MG.files.forEach(function(f){
+      var rest = f.path.indexOf(pref) === 0 ? f.path.slice(pref.length) : f.path;
+      var i = rest.indexOf('/');
+      var cat = i < 0 ? 'прочее' : rest.slice(0, i);
+      (groups[cat] = groups[cat] || []).push({ path:f.path, rel: i<0 ? rest : rest.slice(i+1), size:f.size });
+    });
+    var html = '';
+    MAT_CATS.concat([{id:'прочее', label:'Прочее'}]).forEach(function(c){
+      var list = groups[c.id];
+      if(!list || !list.length) return;
+      html += '<div><div class="mgroup__t">' + esc(c.label) + ' · ' + list.length + '</div><div class="mlist">';
+      list.forEach(function(f){
+        html += '<div class="mrow" data-path="' + esc(f.path) + '">' +
+                  '<div class="mrow__main"><span class="mrow__t">' + esc(f.rel) + '</span>' +
+                  '<span class="mrow__d">' + esc(fmtSize(f.size)) + '</span></div>' +
+                  '<div class="mrow__acts">' +
+                    '<button class="btn" type="button" data-mact="open">Открыть</button>' +
+                    '<button class="btn" type="button" data-mact="del">Удалить</button>' +
+                  '</div></div>';
+      });
+      html += '</div></div>';
+    });
+    box.innerHTML = html;
+  }
+
+  /* ---------------- серии ---------------- */
+  function seriesName(s){
+    return 'Серия ' + (s.number||'') + (s.title ? ' — ' + s.title : '');
+  }
+  function renderSeriesSelect(){
+    var sel = el('matSeries');
+    if(!sel) return;
+    var cur = MG.matSeries || currentSeriesId();
+    sel.innerHTML = MG.series.map(function(s){
+      return '<option value="' + s.id + '"' + (String(s.id)===String(cur)?' selected':'') + '>' +
+             esc(seriesName(s)) + '</option>';
+    }).join('');
+    MG.matSeries = cur;
+  }
+  function barHtml(p){
+    var t = p.total || 0;
+    if(!t) return '';
+    function w(n){ return (100 * (n||0) / t).toFixed(2) + '%'; }
+    return '<div class="bar">' +
+             '<i class="b-ok" style="width:' + w(p.approved) + '"></i>' +
+             '<i class="b-review" style="width:' + w(p.review) + '"></i>' +
+             '<i class="b-redo" style="width:' + w(p.redo) + '"></i>' +
+             '<i class="b-gen" style="width:' + w(p.generating) + '"></i>' +
+           '</div>';
+  }
+  function renderSeries(){
+    var box = el('serList');
+    if(!MG.series.length){
+      box.innerHTML = '<div class="mempty">Серий пока нет.</div>';
+      return;
+    }
+    var open = currentSeriesId();
+    box.innerHTML = MG.series.map(function(s){
+      var p = MG.progress[s.id] || {};
+      var who = MG.team.filter(function(m){
+        return m.active && m.role === 'animator' &&
+               (m.series_ids === null || (m.series_ids||[]).indexOf(s.id) >= 0);
+      });
+      var isOpen = String(s.id) === String(open);
+      return '<div class="mrow" data-series="' + s.id + '">' +
+        '<div class="mrow__main">' +
+          '<span class="mrow__t">' + esc(seriesName(s)) +
+            (isOpen ? ' <span class="pill pill--gen">открыта</span>' : '') + '</span>' +
+          (p.total ? barHtml(p) +
+            '<span class="barlbl">' +
+              '<span>всего <b>' + p.total + '</b></span>' +
+              '<span>одобрено <b>' + (p.approved||0) + '</b></span>' +
+              '<span>на проверке <b>' + (p.review||0) + '</b></span>' +
+              '<span>на переделке <b>' + (p.redo||0) + '</b></span>' +
+              '<span>в очереди <b>' + ((p.queued||0) + (p.waiting_anchor||0)) + '</b></span>' +
+            '</span>'
+            : '<span class="mrow__d">кадров ещё нет — залейте раскадровку</span>') +
+          '<span class="mrow__d">ведут: ' +
+            (who.length ? esc(who.map(function(m){ return m.name; }).join(', ')) : 'никто не назначен') +
+          '</span>' +
+        '</div>' +
+        '<div class="mrow__acts">' +
+          (isOpen ? '' : '<button class="btn" type="button" data-sact="open">Открыть кадры</button>') +
+          '<button class="btn" type="button" data-sact="zip"' + ((p.approved||0) ? '' : ' disabled title="одобренных кадров пока нет"') + '>' +
+            'Скачать одобренные' + ((p.approved||0) ? ' (' + p.approved + ')' : '') + '</button>' +
+          '<button class="btn" type="button" data-sact="who">Кто ведёт</button>' +
+        '</div>' +
+        '<div class="mform" data-whoform hidden>' +
+          '<div class="mfield" style="flex:1 1 100%"><label>Аниматоры на этой серии</label>' +
+            '<div class="mchecks">' + checksHtml(s.id) + '</div></div>' +
+          '<button class="btn btn--primary" type="button" data-sact="who-save">Сохранить</button>' +
+          '<button class="btn" type="button" data-sact="who-cancel">Отмена</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+  // Галочки «кто ведёт серию». Сотрудника, который видит все серии,
+  // не трогаем: снять его отсюда — значит молча урезать ему доступ.
+  function checksHtml(seriesId){
+    var animators = MG.team.filter(function(m){ return m.active && m.role === 'animator'; });
+    if(!animators.length) return '<span class="mempty">Аниматоров пока нет.</span>';
+    return animators.map(function(m){
+      var all = (m.series_ids === null);
+      var on  = all || (m.series_ids||[]).indexOf(seriesId) >= 0;
+      return '<label class="mcheck' + (all ? ' is-fixed' : '') + '"' +
+             (all ? ' title="видит все серии — снимается в разделе «Команда»"' : '') + '>' +
+             '<input type="checkbox" value="' + m.id + '"' + (on?' checked':'') + (all?' disabled':'') + '>' +
+             esc(m.name) + (all ? ' (все серии)' : '') + '</label>';
+    }).join('');
+  }
+
+  /* ---------------- команда ---------------- */
+  function seriesLabels(ids){
+    if(ids === null || ids === undefined) return 'все серии';
+    if(!ids.length) return 'серии не назначены';
+    return ids.map(function(id){
+      var s = MG.series.filter(function(x){ return x.id === id; })[0];
+      return s ? ('серия ' + s.number) : ('серия #' + id);
+    }).join(', ');
+  }
+  function renderTeam(){
+    var box = el('memList');
+    if(MG.sqlMissing || !MG.team.length){
+      box.innerHTML = MG.sqlMissing
+        ? '<div class="msg msg--warn">' + esc(SQL_TIP) + '</div>'
+        : '<div class="mempty">Список сотрудников недоступен.</div>';
+      return;
+    }
+    box.innerHTML = MG.team.map(function(m){
+      var self = !!(me && me.name === m.name);          // сам себя отключить нельзя
+      return '<div class="mrow' + (m.active ? '' : ' is-off') + '" data-member="' + m.id + '">' +
+        '<div class="mrow__main">' +
+          '<span class="mrow__t">' + esc(m.name) +
+            '<span class="pill pill--' + (m.role==='director'?'gen':'review') + '">' +
+              (m.role==='director'?'режиссёр':'аниматор') + '</span>' +
+            (m.active ? '' : '<span class="pill pill--queue">отключён</span>') +
+            (self ? '<span class="pill pill--ok">это вы</span>' : '') +
+          '</span>' +
+          '<span class="mrow__d">' + esc(seriesLabels(m.series_ids)) +
+            ' · заходил: <b>' + (m.last_seen ? esc(fmtUpdated(m.last_seen)) : 'ни разу') + '</b>' +
+            ' · проверил кадров: <b>' + (m.reviewed||0) + '</b></span>' +
+          '<span class="mrow__d" data-link hidden></span>' +
+        '</div>' +
+        '<div class="mrow__acts">' +
+          '<button class="btn" type="button" data-tact="link">Ссылка</button>' +
+          (self ? '' :
+            '<button class="btn" type="button" data-tact="toggle">' +
+              (m.active ? 'Отключить' : 'Включить') + '</button>') +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  /* ---------------- лента и сводка ---------------- */
+  function renderFeed(){
+    var box = el('feedList');
+    if(!MG.events.length){
+      box.innerHTML = '<div class="mempty">Событий пока нет. Здесь появятся запуски воркера, ' +
+                      'решения по кадрам и загрузки материалов.</div>';
+      return;
+    }
+    box.innerHTML = MG.events.map(function(e){
+      var k = EV_KIND[e.kind] || { t:e.kind, c:'queue' };
+      var extra = (e.frames_ok || e.frames_failed)
+        ? ' <b>' + (e.frames_ok||0) + '</b> ' + plural(e.frames_ok||0,'кадр','кадра','кадров') +
+          (e.frames_failed ? ', не вышло ' + e.frames_failed : '')
+        : '';
+      return '<div class="ev">' +
+        '<span class="ev__at">' + esc(fmtUpdated(e.at)) + '</span>' +
+        '<span class="ev__k"><span class="pill pill--' + k.c + '">' + esc(k.t) + '</span></span>' +
+        '<span class="ev__m">' + esc(e.message || '—') + extra + '</span>' +
+      '</div>';
+    }).join('');
+  }
+  function renderSummary(){
+    var t = { total:0, queued:0, waiting_anchor:0, review:0, approved:0, redo:0 };
+    MG.series.forEach(function(s){
+      var p = MG.progress[s.id]; if(!p) return;
+      Object.keys(t).forEach(function(k){ t[k] += (p[k]||0); });
+    });
+    var last = MG.events.length ? MG.events[0].at : '';
+    var worker = MG.events.filter(function(e){ return !HUMAN_KINDS[e.kind]; })[0];
+    el('mSummary').innerHTML =
+      '<span class="stat"><span class="d d-total"></span>Серий <b>' + MG.series.length + '</b></span>' +
+      '<span class="stat"><span class="d d-queue"></span>В очереди <b>' + (t.queued + t.waiting_anchor) + '</b></span>' +
+      '<span class="stat"><span class="d d-hold"></span>Ждут мастер-кадр <b>' + t.waiting_anchor + '</b></span>' +
+      '<span class="stat"><span class="d d-review"></span>Ждут проверки <b>' + t.review + '</b></span>' +
+      '<span class="stat"><span class="d d-ok"></span>Одобрено <b>' + t.approved + '</b></span>' +
+      '<span class="stat"><span class="d d-gen"></span>Воркер: <b>' +
+        (worker ? esc(fmtUpdated(worker.at)) : 'не выходил на связь') + '</b></span>' +
+      '<span class="stat"><span class="d d-total"></span>Последнее событие: <b>' +
+        (last ? esc(fmtUpdated(last)) : '—') + '</b></span>';
+  }
+  function renderSqlNote(){
+    var n = el('mSqlNote');
+    n.hidden = !MG.sqlMissing;
+    if(MG.sqlMissing){
+      n.innerHTML = '<b>Раздел работает наполовину.</b> Читать данные можно, а создавать серии, ' +
+        'заводить сотрудников и загружать материалы — пока нет: в базе не хватает прав и функций. ' +
+        'Их добавляет файл <code>docs/supabase-storage-политики.sql</code> — откройте Supabase → SQL Editor, ' +
+        'вставьте его целиком и нажмите Run.';
+    }
+  }
+  function renderManage(){
+    renderSummary(); renderSeriesSelect(); renderSeries(); renderTeam(); renderFeed(); renderSqlNote();
+  }
+
+  /* ---------------- загрузка данных раздела ---------------- */
+  function loadManage(){
+    if(MG.busy) return Promise.resolve();
+    MG.busy = true;
+    return Promise.all([
+      sbGet('series?select=id,project,number,title,assignee,status&order=number.asc').catch(function(){ return []; }),
+      sbGet('progress?select=series_id,total,queued,generating,review,approved,redo,waiting_anchor').catch(function(){ return []; }),
+      dirRpc('director_team', {}).catch(function(){ return []; }),
+      sbGet('events?select=id,at,series_id,kind,message,frames_ok,frames_failed&order=at.desc&limit=40').catch(function(){ return []; })
+    ]).then(function(r){
+      MG.series = r[0] || [];
+      MG.progress = {};
+      (r[1] || []).forEach(function(p){ MG.progress[p.series_id] = p; });
+      MG.team = r[2] || [];
+      MG.events = r[3] || [];
+      MG.busy = false;
+      renderManage();
+      return loadMaterials();
+    }).catch(function(err){
+      MG.busy = false;
+      showToast((err && err.message) || 'Не удалось загрузить раздел');
+    });
+  }
+
+  /* ---------------- переключение вкладок ---------------- */
+  function switchView(v){
+    if(v === 'manage' && !isDirector()) v = 'frames';
+    MG.tab = v;
+    var man = (v === 'manage');
+    el('viewFrames').hidden = man;
+    el('viewManage').hidden = !man;
+    el('counters').hidden = man;
+    document.querySelectorAll('#viewSeg button').forEach(function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-view') === v ? 'true' : 'false');
+    });
+    if(man) loadManage();
+  }
+  document.querySelectorAll('#viewSeg button').forEach(function(b){
+    b.addEventListener('click', function(){ switchView(b.getAttribute('data-view')); });
+  });
+
+  /* ---------------- открыть другую серию в «Кадрах» ---------------- */
+  function openSeries(id){
+    if(String(id) === String(currentSeriesId())){ switchView('frames'); return; }
+    seriesOverride = +id;
+    seriesRow = null; sceneChipsBuilt = false; lastProgress = ''; ui = {};
+    state.fscene = 'all'; state.fstatus = 'all'; state.q = '';
+    var s = document.getElementById('search'); if(s) s.value = '';
+    document.querySelectorAll('[data-fstatus]').forEach(function(x){
+      x.setAttribute('aria-pressed', x.getAttribute('data-fstatus')==='all' ? 'true':'false');
+    });
+    switchView('frames');
+    grid.innerHTML = '';
+    loadSupabase().then(seedProgress).then(function(){
+      showToast('Открыта ' + (seriesRow ? seriesName(seriesRow).toLowerCase() : 'серия'));
+    }).catch(showLoadError);
+  }
+
+  /* ---------------- скачать одобренные кадры серии ---------------- */
+  function downloadApproved(seriesId){
+    sbGet('frames?select=code,scene_n,seq,status,versions(v,full_url)&series_id=eq.' +
+          encodeURIComponent(seriesId) + '&status=eq.approved&order=scene_n.asc,seq.asc')
+      .then(function(rows){
+        var links = [];
+        (rows||[]).forEach(function(f){
+          var vs = (f.versions||[]).slice().sort(function(a,b){ return (a.v||0)-(b.v||0); });
+          var last = vs[vs.length-1];
+          if(!last || !last.full_url) return;
+          var name = last.full_url.split('/').pop();
+          links.push({ url: fileUrl(last.full_url), name: 'кадр-' + f.code + '-' + name });
+        });
+        if(!links.length){ showToast('Одобренных кадров с картинками пока нет'); return; }
+        showApprovedList(seriesId, links);
+      })
+      .catch(function(err){ showToast((err && err.message) || 'Не удалось собрать кадры'); });
+  }
+  // Архив на клиенте не собираем: сторонняя библиотека с чужого CDN — лишняя
+  // точка отказа. Отдаём список прямых ссылок и жмём их по очереди.
+  function showApprovedList(seriesId, links){
+    var row = document.querySelector('.mrow[data-series="' + seriesId + '"]');
+    if(!row) return;
+    var box = row.querySelector('[data-dl]');
+    if(!box){
+      box = document.createElement('div');
+      box.className = 'mform'; box.setAttribute('data-dl','');
+      box.style.flexDirection = 'column'; box.style.alignItems = 'stretch';
+      row.appendChild(box);
+    }
+    box.hidden = false;
+    box.innerHTML =
+      '<div class="mrow__d">Одобренных кадров: <b>' + links.length + '</b>. ' +
+        'Браузер спросит разрешение на скачивание нескольких файлов — согласитесь.</div>' +
+      '<div class="mrow__acts">' +
+        '<button class="btn btn--primary" type="button" data-sact="dl-all">Скачать все</button>' +
+        '<button class="btn" type="button" data-sact="dl-hide">Свернуть</button>' +
+      '</div>' +
+      '<div class="mlist" style="max-height:210px;overflow:auto">' +
+        links.map(function(l){
+          return '<a class="btn" style="justify-content:flex-start" href="' + esc(l.url) +
+                 '" download="' + esc(l.name) + '">' + esc(l.name) + '</a>';
+        }).join('') +
+      '</div>';
+    box.__links = links;
+  }
+  function clickDownloads(links){
+    var i = 0;
+    (function next(){
+      if(i >= links.length){ showToast('Скачивание запущено: ' + links.length + ' ' +
+                                       plural(links.length,'файл','файла','файлов')); return; }
+      var l = links[i++];
+      var a = document.createElement('a');
+      a.href = l.url; a.download = l.name; a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(next, 400);                       // подряд браузер глотает не всё
+    })();
+  }
+
+  /* ---------------- действия внутри раздела ---------------- */
+  // Удаление в два нажатия: модальных окон не заводим, чтобы случайный
+  // клик ничего не стирал, а подтверждение оставалось на виду.
+  function armConfirm(btn, run, label){
+    if(btn.getAttribute('data-armed') === '1'){ run(); return; }
+    var old = btn.textContent;
+    btn.setAttribute('data-armed','1');
+    btn.textContent = label || 'Точно удалить?';
+    btn.classList.add('btn--primary');
+    setTimeout(function(){
+      if(!btn.isConnected) return;
+      btn.removeAttribute('data-armed');
+      btn.textContent = old;
+      btn.classList.remove('btn--primary');
+    }, 4000);
+  }
+
+  el('matList').addEventListener('click', function(e){
+    var b = e.target.closest('[data-mact]'); if(!b) return;
+    var row = b.closest('.mrow'), path = row.getAttribute('data-path');
+    if(b.getAttribute('data-mact') === 'open'){
+      b.disabled = true;
+      stSign(path).then(function(url){
+        b.disabled = false;
+        window.open(url, '_blank', 'noopener');
+      }).catch(function(err){ b.disabled = false; showToast((err && err.message) || 'Не удалось открыть файл'); });
+    } else {
+      armConfirm(b, function(){
+        b.disabled = true;
+        stDelete(path).then(function(){
+          showToast('Файл удалён');
+          dirEvent(MG.matSeries || currentSeriesId(), 'materials_deleted',
+                   'удалил файл ' + path.split('/').pop(), { path: path });
+          loadMaterials();
+        }).catch(function(err){ b.disabled = false; showToast((err && err.message) || 'Не удалось удалить'); });
+      });
+    }
+  });
+
+  el('serList').addEventListener('click', function(e){
+    var b = e.target.closest('[data-sact]'); if(!b) return;
+    var row = b.closest('.mrow'), sid = +row.getAttribute('data-series');
+    var act = b.getAttribute('data-sact');
+    if(act === 'open') openSeries(sid);
+    else if(act === 'zip') downloadApproved(sid);
+    else if(act === 'who'){
+      var f = row.querySelector('[data-whoform]'); f.hidden = !f.hidden;
+    }
+    else if(act === 'who-cancel'){ row.querySelector('[data-whoform]').hidden = true; }
+    else if(act === 'who-save'){
+      var ids = [];
+      row.querySelectorAll('[data-whoform] input[type=checkbox]').forEach(function(c){
+        if(c.checked && !c.disabled) ids.push(+c.value);
+      });
+      b.disabled = true;
+      dirRpc('director_series_assign', { p_series_id:sid, p_member_ids:ids })
+        .then(function(){ showToast('Назначение сохранено'); return loadManage(); })
+        .catch(function(err){ showToast((err && err.message) || 'Не удалось сохранить'); })
+        .then(function(){ b.disabled = false; });
+    }
+    else if(act === 'dl-all'){
+      var box = b.closest('[data-dl]');
+      if(box && box.__links) clickDownloads(box.__links);
+    }
+    else if(act === 'dl-hide'){
+      var box2 = b.closest('[data-dl]'); if(box2) box2.hidden = true;
+    }
+  });
+
+  el('memList').addEventListener('click', function(e){
+    var b = e.target.closest('[data-tact]'); if(!b) return;
+    var row = b.closest('.mrow'), mid = +row.getAttribute('data-member');
+    var m = MG.team.filter(function(x){ return x.id === mid; })[0];
+    if(b.getAttribute('data-tact') === 'link'){
+      b.disabled = true;
+      dirRpc('director_member_link', { p_member_id: mid }).then(function(token){
+        b.disabled = false;
+        var url = location.origin + location.pathname + '?key=' + token;
+        var slot = row.querySelector('[data-link]');
+        slot.hidden = false;
+        slot.innerHTML = 'Личная ссылка: <input class="minput" style="margin-top:5px" readonly value="' +
+                         esc(url) + '">';
+        var inp = slot.querySelector('input');
+        inp.focus(); inp.select();
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(url)
+            .then(function(){ showToast('Ссылка скопирована'); })
+            .catch(function(){ showToast('Ссылка ниже — скопируйте вручную'); });
+        } else showToast('Ссылка ниже — скопируйте вручную');
+      }).catch(function(err){ b.disabled = false; showToast((err && err.message) || 'Не удалось получить ссылку'); });
+    } else {
+      var turnOff = !!(m && m.active);
+      var go = function(){
+        b.disabled = true;
+        dirRpc('director_member_update', { p_member_id:mid, p_active:!turnOff })
+          .then(function(){ showToast(turnOff ? 'Участник отключён' : 'Участник включён'); return loadManage(); })
+          .catch(function(err){ showToast((err && err.message) || 'Не удалось изменить'); })
+          .then(function(){ b.disabled = false; });
+      };
+      if(turnOff) armConfirm(b, go, 'Точно отключить?'); else go();
+    }
+  });
+
+  /* ---------------- формы: новая серия, новый участник ---------------- */
+  function seriesChecksHtml(){
+    if(!MG.series.length) return '<span class="mempty">Серий пока нет — сотрудник будет видеть все.</span>';
+    return MG.series.map(function(s){
+      return '<label class="mcheck"><input type="checkbox" value="' + s.id + '">' +
+             esc(seriesName(s)) + '</label>';
+    }).join('');
+  }
+  el('serAddBtn').addEventListener('click', function(){
+    var f = el('serForm');
+    f.hidden = !f.hidden;
+    if(f.hidden) return;
+    var last = MG.series[MG.series.length-1];
+    el('serProject').value = (last && last.project) || '';
+    el('serNumber').value  = last ? (last.number + 1) : 1;
+    el('serTitle').value   = '';
+    el('serWho').innerHTML = checksHtml(-1);       // -1: ни у кого ещё не отмечена
+    el('serProject').focus();
+  });
+  el('serCancel').addEventListener('click', function(){ el('serForm').hidden = true; });
+  el('serSave').addEventListener('click', function(){
+    var btn = this;
+    var ids = [];
+    el('serWho').querySelectorAll('input[type=checkbox]').forEach(function(c){
+      if(c.checked && !c.disabled) ids.push(+c.value);
+    });
+    var num = parseInt(el('serNumber').value, 10);
+    if(!num || num < 1){ showToast('Впишите номер серии'); el('serNumber').focus(); return; }
+    btn.disabled = true;
+    dirRpc('director_series_create', {
+      p_project: el('serProject').value.trim(),
+      p_number:  num,
+      p_title:   el('serTitle').value.trim(),
+      p_member_ids: ids
+    }).then(function(){
+      el('serForm').hidden = true;
+      showToast('Серия создана — теперь загрузите её раскадровку');
+      return loadManage();
+    }).catch(function(err){ showToast((err && err.message) || 'Не удалось создать серию'); })
+      .then(function(){ btn.disabled = false; });
+  });
+
+  el('memAddBtn').addEventListener('click', function(){
+    var f = el('memForm');
+    f.hidden = !f.hidden;
+    if(f.hidden) return;
+    el('memName').value = '';
+    el('memRole').value = 'animator';
+    el('memWho').innerHTML = seriesChecksHtml();
+    el('memName').focus();
+  });
+  el('memCancel').addEventListener('click', function(){ el('memForm').hidden = true; });
+  el('memSave').addEventListener('click', function(){
+    var btn = this;
+    var name = el('memName').value.trim();
+    if(name.length < 2){ showToast('Впишите имя сотрудника'); el('memName').focus(); return; }
+    var ids = [];
+    el('memWho').querySelectorAll('input[type=checkbox]').forEach(function(c){ if(c.checked) ids.push(+c.value); });
+    btn.disabled = true;
+    dirRpc('director_member_add', {
+      p_name: name, p_role: el('memRole').value,
+      p_series_ids: ids.length ? ids : null
+    }).then(function(rows){
+      var m = (rows && rows.length) ? rows[0] : null;
+      el('memForm').hidden = true;
+      return loadManage().then(function(){
+        if(!m) return;
+        var url = location.origin + location.pathname + '?key=' + m.token;
+        var row = document.querySelector('.mrow[data-member="' + m.id + '"]');
+        if(row){
+          var slot = row.querySelector('[data-link]');
+          slot.hidden = false;
+          slot.innerHTML = 'Личная ссылка: <input class="minput" style="margin-top:5px" readonly value="' +
+                           esc(url) + '">';
+          slot.querySelector('input').select();
+          row.scrollIntoView({ block:'center', behavior:'smooth' });
+        }
+        if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).catch(function(){});
+        showToast('Участник заведён — ссылка скопирована, отправьте её лично');
+      });
+    }).catch(function(err){ showToast((err && err.message) || 'Не удалось завести участника'); })
+      .then(function(){ btn.disabled = false; });
+  });
+
+  el('feedReload').addEventListener('click', function(){
+    loadManage().then(function(){ showToast('Обновлено'); });
+  });
+
+  /* ---------------- материалы: выбор серии, раздела, приём файлов ---------------- */
+  function renderCats(){
+    el('matCats').innerHTML = MAT_CATS.map(function(c){
+      return '<button class="chip" type="button" data-cat="' + c.id + '" aria-pressed="' +
+             (c.id === MG.cat ? 'true' : 'false') + '">' + esc(c.label) + '</button>';
+    }).join('');
+  }
+  renderCats();
+  el('matCats').addEventListener('click', function(e){
+    var b = e.target.closest('[data-cat]'); if(!b) return;
+    MG.cat = b.getAttribute('data-cat');
+    el('matCats').querySelectorAll('[data-cat]').forEach(function(x){
+      x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+    });
+    var c = catById(MG.cat);
+    el('matDropT').textContent = 'Перетащите сюда «' + c.label.toLowerCase() + '»';
+    el('matFiles').setAttribute('accept', c.ext === 'image' ? 'image/*' :
+      c.ext.map(function(x){ return '.' + x; }).join(','));
+  });
+  el('matSeries').addEventListener('change', function(){
+    MG.matSeries = +this.value;
+    el('matProgress').innerHTML = '';
+    loadMaterials();
+  });
+
+  var drop = el('matDrop');
+  ['dragenter','dragover'].forEach(function(ev){
+    drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add('is-over'); });
+  });
+  ['dragleave','dragend'].forEach(function(ev){
+    drop.addEventListener(ev, function(){ drop.classList.remove('is-over'); });
+  });
+  drop.addEventListener('drop', function(e){
+    e.preventDefault(); drop.classList.remove('is-over');
+    filesFromDrop(e.dataTransfer).then(function(list){
+      if(!list.length){ showToast('В том, что вы бросили, не нашлось файлов'); return; }
+      uploadFiles(list);
+    });
+  });
+  el('matPickFiles').addEventListener('click', function(){ el('matFiles').click(); });
+  el('matPickDir').addEventListener('click', function(){ el('matDir').click(); });
+  el('matFiles').addEventListener('change', function(){
+    var list = Array.prototype.slice.call(this.files||[]).map(function(f){ return { file:f, rel:f.name }; });
+    this.value = '';
+    if(list.length) uploadFiles(list);
+  });
+  el('matDir').addEventListener('change', function(){
+    var list = Array.prototype.slice.call(this.files||[]).map(function(f){
+      return { file:f, rel: f.webkitRelativePath || f.name };
+    });
+    this.value = '';
+    if(list.length) uploadFiles(list);
+  });
 
   /* ---------------- старт ---------------- */
   function showLoadError(err){
