@@ -1072,7 +1072,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- Опциональная конфигурация бэкенда. На GitHub Pages файл есть; через serve.py его нет — 404 гасим onerror. -->
+<!-- Опциональная конфигурация бэкенда. На GitHub Pages файл есть; если его нет (открыт локальный файл) — 404 гасим onerror. -->
 <script src="config.js" onerror="window.__CONFIG_MISSING=1"></script>
 <script>
 (function(){
@@ -1139,7 +1139,7 @@
     if(/[?&](view|preview)\b/i.test(location.search)) return 'view';   // ручной предпросмотр режима
     if(CFG.supabaseUrl && CFG.supabaseKey && !cfgBroken) return 'supabase';   // (а) статичный хостинг + база
     var h = location.hostname;
-    if(location.protocol!=='file:' && (h==='localhost'||h==='127.0.0.1'||h==='::1'||h==='[::1]')) return 'local'; // (б) serve.py
+    if(location.protocol!=='file:' && (h==='localhost'||h==='127.0.0.1'||h==='::1'||h==='[::1]')) return 'local'; // (б) localhost без конфига (старый локальный режим)
     return 'view';                                                     // (в) Pages без базы — только просмотр
   }
   var MODE = backendMode();
@@ -1217,8 +1217,8 @@
     });
   }
   function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  // Пути относительные, чтобы работать и через serve.py (страница в корне),
-  // и на GitHub Pages (страница в /amintako/dashboard/). f выглядит как "images/xxx.png".
+  // Пути относительные, чтобы работать и локально (страница в корне),
+  // и на GitHub Pages (страница в /amintako/dashboard/). f выглядит как "images/xxx.webp".
   function fileUrl(f){ return '../' + String(f).replace(/^\/+/, ''); }
 
   function fmtUpdated(iso){
@@ -1901,7 +1901,7 @@
     }).then(function(r){ return r.json(); }).then(function(j){
       if(!j.ok){ showToast('Не удалось сохранить: '+(j.error||'ошибка сервера')); return false; }
       return loadLocal(true).then(function(){ return true; });
-    }).catch(function(){ showToast('Сервер не отвечает. Запущен ли serve.py?'); return false; });
+    }).catch(function(){ showToast('Локальный сервер не отвечает'); return false; });
   }
   function postPrompt(id, text){
     return fetch('../api/prompt', {
@@ -1910,7 +1910,7 @@
     }).then(function(r){ return r.json(); }).then(function(j){
       if(!j.ok){ showToast('Не удалось сохранить промт: '+(j.error||'ошибка сервера')); return false; }
       return loadLocal(true).then(function(){ return true; });
-    }).catch(function(){ showToast('Сервер не отвечает. Запущен ли serve.py?'); return false; });
+    }).catch(function(){ showToast('Локальный сервер не отвечает'); return false; });
   }
 
   // Одобрить / отправить на переделку. Прямой UPDATE база не примет — только через функцию.
@@ -3159,8 +3159,7 @@
     grid.innerHTML = '<div class="loaderr">Не удалось загрузить кадры.'+
       (msg ? '<br><br>'+msg : '')+'<br><br>'+
       (MODE==='local'
-        ? 'Запустите локальный сервер командой <code>python3 scripts/serve.py</code> и откройте '+
-          '<code>http://localhost:8787</code> (открывать сам файл в браузере нельзя — данные не загрузятся).'
+        ? 'Откройте опубликованную версию: <code>https://genvid25.github.io/amintako/dashboard/</code>'
         : 'Обновите страницу через минуту. Возможно, данные ещё публикуются.')+
       '</div>';
   }
