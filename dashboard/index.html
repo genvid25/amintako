@@ -1901,7 +1901,7 @@
     }).then(function(r){ return r.json(); }).then(function(j){
       if(!j.ok){ showToast('Не удалось сохранить: '+(j.error||'ошибка сервера')); return false; }
       return loadLocal(true).then(function(){ return true; });
-    }).catch(function(){ showToast('Локальный сервер не отвечает'); return false; });
+    }).catch(function(){ showToast('Нет связи с локальным сервером — проще открыть публичную версию: genvid25.github.io/amintako/dashboard/'); return false; });
   }
   function postPrompt(id, text){
     return fetch('../api/prompt', {
@@ -1910,7 +1910,7 @@
     }).then(function(r){ return r.json(); }).then(function(j){
       if(!j.ok){ showToast('Не удалось сохранить промт: '+(j.error||'ошибка сервера')); return false; }
       return loadLocal(true).then(function(){ return true; });
-    }).catch(function(){ showToast('Локальный сервер не отвечает'); return false; });
+    }).catch(function(){ showToast('Нет связи с локальным сервером — проще открыть публичную версию: genvid25.github.io/amintako/dashboard/'); return false; });
   }
 
   // Одобрить / отправить на переделку. Прямой UPDATE база не примет — только через функцию.
