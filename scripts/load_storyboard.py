@@ -27,7 +27,14 @@
 
 Запуск:
   python3 scripts/load_storyboard.py --dry-run     # показать план, ничего не писать
-  python3 scripts/load_storyboard.py               # залить
+  python3 scripts/load_storyboard.py               # залить текущую серию
+
+Новая серия (раскадровку сначала разобрать в свой storyboard.json):
+  python3 scripts/load_storyboard.py --number 3 --title "Название" \
+          --storyboard data/storyboard-s3.json --no-frames --dry-run
+
+По умолчанию скрипт работает с серией, которая уже заведена в проекте
+(константы ниже) — так его и запускают изо дня в день.
 """
 
 import argparse
@@ -169,10 +176,10 @@ def merge_orphan_row(prev, row):
     return text
 
 
-def read_storyboard():
+def read_storyboard(path=None):
     """Раскадровка -> список сцен, у каждой список кадров с номерами.
     Возвращает ещё и список приклеенных строк — чтобы показать их в отчёте."""
-    raw = json.loads(STORYBOARD_JSON.read_text(encoding="utf-8"))
+    raw = json.loads((path or STORYBOARD_JSON).read_text(encoding="utf-8"))
     scenes, merged = [], []
 
     for sc in raw.get("scenes", []):
@@ -216,12 +223,15 @@ def read_storyboard():
     return scenes, merged
 
 
-def read_generated():
+def read_generated(path=None):
     """Кадры, которые уже сгенерированы: промт, исполнитель, версии картинок.
-    Ключ — код кадра («1.3»), как в раскадровке."""
-    if not FRAMES_JSON.exists():
+    Ключ — код кадра («1.3»), как в раскадровке.
+    У новой серии готовых кадров нет — тогда сюда приходит None."""
+    if path is None:
         return {}
-    raw = json.loads(FRAMES_JSON.read_text(encoding="utf-8"))
+    if not path.exists():
+        return {}
+    raw = json.loads(path.read_text(encoding="utf-8"))
     out = {}
     for f in raw.get("frames", []):
         code = (f.get("id") or "").strip()
@@ -248,18 +258,18 @@ def file_size(rel_path):
 # ---------------------------------------------------------------------------
 # Заливка
 # ---------------------------------------------------------------------------
-def ensure_series(sb, dry):
+def ensure_series(sb, dry, project, number, title, assignee):
     rows = sb.select("series?select=id,project,number,title&project=eq.%s&number=eq.%d"
-                     % (urllib.parse.quote(PROJECT), SERIES_NUMBER))
+                     % (urllib.parse.quote(project), number))
     if rows:
         print("  серия      : уже есть, id=%s" % rows[0]["id"])
         return rows[0]["id"]
     if dry:
-        print("  серия      : будет создана «%s», серия %d" % (PROJECT, SERIES_NUMBER))
+        print("  серия      : будет создана «%s», серия %d" % (project, number))
         return None
     created = sb.insert("series", [{
-        "project": PROJECT, "number": SERIES_NUMBER,
-        "title": SERIES_TITLE, "assignee": SERIES_ASSIGNEE,
+        "project": project, "number": number,
+        "title": title, "assignee": assignee,
     }])
     print("  серия      : создана, id=%s" % created[0]["id"])
     return created[0]["id"]
@@ -399,7 +409,30 @@ def report_statuses(sb, series_id):
 def main():
     ap = argparse.ArgumentParser(description="Заливка раскадровки серии в Supabase")
     ap.add_argument("--dry-run", action="store_true", help="показать план, ничего не записывать")
+    # Ниже — всё для НОВОЙ серии. Без этих ключей скрипт работает как раньше,
+    # с серией из констант вверху файла.
+    ap.add_argument("--project", default=PROJECT, help="название проекта")
+    ap.add_argument("--number", type=int, default=SERIES_NUMBER, help="номер серии")
+    ap.add_argument("--title", default=None, help="название серии")
+    ap.add_argument("--assignee", default=None, help="кто ведёт серию")
+    ap.add_argument("--storyboard", default=None, metavar="ФАЙЛ",
+                    help="разобранная раскадровка (по умолчанию data/storyboard.json)")
+    ap.add_argument("--no-frames", action="store_true",
+                    help="не читать data/frames.json — у новой серии готовых кадров нет")
     args = ap.parse_args()
+
+    # Название и исполнителя подставляем из констант только для «своей» серии:
+    # у новой серии чужое название было бы неправдой.
+    same_series = args.project == PROJECT and args.number == SERIES_NUMBER
+    title = args.title if args.title is not None else (SERIES_TITLE if same_series else "")
+    assignee = args.assignee if args.assignee is not None else (SERIES_ASSIGNEE if same_series else "")
+
+    storyboard_path = Path(args.storyboard) if args.storyboard else STORYBOARD_JSON
+    if not storyboard_path.is_absolute():
+        storyboard_path = ROOT / storyboard_path
+    if not storyboard_path.exists():
+        sys.exit("Не нашёл разобранную раскадровку: %s" % storyboard_path)
+    frames_path = None if (args.no_frames or not same_series) else FRAMES_JSON
 
     load_dotenv(ROOT)
     url = os.environ.get("SUPABASE_URL", "").strip()
@@ -409,11 +442,13 @@ def main():
     if not key.startswith("sb_secret_") and not key.startswith("eyJ"):
         sys.exit("SUPABASE_SECRET_KEY не похож на секретный ключ — публичным ключом залить нельзя")
 
-    scenes, merged = read_storyboard()
-    generated = read_generated()
+    scenes, merged = read_storyboard(storyboard_path)
+    generated = read_generated(frames_path)
     frame_count = sum(len(s["frames"]) for s in scenes)
 
-    print("Раскадровка: %d сцен, %d кадров" % (len(scenes), frame_count))
+    print("Серия: «%s» № %d%s" % (args.project, args.number, (" — " + title) if title else ""))
+    print("Раскадровка: %d сцен, %d кадров (%s)"
+          % (len(scenes), frame_count, storyboard_path.relative_to(ROOT).as_posix()))
     print("Уже сгенерировано: %d кадров, %d версий картинок"
           % (len(generated), sum(len(g["versions"]) for g in generated.values())))
     for scene_n, code, text in merged:
@@ -424,7 +459,7 @@ def main():
     sb = Supabase(url, key)
     print("Заливка%s:" % (" (--dry-run, ничего не записываем)" if args.dry_run else ""))
 
-    series_id = ensure_series(sb, args.dry_run)
+    series_id = ensure_series(sb, args.dry_run, args.project, args.number, title, assignee)
     if args.dry_run and series_id is None:
         print("  дальше нечего показывать: серии ещё нет")
         return

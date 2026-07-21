@@ -1664,11 +1664,28 @@
     return m || ('хранилище ответило ' + code);
   }
 
-  function stUpload(path, file, onProg){
+  // Исходное русское имя — в метаданные объекта.
+  // Хранилище кириллицу в именах не принимает, поэтому имя файла уезжает в
+  // латиницу (см. safeSeg ниже). А в базе и во всех промтах референсы записаны
+  // по-русски — «ЛОКАЦИИ/Аул/дорога к аулу». Чтобы воркер вернул имя обратно,
+  // кладём исходное имя и раздел в пользовательские метаданные объекта:
+  // заголовок x-metadata, base64 от JSON в UTF-8 (голый btoa кириллицу не берёт).
+  // Забирает их scripts/fetch_materials.py через /object/info/.
+  function stMeta(obj){
+    try{
+      var bytes = new TextEncoder().encode(JSON.stringify(obj)), bin = '', i;
+      for(i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin);
+    }catch(e){ return ''; }        // не вышло — грузим без метаданных, имя чинится вручную
+  }
+
+  function stUpload(path, file, onProg, meta){
     return new Promise(function(resolve, reject){
       var xhr = new XMLHttpRequest();
       xhr.open('POST', ST + '/object/materials/' + stPath(path), true);
       var h = stHeaders({ 'x-upsert':'true', 'cache-control':'3600' });
+      var md = meta ? stMeta(meta) : '';
+      if(md) h['x-metadata'] = md;
       for(var k in h) xhr.setRequestHeader(k, h[k]);
       xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
       if(xhr.upload && onProg){
@@ -1850,6 +1867,7 @@
       var rel = safeRel(routed.rel);                         // и только потом имя переводим в латиницу
       if(!rel) return;
       plan.push({ file:f.file, cat:routed.cat, rel:rel, name:rel.split('/').pop(),
+                  orig:routed.rel,                           // русское имя — в метаданные объекта
                   path:'series-' + sid + '/' + routed.cat + '/' + rel });
     });
     if(!plan.length){ showToast('Не нашлось ни одного файла'); return; }
@@ -1876,7 +1894,8 @@
         var why = checkFile(p);
         if(why){ bad++; row.className = 'upline is-err'; st.textContent = why; return; }
         st.textContent = 'загружаем…';
-        return stUpload(p.path, p.file, function(k){ bar.style.width = Math.round(k*100) + '%'; })
+        return stUpload(p.path, p.file, function(k){ bar.style.width = Math.round(k*100) + '%'; },
+                        { orig:p.orig, cat:p.cat })
           .then(function(){
             ok++; byCat[p.cat] = (byCat[p.cat]||0) + 1;
             row.className = 'upline is-ok'; bar.style.width = '100%';
