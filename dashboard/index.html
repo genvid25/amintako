@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Тема из прошлого визита — восстанавливаем до отрисовки, чтобы не мигало.
+     Сохранённый выбор перебивает системную тему; если выбора ещё не было — идём за системной. -->
+<script>try{var t=localStorage.getItem('amintako-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <title>Дашборд кадров</title>
 <!-- Иконка вкладки — та же киноклетка, что в шапке. Инлайном, чтобы не ходить за файлом. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%2316222c'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.4' y='6' width='17.2' height='12' rx='1.6'/%3E%3Cpath d='M7.2 6v12M16.8 6v12' opacity='.45'/%3E%3Cpath d='M8.6 15l2.4-3.4 1.7 2.2 1.3-1.6 1.5 2.8'/%3E%3C/g%3E%3C/svg%3E">
@@ -177,6 +180,9 @@
   /* Режим просмотра — единственное, что человеку тут мешает работать: янтарь. */
   .banner--view{ background:var(--review-weak); color:var(--text); border-bottom-color:transparent; }
   .banner--view .dot{ background:var(--review); border-radius:2px; }
+  /* Испорченная или отозванная личная ссылка — не рабочий режим, а поломка: красный сигнал. */
+  .banner--broken{ background:var(--warn-weak); color:var(--text); border-bottom-color:transparent; }
+  .banner--broken .dot{ background:var(--warn); border-radius:2px; }
 
   /* ---------- шапка ---------- */
   header{ padding-top:26px; }
@@ -541,11 +547,18 @@
   .ver{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .ver__lbl{ font-family:var(--slate); font-size:var(--fs-micro); font-weight:700;
     text-transform:uppercase; letter-spacing:.11em; color:var(--text-3); }
-  .verbtn{ padding:5px 12px; border-radius:var(--r-xs); border:1px solid var(--border-2);
+  .verbtn{ display:inline-flex; align-items:baseline; gap:6px; padding:5px 11px;
+    border-radius:var(--r-xs); border:1px solid var(--border-2);
     background:var(--card); font-family:var(--mono); font-size:var(--fs-xs); font-weight:500;
     color:var(--text-2); font-variant-numeric:tabular-nums; transition:border-color .14s; }
   .verbtn:hover{ border-color:var(--accent); color:var(--text); }
   .verbtn.is-on{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
+  /* Номер версии первичен; движок — вторичная подпись слейтом, тише и мельче. */
+  .verbtn__v{ font-weight:600; }
+  .verbtn__eng{ font-family:var(--slate); font-size:var(--fs-micro); font-weight:700;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); }
+  .verbtn:hover .verbtn__eng{ color:var(--text-2); }
+  .verbtn.is-on .verbtn__eng{ color:var(--on-accent); opacity:.72; }
 
   /* ---------- кнопки ----------
      Одна главная на контекст (чернила), остальные тише: контур, потом призрак. */
@@ -931,11 +944,11 @@
       Как это работает
     </summary>
     <div class="how__body">
-      <p class="how__lead">Раскадровка превращается в очередь кадров. Агент пишет к каждому кадру англоязычный промт по правилам студии. Воркер на компьютере режиссёра берёт кадры из очереди, генерирует их в браузере по вашей подписке с референсами персонажей и выкладывает готовые картинки в этот дашборд. Сотрудник одобряет кадр или отправляет на переделку с комментарием — правка возвращается к агенту, он переписывает промт, и кадр генерируется заново. Промт можно поправить и руками: такой промт агент больше не трогает.</p>
+      <p class="how__lead">Раскадровка превращается в очередь кадров. Воркер на компьютере режиссёра пишет к каждому кадру англоязычный промт по правилам студии, берёт кадры из очереди, генерирует их в браузере по вашей подписке с референсами персонажей и выкладывает готовые картинки в этот дашборд. Сотрудник одобряет кадр или отправляет на переделку с комментарием — правка возвращается к воркеру, он переписывает промт, и кадр генерируется заново. Промт можно поправить и руками: такой промт воркер больше не трогает.</p>
       <div class="flow">
         <div class="flow-step"><span class="t">Очередь кадров</span><span class="d">раскадровка серии</span></div>
         <span class="flow-arrow">→</span>
-        <div class="flow-step is-agent"><span class="t">Агент пишет промты</span><span class="d">EN-промт по правилам студии</span></div>
+        <div class="flow-step is-agent"><span class="t">Воркер пишет промты</span><span class="d">EN-промт по правилам студии</span></div>
         <span class="flow-arrow">→</span>
         <div class="flow-step"><span class="t">Мастер-кадр сцены</span><span class="d">одобряется первым</span></div>
         <span class="flow-arrow">→</span>
@@ -949,7 +962,7 @@
       </div>
       <div class="flow-loop">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9a8 8 0 1 0 1.5 5"/><path d="M20 4v5h-5"/></svg>
-        Правка возвращается к агенту → он переписывает промт → кадр снова уходит в генерацию.
+        Правка возвращается к воркеру → он переписывает промт → кадр снова уходит в генерацию.
       </div>
       <div class="flow-loop">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
@@ -1094,7 +1107,7 @@
   var EMP_RANGE = { amin:[1,8], timur:[9,16], isa:[1,999] };
   var SECTION = { amin:'сцены 1–8 (Амин)', timur:'сцены 9–16 (Тимур)', isa:'все сцены' };
 
-  // Комментарий, который уходит агенту, когда промт правили руками и просят перегенерировать.
+  // Комментарий, который уходит воркеру, когда промт правили руками и просят перегенерировать.
   // База требует для «переделки» непустой комментарий — поэтому он осмысленный, а не заглушка.
   var PROMPT_REDO_NOTE = 'Промт отредактирован вручную — перерисовать кадр по новому промту.';
 
@@ -1120,6 +1133,7 @@
   var keyBroken = !!rawKey && !KEY;
   var cfgBroken = !!(CFG.supabaseUrl && CFG.supabaseKey) && !headerSafe(String(CFG.supabaseKey).trim());
   var me = null;                        // {name, role, series_ids} — заполняет whoami()
+  var linkRejected = false;             // ключ дошёл до базы, но не совпал: ссылка отозвана/недействительна
 
   function backendMode(){
     if(/[?&](view|preview)\b/i.test(location.search)) return 'view';   // ручной предпросмотр режима
@@ -1147,6 +1161,14 @@
   function applyMode(){
     var vb = document.getElementById('viewBanner');
     var pb = document.getElementById('pilotBanner');
+    // Испорченная или отозванная личная ссылка — постоянная плашка поверх режима просмотра.
+    if(keyBroken || linkRejected){
+      pb.hidden = true; vb.hidden = false; vb.classList.add('banner--broken');
+      document.getElementById('viewBannerTxt').innerHTML =
+        '<b>Ссылка повреждена или отозвана.</b> Попросите новую личную ссылку у режиссёра.';
+      return;
+    }
+    vb.classList.remove('banner--broken');
     if(canEdit()){
       vb.hidden = true; pb.hidden = false;
       document.getElementById('pilotBannerTxt').innerHTML = (MODE==='supabase')
@@ -1182,7 +1204,9 @@
       document.getElementById('whoRole').textContent = (me.role==='director')
         ? ' · режиссёр, все серии' : ' · аниматор';
     } else {
-      note.textContent = 'Открыто без личной ссылки — доступен только просмотр.';
+      note.textContent = (keyBroken || linkRejected)
+        ? 'Ссылка недействительна — доступен только просмотр.'
+        : 'Открыто без личной ссылки — доступен только просмотр.';
     }
   }
 
@@ -1212,6 +1236,14 @@
     var u = uiFor(c.id);
     var idx = (u.vi==null ? v.length-1 : Math.min(u.vi, v.length-1));
     return v[idx];
+  }
+  // Движок версии -> человекочитаемая метка. Работает с обоими поколениями имён:
+  // в базе сейчас openai/gemini, воркер будет писать chatgpt/google-labs.
+  function providerLabel(p){
+    p = String(p||'').toLowerCase();
+    if(p==='openai' || p==='chatgpt' || p==='gpt') return 'GPT';
+    if(p==='gemini' || p==='google-labs' || p==='google_labs' || p==='google') return 'Google';
+    return '';
   }
   // Промт кадра — тот, что уйдёт в следующую генерацию. Промты версий это история:
   // они показываются отдельно и задним числом не переписываются.
@@ -1268,7 +1300,13 @@
   function promptHtml(c, hasImg){
     var u = uiFor(c.id);
     var saved = savedPrompt(c);
-    if(!saved && !canEdit()) return '';
+    // Промта ещё нет. Гостю раскрывашку не показываем совсем; тому, кто правит,
+    // вместо пустого поля — подсказка, что промт напишет воркер при генерации.
+    if(!saved){
+      return canEdit()
+        ? '<p class="phint">Промта пока нет — воркер напишет его при генерации.</p>'
+        : '';
+    }
     var draft = (u.promptDraft==null ? saved : u.promptDraft);
     var cls = 'prompt' + (draft!==saved ? ' is-dirty' : '') + (u.promptSaved ? ' is-saved' : '');
 
@@ -1281,12 +1319,12 @@
       var by   = c.prompt_updated_by ? (' — ' + esc(c.prompt_updated_by)) : '';
       var when = c.prompt_updated_at ? (', ' + esc(fmtUpdated(c.prompt_updated_at))) : '';
       h += '<p class="phint"><b>Промт отредактирован вручную'+by+when+'.</b> '+
-           'Агент такой промт не переписывает: правки сотрудника уйдут в комментарий, а текст останется вашим.</p>';
+           'Воркер такой промт не переписывает: правки сотрудника уйдут в комментарий, а текст останется вашим.</p>';
     }
 
     if(canEdit()){
       h += '<textarea class="ptext" spellcheck="false" aria-label="Промт кадра '+esc(c.id)+'">'+esc(draft)+'</textarea>';
-      h += '<p class="phint">Этот текст уйдёт в следующую генерацию кадра. После сохранения агент перестанет переписывать промт сам.</p>';
+      h += '<p class="phint">Этот текст уйдёт в следующую генерацию кадра. После сохранения воркер перестанет переписывать промт сам.</p>';
       h += '<div class="prow">'+
              '<button class="btn btn--primary" type="button" data-act="prompt-save">'+I.save+'Сохранить промт</button>'+
              '<button class="btn" type="button" data-act="prompt-cancel">Отмена</button>'+
@@ -1339,8 +1377,12 @@
         html += '<div class="ver"><span class="ver__lbl">Версия</span>';
         for(var vi=0; vi<c.versions.length; vi++){
           var vobj = c.versions[vi];
-          var vlabel = (vobj.provider === 'openai') ? 'GPT' : ('v'+(vobj.v||vi+1));
-          html += '<button type="button" class="verbtn'+(vi===vidx?' is-on':'')+'" data-act="ver" data-v="'+vi+'">'+vlabel+'</button>';
+          var vnum = 'v'+(vobj.v||vi+1);                // номер первичен
+          var veng = providerLabel(vobj.provider);      // движок — вторичная подпись
+          html += '<button type="button" class="verbtn'+(vi===vidx?' is-on':'')+'" data-act="ver" data-v="'+vi+'">'+
+                    '<span class="verbtn__v">'+vnum+'</span>'+
+                    (veng ? '<span class="verbtn__eng">'+veng+'</span>' : '')+
+                  '</button>';
         }
         html += '</div>';
       }
@@ -1371,9 +1413,9 @@
         html += '</div>';
         if(canEdit()){
           html += '<div class="rework'+(u.reworkOpen?' is-on':'')+'">'+
-                    '<textarea placeholder="Что поправить или новые вводные для агента…">'+esc(u.draft||'')+'</textarea>'+
+                    '<textarea placeholder="Что поправить или новые вводные для воркера…">'+esc(u.draft||'')+'</textarea>'+
                     '<div class="rrow">'+
-                      '<button class="btn btn--primary" type="button" data-act="rework-send">'+I.send+'Отправить агенту</button>'+
+                      '<button class="btn btn--primary" type="button" data-act="rework-send">'+I.send+'Отправить воркеру</button>'+
                       '<button class="btn" type="button" data-act="rework-cancel">Отмена</button>'+
                     '</div>'+
                   '</div>';
@@ -1513,7 +1555,18 @@
       el.classList.toggle('is-hidden', !ok);
       if(ok) visible++;
     });
-    document.getElementById('empty').classList.toggle('is-on', visible===0);
+    var emptyEl = document.getElementById('empty');
+    emptyEl.classList.toggle('is-on', visible===0);
+    if(visible===0){
+      // Пустая серия и «фильтр всё скрыл» — разные сообщения: во втором случае
+      // есть что показать, в первом — грузить раскадровку (режиссёру) или ждать.
+      var seriesEmpty = !(data && data.frames && data.frames.length);
+      emptyEl.textContent = seriesEmpty
+        ? (isDirector()
+            ? 'В серии пока нет кадров. Загрузите раскадровку во вкладке «Управление».'
+            : 'В серии пока нет кадров. Обратитесь к режиссёру.')
+        : 'Под эти фильтры не попал ни один кадр. Снимите фильтр по статусу или сцене — или поищите по другому слову.';
+    }
     document.getElementById('resultLine').textContent =
       'Показано кадров: '+visible+' из '+inScope+(byEmp ? ' в вашем разделе' : '');
   }
@@ -1523,6 +1576,21 @@
   function showToast(msg){
     toast.textContent = msg; toast.classList.add('is-on');
     clearTimeout(toastT); toastT = setTimeout(function(){ toast.classList.remove('is-on'); }, 2600);
+  }
+
+  /* ---- ошибки сети ----
+     Сбой fetch приходит техническим текстом («Failed to fetch», «Load failed»,
+     «NetworkError»). В интерфейсе это шум — показываем по-русски, техтекст в консоль. */
+  var NET_HINT = 'Не получилось связаться с базой. Проверьте интернет и обновите страницу.';
+  function isNetErr(err){
+    var m = (err && err.message) || String(err||'');
+    return /failed to fetch|load failed|networkerror|network error|net::|ERR_|connection|timed? ?out|нет связи/i.test(m);
+  }
+  // Текст ошибки для человека: сетевой сбой -> общая подсказка (сырой текст в консоль),
+  // иначе — как прислала база (её сообщения уже по-русски).
+  function humanError(err, fallback){
+    if(isNetErr(err)){ if(window.console) console.error(err); return NET_HINT; }
+    return (err && err.message) || fallback || 'неизвестная ошибка';
   }
 
   /* ================= данные: Supabase REST ==================
@@ -1588,7 +1656,9 @@
   function whoami(){
     if(!KEY) return Promise.resolve(null);
     return sbRpc('whoami', {})
-      .then(function(rows){ me = (rows && rows.length) ? rows[0] : null; return me; })
+      // База ответила, но токен ничей — ссылка отозвана или испорчена.
+      // Сетевой сбой (.catch) сюда не относится: это не «плохая ссылка».
+      .then(function(rows){ me = (rows && rows.length) ? rows[0] : null; linkRejected = !me; return me; })
       .catch(function(){ me = null; return null; });   // не пустили — работаем как гость
   }
 
@@ -1850,7 +1920,7 @@
       p_feedback: status==='redo' ? (feedback||'') : ''
     }).then(function(){ return loadSupabase(); })
       .then(function(){ return true; })
-      .catch(function(err){ showToast((err && err.message) || 'База недоступна — правка не сохранена'); return false; });
+      .catch(function(err){ showToast(humanError(err, 'База недоступна — правка не сохранена')); return false; });
   }
   // Сохранить отредактированный промт. Тоже отдельная функция базы: см. дополнение к схеме.
   function promptSupabase(c, text){
@@ -1895,7 +1965,7 @@
     else if(act==='rework-send'){
       var ta = cardEl.querySelector('.rework textarea');
       var val = ta ? ta.value.trim() : '';
-      if(!val){ showToast('Добавьте комментарий для агента'); if(ta) ta.focus(); return; }
+      if(!val){ showToast('Добавьте комментарий для воркера'); if(ta) ta.focus(); return; }
       u.reworkOpen=false; u.draft='';
       saveFrame(c, 'redo', val).then(function(ok){ if(ok) showToast('Правка по кадру '+id+' отправлена'); });
     }
@@ -1998,7 +2068,12 @@
   reflectTheme();
   mq.addEventListener('change', reflectTheme);
   new MutationObserver(reflectTheme).observe(root, { attributes:true, attributeFilter:['data-theme'] });
-  themeBtn.addEventListener('click', function(){ root.setAttribute('data-theme', effDark()?'light':'dark'); reflectTheme(); });
+  themeBtn.addEventListener('click', function(){
+    var next = effDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('amintako-theme', next); }catch(e){}   // запомним выбор между визитами
+    reflectTheme();
+  });
 
   /* ================= РЕЖИССЁРСКИЙ РАЗДЕЛ =================
      Вкладка «Управление»: материалы, серии, команда, лента событий.
@@ -2490,9 +2565,10 @@
             '<span class="barlbl">' +
               '<span>всего <b>' + p.total + '</b></span>' +
               '<span>одобрено <b>' + (p.approved||0) + '</b></span>' +
-              '<span>на проверке <b>' + (p.review||0) + '</b></span>' +
+              '<span>ждут проверки <b>' + (p.review||0) + '</b></span>' +
               '<span>на переделке <b>' + (p.redo||0) + '</b></span>' +
-              '<span>в очереди <b>' + ((p.queued||0) + (p.waiting_anchor||0)) + '</b></span>' +
+              '<span>в очереди <b>' + (p.queued||0) + '</b></span>' +
+              (p.waiting_anchor ? '<span>ждут мастер-кадр <b>' + p.waiting_anchor + '</b></span>' : '') +
             '</span>'
             : '<span class="mrow__d">кадров ещё нет — залейте раскадровку</span>') +
           '<span class="mrow__d">ведут: ' +
@@ -2601,7 +2677,7 @@
     var worker = MG.events.filter(function(e){ return !HUMAN_KINDS[e.kind]; })[0];
     el('mSummary').innerHTML =
       '<span class="stat"><span class="d d-total"></span>Серий <b>' + MG.series.length + '</b></span>' +
-      '<span class="stat"><span class="d d-queue"></span>В очереди <b>' + (t.queued + t.waiting_anchor) + '</b></span>' +
+      '<span class="stat"><span class="d d-queue"></span>В очереди <b>' + t.queued + '</b></span>' +
       '<span class="stat"><span class="d d-hold"></span>Ждут мастер-кадр <b>' + t.waiting_anchor + '</b></span>' +
       '<span class="stat"><span class="d d-review"></span>Ждут проверки <b>' + t.review + '</b></span>' +
       '<span class="stat"><span class="d d-ok"></span>Одобрено <b>' + t.approved + '</b></span>' +
@@ -2650,7 +2726,7 @@
       return loadMaterials();
     }).catch(function(err){
       MG.busy = false;
-      showToast((err && err.message) || 'Не удалось загрузить раздел');
+      showToast(humanError(err, 'Не удалось загрузить раздел'));
     });
   }
 
@@ -2924,9 +3000,18 @@
     var f = el('serForm');
     f.hidden = !f.hidden;
     if(f.hidden) return;
-    var last = MG.series[MG.series.length-1];
-    el('serProject').value = (last && last.project) || '';
-    el('serNumber').value  = last ? (last.number + 1) : 1;
+    // Проект берём из серии с наибольшим числом кадров (а не из последней созданной),
+    // номер — максимальный по этому проекту плюс один.
+    var pick = null, best = -1;
+    MG.series.forEach(function(s){
+      var tot = (MG.progress[s.id] && MG.progress[s.id].total) || 0;
+      if(tot > best){ best = tot; pick = s; }
+    });
+    var proj = (pick && pick.project) || (MG.series[0] && MG.series[0].project) || '';
+    var maxNum = 0;
+    MG.series.forEach(function(s){ if(s.project === proj && (s.number||0) > maxNum) maxNum = s.number; });
+    el('serProject').value = proj;
+    el('serNumber').value  = proj ? (maxNum + 1) : 1;
     el('serTitle').value   = '';
     el('serWho').innerHTML = checksHtml(-1);       // -1: ни у кого ещё не отмечена
     el('serProject').focus();
@@ -3007,7 +3092,19 @@
              (c.id === MG.cat ? 'true' : 'false') + '">' + esc(c.label) + '</button>';
     }).join('');
   }
+  // На узком экране перетаскивать нечем (кнопки выбора файлов и папки рядом уже есть) —
+  // «Перетащите сюда» меняем на «Добавьте». Пересобираем текст и при смене ширины.
+  var dropCatLabel = null;   // подпись выбранного раздела; null — общий текст
+  function dropVerb(){ return window.matchMedia('(max-width:700px)').matches ? 'Добавьте' : 'Перетащите сюда'; }
+  function setDropText(label){
+    if(label !== undefined) dropCatLabel = label;
+    el('matDropT').textContent = dropCatLabel
+      ? dropVerb() + ' «' + dropCatLabel + '»'
+      : dropVerb() + ' файлы или папку';
+  }
   renderCats();
+  setDropText(null);
+  try{ window.matchMedia('(max-width:700px)').addEventListener('change', function(){ setDropText(); }); }catch(e){}
   el('matCats').addEventListener('click', function(e){
     var b = e.target.closest('[data-cat]'); if(!b) return;
     MG.cat = b.getAttribute('data-cat');
@@ -3015,7 +3112,7 @@
       x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
     });
     var c = catById(MG.cat);
-    el('matDropT').textContent = 'Перетащите сюда «' + c.label.toLowerCase() + '»';
+    setDropText(c.label.toLowerCase());
     el('matFiles').setAttribute('accept', c.ext === 'image' ? 'image/*' :
       c.ext.map(function(x){ return '.' + x; }).join(','));
   });
@@ -3056,7 +3153,9 @@
 
   /* ---------------- старт ---------------- */
   function showLoadError(err){
-    var msg = (err && err.message) ? esc(err.message) : '';
+    if(err && window.console) console.error(err);
+    // Сырой «Failed to fetch» не показываем — по-русски; прочие ошибки база шлёт текстом.
+    var msg = isNetErr(err) ? esc(NET_HINT) : ((err && err.message) ? esc(err.message) : '');
     grid.innerHTML = '<div class="loaderr">Не удалось загрузить кадры.'+
       (msg ? '<br><br>'+msg : '')+'<br><br>'+
       (MODE==='local'
@@ -3068,8 +3167,9 @@
 
   applyMode();
   // Молча падать нельзя: человек должен понимать, почему кнопок нет.
+  // Испорченная личная ссылка теперь показывается постоянной плашкой (см. applyMode),
+  // а не исчезающим тостом. Тост оставляем только для сломанного ключа в config.js.
   if(cfgBroken) setTimeout(function(){ showToast('Ключ базы в config.js испорчен — открыт режим просмотра'); }, 400);
-  else if(keyBroken) setTimeout(function(){ showToast('Ссылка испорчена — открыт режим просмотра. Возьмите свою ссылку заново'); }, 400);
 
   var boot;
   if(MODE==='supabase'){
