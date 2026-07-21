@@ -130,6 +130,11 @@
   .whoami .av{ width:28px; height:28px; border-radius:50%; flex:none; display:grid; place-items:center;
     background:var(--accent); color:var(--on-accent); font-size:var(--fs-sm); font-weight:700; }
   .whoami b{ color:var(--text); font-weight:670; }
+  /* переключатель серий: появляется, только когда сотруднику доступна не одна серия */
+  .serpick{ display:none; align-items:center; gap:8px; margin-left:auto;
+    font-size:var(--fs-sm); color:var(--text-2); }
+  .serpick.is-on{ display:inline-flex; }
+  .serpick select{ width:auto; padding:7px 10px; }
 
   /* ---------- agent panel ---------- */
   .agent{ margin-top:18px; position:relative; overflow:hidden;
@@ -164,6 +169,7 @@
 
   /* ---------- filters ---------- */
   .filters{ margin-top:18px; display:flex; flex-direction:column; gap:12px; }
+  .filters[hidden]{ display:none; }
   .frow{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .flabel{ font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.07em; color:var(--text-3); margin-right:2px; }
   .chip{ padding:6px 12px; border-radius:999px; font-size:var(--fs-sm); font-weight:600;
@@ -483,6 +489,9 @@
     <div class="yoursection" id="sectionBox">Ваш раздел: <b id="sectionLbl">все сцены</b></div>
     <div class="selnote" id="selNote">(в облачной версии — разделы по сериям)</div>
     <div class="whoami" id="whoami"><span class="av" id="whoAv"></span><span>Вы вошли как <b id="whoName"></b><span id="whoRole"></span></span></div>
+    <label class="serpick" id="serPick">Серия
+      <select class="minput" id="serPickSel" aria-label="Выбрать серию"></select>
+    </label>
   </div>
 
   <div id="viewFrames">
@@ -748,9 +757,12 @@
   var MODE = backendMode();
 
   // В облаке право писать даёт не наличие базы, а личная ссылка: без неё — только просмотр.
+  // Вторую границу задаёт серия: база принимает правку, только если серия закреплена
+  // за сотрудником (members.series_ids). Держим тут ту же проверку, чтобы кнопки не
+  // предлагали то, на что придёт отказ.
   function canEdit(){
     if(MODE==='local') return true;
-    if(MODE==='supabase') return !!me;
+    if(MODE==='supabase') return !!me && seriesAllowed(currentSeriesId());
     return false;
   }
   var VIEW_TIP = (MODE==='supabase')
@@ -767,9 +779,11 @@
         : '<b>Локальная работа.</b> Данные и картинки — настоящие, из папки проекта.';
     } else {
       pb.hidden = true; vb.hidden = false;
-      document.getElementById('viewBannerTxt').innerHTML = (MODE==='supabase')
-        ? '<b>Режим просмотра.</b> Чтобы одобрять кадры и править промты, откройте дашборд по своей личной ссылке.'
-        : '<b>Режим просмотра.</b> Правки подключатся после настройки базы — пока можно смотреть кадры и скачивать картинки.';
+      document.getElementById('viewBannerTxt').innerHTML = (MODE!=='supabase')
+        ? '<b>Режим просмотра.</b> Правки подключатся после настройки базы — пока можно смотреть кадры и скачивать картинки.'
+        : (me
+            ? '<b>Только просмотр.</b> Эта серия закреплена не за вами — одобрять кадры и править промты в ней нельзя.'
+            : '<b>Режим просмотра.</b> Чтобы одобрять кадры и править промты, откройте дашборд по своей личной ссылке.');
     }
   }
 
@@ -1138,6 +1152,21 @@
   var seriesOverride = null;
   function currentSeriesId(){ return seriesOverride || (seriesRow && seriesRow.id) || CFG.seriesId || null; }
 
+  // Серии, доступные вошедшему сотруднику; пусто — открыто без личной ссылки.
+  var mySeries = [];
+  /* ---- кто какую серию видит и правит ----
+     members.series_ids — закреплённые за сотрудником серии, null означает «все».
+     Правка идёт строго по этому списку: точно так же решает база в review_frame()
+     и set_prompt(). Смотреть режиссёру можно любую серию — в «Управлении» он и так
+     видит их все и открывает кадры любой. */
+  function seriesAllowed(id){
+    if(!me || me.series_ids == null) return true;
+    return id != null && (me.series_ids||[]).indexOf(+id) >= 0;
+  }
+  function seriesVisible(id){
+    return !me || isDirector() || seriesAllowed(id);
+  }
+
   function sbHeaders(extra){
     var h = { 'apikey':CFG.supabaseKey, 'Authorization':'Bearer '+CFG.supabaseKey };
     if(extra) for(var k in extra) h[k] = extra[k];
@@ -1284,6 +1313,59 @@
       seriesRow = rows[0];
       return seriesRow;
     });
+  }
+
+  /* ---------------- какие серии открывать сотруднику ----------------
+     Раньше «Кадры» показывали серию из config.js кому угодно. Теперь аниматор
+     видит только закреплённые за ним: одна — открывается сразу, несколько —
+     в шапке появляется переключатель, ни одной — заглушка вместо сетки.
+     Вход без ключа и молчание базы оставляют прежнее поведение — серию из config.js. */
+  function fetchMySeries(){
+    if(!me) return Promise.resolve(null);                  // гость: серия из config.js
+    return sbGet('series?select=id,project,number,title&order=number.asc')
+      .then(function(rows){
+        return (rows||[]).filter(function(s){ return seriesVisible(s.id); });
+      })
+      .catch(function(){ return null; });                  // список не дали — не запираем
+  }
+  function hasSeries(list, id){
+    for(var i=0; i<(list||[]).length; i++){ if(String(list[i].id) === String(id)) return true; }
+    return false;
+  }
+  function setupSeriesAccess(){
+    return fetchMySeries().then(function(list){
+      if(!list) return true;
+      mySeries = list;
+      if(!list.length){ showNoSeries(); return false; }
+      // Серия из config.js остаётся выбором по умолчанию, но только если она
+      // сотруднику доступна; иначе открываем первую из его серий.
+      if(!hasSeries(list, currentSeriesId())) seriesOverride = list[0].id;
+      renderSeriesPicker();
+      return true;
+    });
+  }
+  function renderSeriesPicker(){
+    var box = el('serPick'), sel = el('serPickSel');
+    if(!box || !sel) return;
+    if(mySeries.length < 2){ box.classList.remove('is-on'); return; }   // выбирать не из чего
+    var cur = String(currentSeriesId());
+    sel.innerHTML = mySeries.map(function(s){
+      return '<option value="' + s.id + '"' + (String(s.id)===cur ? ' selected' : '') + '>' +
+             esc(seriesName(s)) + '</option>';
+    }).join('');
+    box.classList.add('is-on');
+  }
+  // Сотруднику без серий показывать нечего: убираем счётчики, фильтры и панель воркера,
+  // чтобы пустая страница не выглядела поломкой.
+  function showNoSeries(){
+    el('counters').hidden = true;
+    el('empty').hidden = true;
+    el('viewBanner').hidden = true;
+    el('pilotBanner').hidden = true;
+    var f = document.querySelector('.filters'); if(f) f.hidden = true;
+    var a = document.querySelector('.agent');   if(a) a.hidden = true;
+    grid.innerHTML = '<div class="loaderr">Вам пока не назначено ни одной серии — ' +
+                     'обратитесь к режиссёру.</div>';
   }
 
   function loadSupabase(){
@@ -2167,6 +2249,12 @@
       sbGet('events?select=id,at,series_id,kind,message,frames_ok,frames_failed&order=at.desc&limit=40').catch(function(){ return []; })
     ]).then(function(r){
       MG.series = r[0] || [];
+      // Список серий тут самый свежий (могли только что создать новую) — тем же
+      // списком живёт переключатель в «Кадрах», иначе он отстанет до перезагрузки.
+      if(MG.series.length){
+        mySeries = MG.series.filter(function(s){ return seriesVisible(s.id); });
+        renderSeriesPicker();
+      }
       MG.progress = {};
       (r[1] || []).forEach(function(p){ MG.progress[p.series_id] = p; });
       MG.team = r[2] || [];
@@ -2196,11 +2284,17 @@
   document.querySelectorAll('#viewSeg button').forEach(function(b){
     b.addEventListener('click', function(){ switchView(b.getAttribute('data-view')); });
   });
+  el('serPickSel').addEventListener('change', function(){ openSeries(+this.value); });
 
   /* ---------------- открыть другую серию в «Кадрах» ---------------- */
   function openSeries(id){
+    // Единственная точка смены серии: сюда приходит и переключатель в шапке,
+    // и кнопка «Открыть кадры» из «Управления».
+    if(!seriesVisible(id)){ showToast('Эта серия закреплена не за вами'); return; }
     if(String(id) === String(currentSeriesId())){ switchView('frames'); return; }
     seriesOverride = +id;
+    renderSeriesPicker();          // серию могли выбрать в «Управлении»
+    applyMode();                   // право правки зависит от серии
     seriesRow = null; sceneChipsBuilt = false; lastProgress = ''; ui = {};
     state.fscene = 'all'; state.fstatus = 'all'; state.q = '';
     var s = document.getElementById('search'); if(s) s.value = '';
@@ -2537,10 +2631,14 @@
 
   var boot;
   if(MODE==='supabase'){
-    // сначала выясняем, кто пришёл: от этого зависит, показывать ли кнопки правок
+    // сначала выясняем, кто пришёл: от этого зависят и набор серий, и кнопки правок
     boot = whoami()
-      .then(function(){ applyMode(); applyIdentity(); return loadSupabase(); })
-      .then(seedProgress);
+      .then(function(){ applyIdentity(); return setupSeriesAccess(); })
+      .then(function(ok){
+        if(!ok) return;              // серий сотруднику не назначено — показана заглушка
+        applyMode();                 // серия выбрана: банер покажет права именно по ней
+        return loadSupabase().then(seedProgress);
+      });
   } else {
     boot = loadLocal(true);
   }
