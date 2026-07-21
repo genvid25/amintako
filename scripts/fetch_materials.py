@@ -244,10 +244,17 @@ class Storage:
     def user_meta(self, path):
         """Пользовательские метаданные объекта: то, что дашборд положил при
         загрузке (исходное русское имя и раздел). Обычный список их не отдаёт —
-        приходится спрашивать по одному объекту."""
+        приходится спрашивать по одному объекту через /object/info/.
+
+        Где лежит имя — зависит от версии Storage. Свежие версии отдают
+        пользовательские метаданные отдельным полем `user_metadata`, а `metadata`
+        держат под системные (размер, mimetype, eTag) — см. supabase/storage#759.
+        Версия, на которой мы сейчас, кладёт cat/orig прямо в `metadata`, а
+        `user_metadata` не отдаёт вовсе (проверено живой загрузкой). Берём первое
+        непустое — так верно на обеих: сначала user_metadata, потом metadata."""
         raw = self._call("GET", "/object/info/" + BUCKET + "/" + self._quote(path))
         info = json.loads(raw.decode("utf-8"))
-        md = info.get("metadata")
+        md = info.get("user_metadata") or info.get("metadata") or {}
         return md if isinstance(md, dict) else {}
 
     def download(self, path):
